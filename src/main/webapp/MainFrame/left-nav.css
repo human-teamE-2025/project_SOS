@@ -1,0 +1,32 @@
+@charset "UTF-8";
+
+
+#left-nav {
+    width: 120px;	
+    flex-grow: 1;
+    background-color: #F8B400;
+    overflow-y: hidden; /* 기본적으로 스크롤 숨김 */
+}
+/* Chrome, Edge, Safari에서 기본적으로 스크롤바 숨기기 */
+#left-nav::-webkit-scrollbar {
+    display: none;
+}
+/* hover 시 스크롤바 활성화 */
+#left-nav:hover {   
+    overflow-y: auto; /* 스크롤 가능하도록 변경 */
+}
+/* hover 시에는 스크롤바 스타일 지정 가능 */
+#left-nav:hover::-webkit-scrollbar {
+    display: block;
+    width: 8px; /* 스크롤바 너비 */
+}
+
+#left-nav:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5); /* 스크롤바 색상 */
+    border-radius: 4px;
+}
+
+#left-nav:hover::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.3); /* 스크롤 트랙 색상 */
+}
+

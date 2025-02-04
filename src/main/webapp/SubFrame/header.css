@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+header {
+    width: 100vw;
+    height: 9vh;
+    background-color: #F8B400;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#title {
+    font-size: 4rem;
+    font-family: 'League Gothic', sans-serif;
+    text-align: center;
+    letter-spacing: 2px;
+}

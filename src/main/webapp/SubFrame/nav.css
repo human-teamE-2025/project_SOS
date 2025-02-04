@@ -1,0 +1,86 @@
+@charset "UTF-8";
+
+
+nav {
+    width: 100vw;
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #C41E3A;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    width: 40%;
+	max-height: 60%;
+	min-height: 40%;
+    max-width: 500px;
+	min-width: 300px;
+    border: 1px solid #34495E;
+    border-radius: 24px;
+    padding: 5px 15px;
+    background-color: white;
+}
+
+.search-bar input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 5px;
+    background-color: transparent;
+    
+}
+
+.search-bar input::placeholder {
+    color: #8DA4CF;
+}
+
+.search-bar button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #8DA4CF;
+    font-size: 18px;
+    padding: 5px;
+}
+
+.search-bar button:hover {
+    color: #F8B400;
+}
+
+
+
+	
+	#nav-item{
+		display:flex;
+		flex: 1 1 auto;
+		flex-direction:column;
+		gap:10px;
+		padding: 10px 10px 10px 10px;
+
+	}
+	#nav-item li{
+		font-size:1rem;
+		border:1px solid black;
+	    display: block;
+		text-align:left;
+		text-indent:1rem;
+		padding: 10px 10px 10px 10px;
+		white-space: nowrap; /* 줄바꿈 방지 */
+		overflow: hidden; /* 넘치는 글자 숨기기 */
+		text-overflow: ellipsis; /* 넘치는 글자 "..." 처리 */
+		
+	}
+#nav-item li:hover {
+    opacity: 0.7; /* 눌렀을 때 투명도 변경 */
+    background-color: rgba(0, 0, 0, 0.2); /* 배경색도 살짝 변경하여 눌린 느낌 주기 */
+}
+
+
+
+
+
