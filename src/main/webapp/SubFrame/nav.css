@@ -80,6 +80,10 @@ nav {
     background-color: rgba(0, 0, 0, 0.2); /* 배경색도 살짝 변경하여 눌린 느낌 주기 */
 }
 
+#b1, .logo {
+	background-color : transparent !important;
+	border : none;
+}
 
 
 

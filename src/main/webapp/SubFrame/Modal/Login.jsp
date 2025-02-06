@@ -34,9 +34,12 @@
     <div class="modal hidden" id="password-modal">
         <h1>Song of Senses</h1>
         <p>1/3단계<br>비밀번호 생성</p>
-        <form action="PasswordServlet" method="post">
+        <form id="password-form" onsubmit="validatePasswords(event)">
             <input type="password" name="password" placeholder="비밀번호" class="password-input" id="password-input" oninput="validatePassword()" required />
-            <input type="password" name="password-confirm" placeholder="비밀번호 재확인" class="password-input" required />
+            <input type="password" name="password-confirm" placeholder="비밀번호 재확인" class="password-input" id="password-confirm" required />
+            
+            <!-- 경고 메시지 -->
+            <p id="password-warning" class="password-warning hidden">비밀번호가 일치하지 않습니다.</p>
 
             <p class="password-info">비밀번호에는 다음과 같은 조건이 충족되어야 합니다.</p>
             <ul class="password-criteria">
@@ -68,6 +71,19 @@
             document.getElementById('criteria-letter').checked = hasLetter;
             document.getElementById('criteria-special').checked = hasSpecialOrNumber;
             document.getElementById('criteria-length').checked = hasMinLength;
+        }
+
+        function validatePasswords(event) {
+            const password = document.getElementById('password-input').value;
+            const confirmPassword = document.getElementById('password-confirm').value;
+
+            // 비밀번호가 일치하지 않을 경우 경고 메시지를 표시하고 제출을 막음
+            if (password !== confirmPassword) {
+                event.preventDefault();
+                document.getElementById('password-warning').classList.remove('hidden');
+            } else {
+                document.getElementById('password-warning').classList.add('hidden');
+            }
         }
     </script>
 </body>
