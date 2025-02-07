@@ -80,11 +80,58 @@ nav {
     background-color: rgba(0, 0, 0, 0.2); /* 배경색도 살짝 변경하여 눌린 느낌 주기 */
 }
 
-#b1, .logo {
+#b1, #b2 {
 	background-color : transparent !important;
 	border : none;
 }
 
+#b1:hover, #b2:hover{
+	opacity: 0.5;
+	
+}
+.nav-button{
+	position: absolute; right: 20px;
+}
+#b1 i, #b2 i{
+	font-size: 2rem;
+	color:black;
+}
+.logo{
+	
+	position: absolute; left: 1vw; top: 1vh;
+}
+.logo:hover, .logo-btn:hover{
+border:none;
+}
+.logo-btn {
+  width :7vh;
+  height: 7vh;
+  background: url('favicon.ico') no-repeat center;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+}
+.menu{
+	position: absolute; left: 1vw;
+}
+.menu:hover{
+	cursor:pointer;
+
+}
+.menu i{
+	transition: transform 0.4s ease-in-out;
+	font-size: 2rem;
+}
+
+/* 🌀 Hover 시 180도 회전 */
+.menu:hover i {
+  transform: rotate(90deg);
+}
+
+/* 🚀 클릭(포커스)하면 회전 상태 고정 */
+.menu:focus i {
+  transform: rotate(90deg);
+}
 
 
 
