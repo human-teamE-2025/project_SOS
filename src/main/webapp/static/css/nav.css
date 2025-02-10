@@ -17,13 +17,14 @@ nav {
     width: 40%;
 	max-height: 60%;
 	min-height: 40%;
-    max-width: 500px;
-	min-width: 300px;
+    max-width: 600px;
+	min-width: 400px;
     border: 1px solid #34495E;
     border-radius: 24px;
     padding: 5px 15px;
     background-color: white;
 }
+
 
 .search-bar input {
     flex: 1;
@@ -44,7 +45,7 @@ nav {
     border: none;
     cursor: pointer;
     color: #8DA4CF;
-    font-size: 18px;
+    font-size: 16px;
     padding: 5px;
 }
 
@@ -106,7 +107,7 @@ border:none;
 .logo-btn {
   width :7vh;
   height: 7vh;
-  background: url('favicon.ico') no-repeat center;
+  background: url('../img/favicon.ico') no-repeat center;
   background-size: contain;
   border: none;
   cursor: pointer;

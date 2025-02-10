@@ -1,80 +1,70 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>Song of Senses</title>
-    <link rel="stylesheet" href="Login.css">
-</head>
-<body>
-    <!-- 이메일 입력 모달 -->
-    <div class="modal" id="email-modal">
-        <h1>Song of Senses</h1>
-        <p>가입 이후<br>다양한 컨텐츠와 음악을<br>감상하세요</p>
-        <form id="email-form" onsubmit="showPasswordModal(event)">
-            <input type="email" name="email" placeholder="이메일 주소" class="email-input" required />
-            <div class="separator">
-                <span>또는</span>
-            </div>
-            <div class="social-buttons">
-                <button type="button" class="social-btn naver-btn">N</button>
-                <button type="button" class="social-btn kakao-btn">K</button>
-                <button type="button" class="social-btn google-btn">G</button>
-            </div>
-            <button type="submit" class="next-btn">다음</button>
-        </form>
-    </div>
 
-    <!-- 비밀번호 생성 모달 -->
-    <div class="modal hidden" id="password-modal">
-        <h1>Song of Senses</h1>
-        <p>1/3단계<br>비밀번호 생성</p>
-        <form id="password-form" onsubmit="validatePasswords(event)">
-            <input type="password" name="password" placeholder="비밀번호" class="password-input" id="password-input" oninput="validatePassword()" required />
-            <input type="password" name="password-confirm" placeholder="비밀번호 재확인" class="password-input" id="password-confirm" required />
-            
-            <p id="password-warning" class="password-warning hidden">비밀번호가 일치하지 않습니다.</p>
-            <p class="password-info">비밀번호에는 다음 조건이 충족되어야 합니다.</p>
-            <ul class="password-criteria">
-                <li><input type="checkbox" id="criteria-letter" disabled> 문자 1개 이상</li>
-                <li><input type="checkbox" id="criteria-special" disabled> 숫자 또는 특수 문자 1개 이상 (예: !, @, # 등)</li>
-                <li><input type="checkbox" id="criteria-length" disabled> 10자 이상</li>
-            </ul>
-            <button type="submit" class="next-btn">다음</button>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/Login.css">
+<!-- 로그인 모달 -->
+    <div class="modal" id="login-modal" >
+        <h1>Song of Senses<br>로그인</h1>
+        <form id="login-form" onsubmit="processLogin(event)">
+            <input type="email" name="login-email" placeholder="이메일 주소" class="email-input" required />
+            <input type="password" name="login-password" placeholder="비밀번호" class="password-input" required />
+            <button type="submit" class="next-btn">로그인</button>
         </form>
+        
+        <div class="separator">
+            <span>또는</span>
+        </div>
+        
+        <div class="social-buttons">
+            <button type="button" class="social-btn naver-btn" onclick="loginWith('naver')">N</button>
+            <button type="button" class="social-btn kakao-btn" onclick="loginWith('kakao')">K</button>
+            <button type="button" class="social-btn google-btn" onclick="loginWith('google')">G</button>
+        </div>
+        
+        <p class="forgot-password"><a href="#">비밀번호를 잊으셨나요?</a></p>
+        <a href="#" id="signup-link">회원가입하기</a>
     </div>
 
     <script>
-        function showPasswordModal(event) {
+        function processLogin(event) {
             event.preventDefault();
-            document.getElementById('email-modal').classList.add('hidden');
-            document.getElementById('password-modal').classList.remove('hidden');
-        }
+            const email = document.querySelector('input[name="login-email"]').value;
+            const password = document.querySelector('input[name="login-password"]').value;
 
-        function validatePassword() {
-            const password = document.getElementById('password-input').value;
-
-            const hasLetter = /[a-zA-Z]/.test(password);
-            const hasSpecialOrNumber = /[\d!@#$%^&*]/.test(password);
-            const hasMinLength = password.length >= 10;
-
-            document.getElementById('criteria-letter').checked = hasLetter;
-            document.getElementById('criteria-special').checked = hasSpecialOrNumber;
-            document.getElementById('criteria-length').checked = hasMinLength;
-        }
-
-        function validatePasswords(event) {
-            const password = document.getElementById('password-input').value;
-            const confirmPassword = document.getElementById('password-confirm').value;
-
-            if (password !== confirmPassword) {
-                event.preventDefault();
-                document.getElementById('password-warning').classList.remove('hidden');
+            if (email && password) {
+                alert('로그인 성공');
+                // 추가 로그인 처리 로직 필요
             } else {
-                document.getElementById('password-warning').classList.add('hidden');
+                alert('이메일과 비밀번호를 입력해 주세요.');
             }
         }
+
+        function loginWith(provider) {
+            alert(provider + '로 로그인 시도');
+            // 소셜 로그인 연동 로직 추가 필요
+        }
     </script>
-</body>
-</html>
+    
+<script>
+    $(document).ready(function() {
+        // 회원가입 버튼 클릭 이벤트
+        $("#signup-link").click(function(event) {
+            event.preventDefault();  // 기본 링크 이동 방지
+
+            $.ajax({
+                url: "SubFrame/Modal/SignIn_1.jsp",  // 회원가입 모달 경로
+                type: "GET",
+                dataType: "html",
+                success: function(data) {
+                    $("#login-modal").fadeOut(200, function() {
+                        $(this).replaceWith(data); // 로그인 모달을 회원가입 모달로 교체
+                        $("#email-modal").show(); 	// 새 모달 표시
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("회원가입 모달을 불러오는 중 오류 발생:", error);
+                }
+            });
+        });
+    });
+</script>

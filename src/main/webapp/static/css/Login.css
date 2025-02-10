@@ -1,0 +1,142 @@
+.modal {
+    position: fixed;           /* 화면에 고정 */
+    top: 50%;                   /* 화면 중앙 */
+    left: 50%;                  /* 화면 중앙 */
+    transform: translate(-50%, -50%);  /* 정확한 중앙 정렬 */
+    width: 400px;              /* 고정 너비 */
+    height: auto;              /* 높이는 내용에 맞춰 자동 */
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: none;             /* 기본적으로 숨겨짐 */
+    z-index: 1000;             /* 다른 요소 위에 표시되도록 */
+}
+
+/* 모달 외부 클릭 시 닫히도록 배경 추가 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;  /* 초기 상태에서 숨김 */
+    z-index: 999;   /* 모달보다 아래에 표시 */
+}
+
+.modal::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 0;
+    font-size: 12px;
+    color: #777;
+    position: relative;
+}
+.social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.social-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.naver-btn {
+    background-color: #03c75a;
+    color: white;
+}
+
+
+.kakao-btn {
+    background-color: #ffeb00;
+    color: #000;
+}
+
+.google-btn {
+    background-color: #4285f4;
+}
+.next-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #e50914;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.next-btn:hover {
+    background-color: #b00710;
+}
+.email-input, .password-input, .text-input {
+    width: 90%;
+    max-width: 340px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.password-warning {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.password-info {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.password-criteria {
+    text-align: left;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.password-criteria li {
+    margin-bottom: 5px;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}

@@ -5,4 +5,4 @@
       		<%@ include file="./header.jsp" %>
 			<%@ include file="./nav.jsp" %>
 			<%@ include file="./bottom.jsp" %>
-			<%@ include file="./footer.jsp" %>
+			
