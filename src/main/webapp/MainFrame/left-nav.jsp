@@ -9,7 +9,7 @@
 <aside id="left-nav">
 				<ul id="nav-item">
 					<li>홈</li>
-					<li>shorts</li>
+					<li><a href="/E_web/mypage.jsp">shorts</a></li>
 					<li>구독</li>
 					<li>시청기록</li>	
 					<li>내동영상</li>
