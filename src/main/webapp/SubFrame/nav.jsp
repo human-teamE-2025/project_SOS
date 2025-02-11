@@ -37,10 +37,12 @@
                             // 모달이 이미 존재하지 않으면 새로 추가
                             if ($("#login-modal").length === 0) {
                                 $("body").append(data); // 새 모달 추가
+                                // 처음에는 모달을 숨겨두기
+                                $("#login-modal").hide();  
                             }
 
                             // 모달을 즉시 보이게 함 (AJAX 요청이 성공적으로 완료된 후에 표시)
-                            $("#login-modal").fadeIn();
+                            $("#login-modal").fadeIn(); 
                         },
                         error: function(xhr, status, error) {
                             console.error("모달을 불러오는 중 오류 발생:", error);

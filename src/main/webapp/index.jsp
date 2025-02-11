@@ -35,7 +35,7 @@
     <div id="entire">
 			<%@ include file="./SubFrame/SubContainer.jsp" %>		
 			<%@ include file="./MainFrame/main-container.jsp" %>		
-		/* test */
+		
 
     </div>	
 </body>

@@ -13,12 +13,13 @@
     <tr>
         <th>ID</th>
         <th>Item</th>
+        <th>Password</th>
     </tr>
     <%
         String driverName="com.mysql.cj.jdbc.Driver";  // 최신 MySQL 드라이버 이름
-        String url = "jdbc:mysql://localhost:3306/testdb?useSSL=false&serverTimezone=UTC";  // testdb를 포함한 URL
-        String id = "root";  // MySQL ID
-        String pwd = "willter2358@";  // MYSQL Password
+        String url = "jdbc:mysql://3.25.114.213:3306/userDB?useSSL=false&serverTimezone=UTC";
+        String id = "your_user";  // MySQL ID
+        String pwd = "your_password";  // MYSQL Password
 
         Connection conn = null;
         Statement stmt = null;
@@ -26,7 +27,7 @@
 
         try {
             // [1] JDBC 드라이버 로드
-            Class.forName("com.mysql.jdbc.Driver");   
+            Class.forName(driverName);   
             out.println("MySQL JDBC 드라이버 등록 성공!!<br>");
             
             // [2] 데이터베이스 연결
@@ -34,7 +35,7 @@
             out.println("DB 연결 성공!!<br>");
             
             // [3] SQL 쿼리 실행
-            String query = "SELECT id, item FROM goods";
+            String query = "SELECT id, email, password FROM userInfo";
             stmt = conn.createStatement();
             rs = stmt.executeQuery(query);
             
@@ -42,7 +43,8 @@
             while (rs.next()) {
                 out.println("<tr>");
                 out.println("<td>" + rs.getInt("id") + "</td>");
-                out.println("<td>" + rs.getString("item") + "</td>");
+                out.println("<td>" + rs.getString("email") + "</td>");
+                out.println("<td>" + rs.getString("password") + "</td>");
                 out.println("</tr>");
             }
             
