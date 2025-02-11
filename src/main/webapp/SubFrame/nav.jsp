@@ -38,7 +38,7 @@
                             if ($("#login-modal").length === 0) {
                                 $("body").append(data); // 새 모달 추가
                                 // 처음에는 모달을 숨겨두기
-                                $("#login-modal").hide();  
+                                  
                             }
 
                             // 모달을 즉시 보이게 함 (AJAX 요청이 성공적으로 완료된 후에 표시)
