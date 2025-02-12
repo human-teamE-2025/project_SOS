@@ -5,7 +5,8 @@
         
         <nav>
 			<div class="logo" >
-				<button class="logo-btn"></button>
+				<button class="logo-btn" onclick="window.location.href='${pageContext.request.contextPath}/index.jsp';"></button>
+
 			</div>
             <div class="search-bar">
                 <input type="text" placeholder="Search...">

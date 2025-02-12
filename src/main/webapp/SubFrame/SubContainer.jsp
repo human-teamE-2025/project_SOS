@@ -6,4 +6,4 @@
 			<%@ include file="./nav.jsp" %>
 			<%@ include file="./bottom.jsp" %>
 			<%@ include file="./Modal/Login.jsp" %>
-			
+			<%@ include file="./notification/notice.jsp" %>

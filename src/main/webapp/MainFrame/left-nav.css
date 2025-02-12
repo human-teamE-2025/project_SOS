@@ -1,32 +1,97 @@
 @charset "UTF-8";
 
-
 #left-nav {
-    width: 120px;	
-    flex-grow: 1;
-    background-color: #F8B400;
-    overflow-y: hidden; /* 기본적으로 스크롤 숨김 */
-}
-/* Chrome, Edge, Safari에서 기본적으로 스크롤바 숨기기 */
-#left-nav::-webkit-scrollbar {
-    display: none;
-}
-/* hover 시 스크롤바 활성화 */
-#left-nav:hover {   
-    overflow-y: auto; /* 스크롤 가능하도록 변경 */
-}
-/* hover 시에는 스크롤바 스타일 지정 가능 */
-#left-nav:hover::-webkit-scrollbar {
-    display: block;
-    width: 8px; /* 스크롤바 너비 */
+    width: 200px;  /* 유튜브 사이드바처럼 넓게 조정 */
+    background-color: #F8B400; /* 지정한 배경색 적용 */
+    border-right: 1px solid #ddd;
+    overflow-y: auto; /* 기본적으로 스크롤 가능하게 설정 */
+    padding-top: 10px;
 }
 
-#left-nav:hover::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.5); /* 스크롤바 색상 */
+/* 스크롤바 스타일 */
+#left-nav::-webkit-scrollbar {
+    width: 8px;
+    background-color: transparent; /* 기본적으로 숨김 */
+        display: none;
+}
+
+#left-nav:hover::-webkit-scrollbar {
+	display: block;
+    background-color: rgba(0, 0, 0, 0.1); /* 마우스를 올리면 보이도록 설정 */
+}
+
+#left-nav::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
     border-radius: 4px;
 }
 
-#left-nav:hover::-webkit-scrollbar-track {
-    background-color: rgba(255, 255, 255, 0.3); /* 스크롤 트랙 색상 */
+/* 고정된 크기 유지 */
+#left-nav {
+    flex-shrink: 0;
 }
 
+/* 섹션 스타일 */
+.left-nav-section {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #000; /* 검정색 섹션 경계선 추가 */
+}
+
+.left-nav-section:last-child {
+    border-bottom: none; /* 마지막 섹션의 경계선 제거 */
+}
+
+/* .left-nav-section span {
+    display: block;
+    font-size: 16px; 타이틀도 글자 크기 일정하게 조정
+    font-weight: 600;
+    color: #000; 텍스트 색상을 검정으로 변경
+    padding: 10px 20px;
+    text-transform: uppercase;
+} */
+
+#left-nav button {
+    background-color: transparent;
+    color: #0f0f0f;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    padding: 10px 0px;
+    width: 100%;
+    font-size: 18px; /* 글자 크기 일정하게 조정 */
+    font-weight: 600; /* 글자 굵기 일정하게 조정 */
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#left-nav button img{
+	width: 24px;
+	height: 24px;
+}
+#left-nav button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+#left-nav button i, #left-nav img {
+    margin-right: 2px; /* 아이콘과 텍스트 간격 일정하게 조정 */
+    width: 24px; /* 아이콘 크기 증가 */
+    height: 24px;
+
+    filter: brightness(0);
+    flex-shrink: 0; /* 아이콘 크기 유지 */
+}
+#left-nav button i{
+	    font-size:1.5rem;
+}
+/* 카테고리 구분선 */
+#left-nav hr {
+    
+    border: none;
+    height: 2px;
+    width: 100%;
+    background-color: #000; /* 검정색 구분선 적용 */
+}

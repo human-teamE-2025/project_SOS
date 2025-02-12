@@ -12,9 +12,9 @@
 				
 							<footer>
 
-				<a href="/about">회사소개</a>&emsp;|&emsp;
-				<a href="/terms">이용약관</a>&emsp;|&emsp;
-				<a href="/privacy">개인정보처리방침</a>&emsp;
+				<a href="${pageContext.request.contextPath}/about.jsp">회사소개</a>&emsp;|&emsp;
+				<a href="${pageContext.request.contextPath}/about.jsp">이용약관</a>&emsp;|&emsp;
+				<a href="/about.jsp">개인정보처리방침</a>&emsp;
 				Copyright © 2025 All rights reserved.
 				
 			</footer>

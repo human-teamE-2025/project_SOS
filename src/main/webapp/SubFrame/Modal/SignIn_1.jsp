@@ -42,5 +42,12 @@
                 }
             });
         });
+        
+        $(document).on("click", function(event) {
+            if ($(event.target).closest("#email-modal").length === 0) {
+                $("#email-modal").fadeOut();
+            }
+        });
+        
     });
 </script>

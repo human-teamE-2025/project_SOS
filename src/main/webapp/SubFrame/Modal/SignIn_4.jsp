@@ -5,7 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Song of Senses</title>
-    <link rel="stylesheet" href="SingIn.css">
 </head>
 <body>
     <!-- 이용 약관 모달 -->
@@ -75,6 +74,14 @@
             alert('회원가입이 완료되었습니다.');
             // 추가 로직: 회원가입 완료 후 페이지 이동 또는 서버로 데이터 전송
         });
+ $(document).ready(function() {
+ $(document).on("click", function(event) {
+     if ($(event.target).closest("#terms-modal").length === 0) {
+         $("#terms-modal").fadeOut();
+     }
+ });
+ });
+ 
     </script>
 </body>
 </html>

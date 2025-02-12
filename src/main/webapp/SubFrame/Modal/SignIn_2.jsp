@@ -87,5 +87,11 @@
                 }
             });
         });
+        $(document).on("click", function(event) {
+            if ($(event.target).closest("#password-modal").length === 0) {
+                $("#password-modal").fadeOut();
+            }
+        });
+        
     });
 </script>

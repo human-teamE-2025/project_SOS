@@ -24,13 +24,18 @@
     box-sizing: border-box;
 	font-family: 'Inter', sans-serif;
 }
-	
+
+#entire {
+
+}
+
+			
 </style>
 </head>
 <body>
     <div id="entire">
 			<%@ include file="./SubFrame/SubContainer.jsp" %>		
-			<%@ include file="./MainFrame/main-container.jsp" %>		
+			<%@ include file="./MainFrame/about-container.jsp" %>		
 		
 
     </div>	

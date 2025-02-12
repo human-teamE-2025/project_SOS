@@ -1,0 +1,132 @@
+@charset "UTF-8";
+
+/* 팝업 스타일 */
+#popup {
+    position: fixed;
+    right: 116px;
+    top: 15vh;
+    width: 20vw;
+    height: 60vh;
+    background-color: #f8b400;
+    visibility: hidden; /* 기본적으로 숨김 */
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow-y: auto; /* 스크롤 가능 */
+}
+
+/* 팝업 헤더 스타일 */
+#popup-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f1a500;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    color: white;
+    font-weight: bold;
+}
+
+/* 알림 제목 스타일 */
+#popup-title {
+    font-size: 18px;
+}
+
+/* 설정 버튼 스타일 */
+#settings-btn {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* 세로 줄 (hr) 스타일 */
+
+/* 리스트 스타일 */
+#popup #nav-item {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+/* 리스트 아이템 스타일 */
+#popup #nav-item li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    height: 100px;
+    background-color: #C41E3A;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+}
+
+/* 아이템 이미지와 텍스트 */
+.item-content {
+    display: flex;
+    align-items: center;
+}
+
+.item-content img {
+    width: 4vh;
+    height: 4vh;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.item-content a {
+    color: black;
+    text-decoration: none;
+}
+
+/* 옵션 버튼 및 삭제 아이콘 스타일 */
+.option-icon, .delete-icon {
+    cursor: pointer;
+    font-size: 18px;
+    margin-left: 4px;
+}
+
+/* 삭제 아이콘 빨간색 */
+.delete-icon {
+    color: red;
+}
+
+/* 옵션 아이콘 회색 */
+.option-icon {
+    color: gray;
+}
+
+/* 버튼 영역 */
+.button-content {
+    display: flex;
+    align-items: center;
+}
+
+/* 팝업이 표시될 때 */
+#popup.visible {
+    visibility: visible;
+}
+
+/* 스크롤바 기본 숨김 */
+#popup::-webkit-scrollbar {
+    display: none;
+}
+
+/* hover 시 스크롤바 보이기 */
+#popup:hover::-webkit-scrollbar {
+    display: block;
+    width: 8px; /* 스크롤바 너비 */
+}
+
+#popup:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5); /* 스크롤바 색상 */
+    border-radius: 4px;
+}
+
+#popup:hover::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.3); /* 스크롤 트랙 색상 */
+}
+

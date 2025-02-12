@@ -1,0 +1,107 @@
+#main-container {
+    display: flex;
+    justify-content: center;
+    background-color: none;
+    height: 79vh;
+        min-width:768px;
+}
+
+#main-con {
+    display: flex;
+    flex-direction: column; /* 가로로 배치 */
+    width: 40%;
+    background-color: #F17C7C;
+    padding: 2vw;
+    height: 100%;
+
+}
+
+.column {
+    background-color: #C41E3A;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    transition: background-color 0.3s;
+ 	min-height:20px;   
+}
+
+.column.selected {
+        background-color: #F8B400;
+}
+
+.title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.title {
+	font-size:1.5rem;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom:10px;
+    margin-right: 10px; /* 오른쪽 여백 */
+    flex: 1;
+}
+
+.toggle-btn {
+    background-color: lightblue;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.description {
+    display: none; /* 기본 상태에서는 내용 숨김 */
+    margin-top: 10px;
+    text-align: center;
+    transition: height 0.3s ease;
+}
+
+.description.show {
+    display: block;
+    height: auto; /* 펼쳐지면 내용만큼 */
+}
+
+.toggle-btn.open::after {
+    content: "\f106"; /* 아이콘: 'fa-chevron-up' */
+    font-family: "Font Awesome 6 Free"; /* 폰트어썸의 기본 폰트 패밀리 */
+    font-weight: 900; /* 폰트어썸 아이콘은 'font-weight'가 900이어야 합니다 */
+
+}
+
+.toggle-btn::after {
+    content: "\f107"; /* 아이콘: 'fa-chevron-down' */
+    font-family: "Font Awesome 6 Free"; /* 폰트어썸의 기본 폰트 패밀리 */
+    font-weight: 900; /* 폰트어썸 아이콘은 'font-weight'가 900이어야 합니다 */
+
+}
+
+
+        .buttons {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between; /* 좌우에 버튼을 배치 */
+            transform: translateY(-50%); /* 수직 중앙 정렬 */
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #333;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+        

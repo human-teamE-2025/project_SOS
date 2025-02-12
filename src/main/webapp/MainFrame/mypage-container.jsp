@@ -3,7 +3,7 @@
     pageEncoding="UTF-8"%>
 
 <head>
-    <link rel="stylesheet" type="text/css" href="./MainFrame/mypage-container.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/mypage-container.css">
 </head>
 
 

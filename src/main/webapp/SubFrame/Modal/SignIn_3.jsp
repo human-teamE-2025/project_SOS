@@ -38,5 +38,12 @@
                 }
             });
         });
+        
+        $(document).on("click", function(event) {
+            if ($(event.target).closest("#profile-modal").length === 0) {
+                $("#profile-modal").fadeOut();
+            }
+        });
+        
     });
 </script>
