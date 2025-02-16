@@ -1,49 +1,91 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/SingIn.css">
- <!-- 이름 입력 및 생년월일 모달 -->
-    <div class="modal" id="profile-modal">
-        <h1>Song of Senses</h1>
-        <form id="password-form" action="SingIn_4.jsp" onsubmit="showProfileModal(event)">
-        <div class="step-title">2/3단계: 자신을 소개</div>
-        <input type="text" class="input-field" placeholder="이름" id="name-input" required>
-        <p>이 이름이 프로필에 표시됩니다.</p>
-        <input type="date" class="input-field" id="date-input" required>
+
+<div class="modal-overlay"></div>
+<div class="modal" id="profile-modal">
+    <h1>Song of Senses</h1>
+    <p>2/3단계: 자신을 소개</p>
+    <form id="profile-form">
+        <input type="text" id="nickname-input" placeholder="닉네임" class="input-field" required />
+        <p id="nickname-warning" class="input-warning hidden">❌ 닉네임을 2자 이상 입력하세요.</p>
+        
+        <input type="date" id="birthdate-input" class="input-field" required />
+        <p id="birthdate-warning" class="input-warning hidden">❌ 생년월일을 선택하세요.</p>
+
         <div class="gender-options">
             <label><input type="radio" name="gender" value="male"> 남자</label>
             <label><input type="radio" name="gender" value="female"> 여자</label>
         </div>
-        <button class="next-btn" onclick="showTermsModal()">다음</button>
-        </form>
-    </div>
+        <p id="gender-warning" class="input-warning hidden">❌ 성별을 선택하세요.</p>
+
+        <button type="button" class="next-btn">다음</button>
+    </form>
+</div>
 
 <script>
-    $(document).ready(function() {
-        // 회원가입 버튼 클릭 이벤트
-        $(".next-btn").click(function(event) {
-            event.preventDefault();  // 기본 링크 이동 방지
+$(document).ready(function() {
+    $(".next-btn").click(function(event) {
+        event.preventDefault();
+        const nickname = $("#nickname-input").val().trim();
+        const birthdate = $("#birthdate-input").val();
+        const gender = $("input[name='gender']:checked").val();
 
-            $.ajax({
-                url: "SubFrame/Modal/SignIn_4.jsp",  // 회원가입 모달 경로
-                type: "GET",
-                dataType: "html",
-                success: function(data) {
+        let isValid = true;
+
+        // 닉네임 검증
+        if (!nickname || nickname.length < 2) {
+            $("#nickname-warning").removeClass("hidden");
+            isValid = false;
+        } else {
+            $("#nickname-warning").addClass("hidden");
+        }
+
+        // 생년월일 검증
+        if (!birthdate) {
+            $("#birthdate-warning").removeClass("hidden");
+            isValid = false;
+        } else {
+            $("#birthdate-warning").addClass("hidden");
+        }
+
+        // 성별 검증
+        if (!gender) {
+            $("#gender-warning").removeClass("hidden");
+            isValid = false;
+        } else {
+            $("#gender-warning").addClass("hidden");
+        }
+
+        if (!isValid) return;
+
+        // AJAX 요청을 통해 서버로 데이터 전송
+        $.ajax({
+            url: "${pageContext.request.contextPath}/SignInServlet",
+            type: "POST",
+            data: { step: "3", nickname: nickname, birthdate: birthdate, gender: gender },
+            success: function(response) {
+                console.log("🔍 서버 응답:", response);
+
+                if (response.trim() === "success") {
                     $("#profile-modal").fadeOut(200, function() {
-                        $(this).replaceWith(data); // 로그인 모달을 회원가입 모달로 교체
-                        $("#terms-modal").show(); 	// 새 모달 표시
+                        $.ajax({
+                            url: "SubFrame/Modal/SignIn_4.jsp",
+                            type: "GET",
+                            success: function(data) {
+                                $("body").append(data);
+                                $("#terms-modal").fadeIn(200);
+                            }
+                        });
                     });
-                },
-                error: function(xhr, status, error) {
-                    console.error("회원가입 모달을 불러오는 중 오류 발생:", error);
+                } else {
+                    alert("❌ 회원 정보 저장 실패: " + response);
                 }
-            });
-        });
-        
-        $(document).on("click", function(event) {
-            if ($(event.target).closest("#profile-modal").length === 0) {
-                $("#profile-modal").fadeOut();
+            },
+            error: function(xhr, status, error) {
+                console.error("🚨 AJAX 요청 오류:", status, error);
+                alert("❌ 서버 요청 중 문제가 발생했습니다.");
             }
         });
-        
     });
+});
 </script>
