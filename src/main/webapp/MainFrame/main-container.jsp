@@ -9,8 +9,11 @@
 
 			<div id="main-container">
 			<%@ include file="./left-nav.jsp" %>
+			<%@ include file="./left-nav-mine.jsp" %>
 			
-			<div id="main-con">
+			
+			
+			<div id="main-con">	
 				
 				<main>
 					
