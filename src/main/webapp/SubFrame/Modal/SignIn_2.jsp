@@ -22,15 +22,60 @@
 
 <script>
 $(document).ready(function() {
-	var contextPath = "";
-	
+    var contextPath = "<%= request.getContextPath() %>";
+
+    // ✅ 비밀번호 검증 로직 강화
+    function validatePassword() {
+        const password = $("#password-input").val();
+        const confirmPassword = $("#password-confirm").val();
+        let isValid = true;
+
+        // 🔍 검증 조건
+        const hasLetter = /[a-zA-Z]/.test(password);
+        const hasSpecialOrNumber = /[\d!@#$%^&*]/.test(password);
+        const hasMinLength = password.length >= 10;
+        const isMatch = password === confirmPassword;
+
+        // ✅ 체크박스 업데이트
+        $("#criteria-letter").prop("checked", hasLetter);
+        $("#criteria-special").prop("checked", hasSpecialOrNumber);
+        $("#criteria-length").prop("checked", hasMinLength);
+
+        // ✅ 비밀번호 일치 확인
+        if (password === "" || confirmPassword === "") {
+            $("#password-warning").addClass("hidden").text("");
+        } else if (isMatch) {
+            $("#password-warning")
+                .removeClass("hidden password-warning")
+                .addClass("password-success")
+                .text("✅ 비밀번호가 일치합니다.");
+        } else {
+            $("#password-warning")
+                .removeClass("hidden password-success")
+                .addClass("password-warning")
+                .text("❌ 비밀번호가 일치하지 않습니다.");
+            isValid = false;
+        }
+
+        // ✅ 모든 조건을 만족해야 `다음` 버튼 활성화
+        if (hasLetter && hasSpecialOrNumber && hasMinLength && isMatch) {
+            $(".next-btn").prop("disabled", false);
+        } else {
+            $(".next-btn").prop("disabled", true);
+        }
+    }
+
+    // ✅ 비밀번호 입력 시 검증 실행
+    $("#password-input, #password-confirm").on("input", validatePassword);
+
     $(".next-btn").click(function(event) {
         event.preventDefault();
         const password = $("#password-input").val();
         const confirmPassword = $("#password-confirm").val();
 
-        if (password === "" || confirmPassword === "") {
-            alert("비밀번호를 입력해주세요.");
+        // ✅ 최종 확인 (한 번 더 체크)
+        if (!password || !confirmPassword) {
+            alert("❌ 비밀번호를 입력해주세요.");
             return;
         }
 
@@ -42,7 +87,7 @@ $(document).ready(function() {
         $.ajax({
             url: contextPath + "/SignInServlet",
             type: "POST",
-            data: { step: "2", password: password }, // ✅ step 추가!
+            data: { step: "2", password: password },
             success: function(response) {
                 console.log("🔍 서버 응답:", response);
                 
@@ -59,7 +104,7 @@ $(document).ready(function() {
                     });
                 } else if (response.trim() === "error: email missing in session") {
                     alert("❌ 세션 오류: 이메일 정보가 사라졌습니다. 다시 시작해주세요.");
-                    window.location.reload(); // 세션 초기화 시 새로고침
+                    window.location.reload();
                 } else {
                     alert("❌ 비밀번호 저장 실패: " + response);
                 }
@@ -72,27 +117,4 @@ $(document).ready(function() {
     });
 });
 
-function validatePassword() {
-    const password = $("#password-input").val();
-    $("#criteria-letter").prop("checked", /[a-zA-Z]/.test(password));
-    $("#criteria-special").prop("checked", /[\d!@#$%^&*]/.test(password));
-    $("#criteria-length").prop("checked", password.length >= 10);
-}
-
-function checkPasswordMatch() {
-    const password = $("#password-input").val();
-    const confirmPassword = $("#password-confirm").val();
-    const warningMessage = $("#password-warning");
-
-    if (password === "" || confirmPassword === "") {
-        warningMessage.addClass("hidden").text("");
-        return;
-    }
-
-    if (password === confirmPassword) {
-        warningMessage.removeClass("hidden").removeClass("password-warning").addClass("password-success").text("✅ 비밀번호가 일치합니다.");
-    } else {
-        warningMessage.removeClass("hidden").removeClass("password-success").addClass("password-warning").text("❌ 비밀번호가 일치하지 않습니다.");
-    }
-}
 </script>

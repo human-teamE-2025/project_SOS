@@ -10,7 +10,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: none;             /* 기본적으로 숨겨짐 */
-    z-index: 1000;             /* 다른 요소 위에 표시되도록 */
+    z-index: 1000; 	            /* 다른 요소 위에 표시되도록 */
 }
 
 /* 모달 외부 클릭 시 닫히도록 배경 추가 */
@@ -139,4 +139,8 @@ p {
 
 input[type="checkbox"] {
     margin-right: 10px;
+}
+#signup-link{
+	margin-top : 10px;
+	background-color:#F8B400;
 }

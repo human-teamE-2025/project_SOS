@@ -6,17 +6,28 @@
     border-right: 1px solid #ddd;
     overflow-y: auto; /* 기본적으로 스크롤 가능하게 설정 */
     padding-top: 10px;
+    flex-shrink: 0;
+    position: relative;
+    max-height: 100vh; /* 부모 컨테이너 초과 방지 */
+    transition: width 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 메뉴 버튼 클릭 시 최소 너비 적용 */
+#left-nav.collapsed {
+    width: 92px; /* 최소한의 너비 */
 }
 
 /* 스크롤바 스타일 */
 #left-nav::-webkit-scrollbar {
     width: 8px;
     background-color: transparent; /* 기본적으로 숨김 */
-        display: none;
+    display: none;
 }
 
 #left-nav:hover::-webkit-scrollbar {
-	display: block;
+    display: block;
     background-color: rgba(0, 0, 0, 0.1); /* 마우스를 올리면 보이도록 설정 */
 }
 
@@ -28,6 +39,7 @@
 /* 고정된 크기 유지 */
 #left-nav {
     flex-shrink: 0;
+
 }
 
 /* 섹션 스타일 */
@@ -41,22 +53,14 @@
     border-bottom: none; /* 마지막 섹션의 경계선 제거 */
 }
 
-/* .left-nav-section span {
-    display: block;
-    font-size: 16px; 타이틀도 글자 크기 일정하게 조정
-    font-weight: 600;
-    color: #000; 텍스트 색상을 검정으로 변경
-    padding: 10px 20px;
-    text-transform: uppercase;
-} */
-
 #left-nav button {
     background-color: transparent;
     color: #0f0f0f;
     text-align: left;
     display: flex;
     align-items: center;
-    padding: 10px 0px;
+    padding: 12px 12px;
+    margin-top: 24px;
     width: 100%;
     font-size: 18px; /* 글자 크기 일정하게 조정 */
     font-weight: 600; /* 글자 굵기 일정하게 조정 */
@@ -66,12 +70,14 @@
     white-space: nowrap; /* 텍스트 줄바꿈 방지 */
     overflow: hidden;
     text-overflow: ellipsis;
+    flex-grow: 1; /* 버튼이 균등한 높이를 가짐 */
 }
 
 #left-nav button img{
-	width: 24px;
-	height: 24px;
+    width: 24px;
+    height: 24px;
 }
+
 #left-nav button:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
@@ -80,18 +86,72 @@
     margin-right: 2px; /* 아이콘과 텍스트 간격 일정하게 조정 */
     width: 24px; /* 아이콘 크기 증가 */
     height: 24px;
-
     filter: brightness(0);
     flex-shrink: 0; /* 아이콘 크기 유지 */
 }
-#left-nav button i{
-	    font-size:1.5rem;
+
+#left-nav button i {
+    font-size: 1.5rem;
 }
-/* 카테고리 구분선 */
+
+/* 카테고리 구분선 - 메뉴가 축소되면 숨김 */
 #left-nav hr {
-    
     border: none;
     height: 2px;
     width: 100%;
     background-color: #000; /* 검정색 구분선 적용 */
 }
+
+#left-nav.collapsed hr {
+    display: none; /* 메뉴가 접힐 때 hr 숨김 */
+}
+
+/* 아티스트 목록 숨기기 기능 */
+#artist-section.hidden {
+    display: none;
+    visibility: hidden;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* 메뉴 버튼 클릭 시 6개 버튼이 세로로 균등 분배 */
+#nav-item {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-evenly;
+    height: 100%;
+}
+/* 메뉴가 축소될 때 버튼을 중앙 정렬 */
+#left-nav.collapsed button {
+    flex-direction: column; /* 아이콘과 텍스트를 세로 배치 */
+    align-items: center; /* 중앙 정렬 */
+    justify-content: center;
+    text-align: center;
+    padding: 15px 0; /* 버튼 크기 조정 */
+    margin-left: 0; /* 기존 margin-left 제거 */
+    width: 100%; /* 부모 크기에 맞춤 */
+}
+
+/* 아이콘 크기 증가 및 텍스트 위치 조정 */
+#left-nav.collapsed button i{
+    font-size: 3rem; /* 아이콘 크기 2배 증가 */
+    margin-bottom: 36px; /* 아이콘과 텍스트 사이 충분한 간격 */
+    display: block;
+    width: 100%; /* 아이콘을 부모 기준으로 정렬 */
+    text-align: center; /* 아이콘을 중앙에 배치 */
+}
+#left-nav.collapsed #btn-sub img{
+	width: 60px;
+	height: 60px;
+}
+/* 텍스트가 아이콘 아래에서 균등 정렬되도록 설정 */
+#left-nav.collapsed button span {
+    display: block; /* 줄바꿈 적용 */
+    font-size: 14px; /* 텍스트 크기 조정 */
+    text-align: center;
+    width: 100%; /* 부모 기준 중앙 정렬 */
+}
+

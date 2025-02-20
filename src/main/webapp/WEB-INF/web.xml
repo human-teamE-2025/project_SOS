@@ -48,6 +48,14 @@
     <url-pattern>/SignUpCompleteServlet</url-pattern>
 </servlet-mapping>
 
+<servlet>
+    <servlet-name>VerifyCaptchaServlet</servlet-name>
+    <servlet-class>controller.VerifyCaptchaServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>VerifyCaptchaServlet</servlet-name>
+    <url-pattern>/VerifyCaptchaServlet</url-pattern>
+</servlet-mapping>
 
 
 

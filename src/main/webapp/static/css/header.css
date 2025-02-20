@@ -5,8 +5,48 @@ header {
     height: 9vh;
     background-color: #F8B400;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    position: relative;
     align-items: center;
+    flex-wrap: nowrap;
+
+}
+
+#left-header, #right-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+#left-header {
+    margin-left: 12px;
+}
+
+#right-header {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 24px;
+    margin-right: 12px;
+}
+
+.nav-button {
+    display: flex;
+    gap: 24px;
+}
+
+#titles {
+    display: flex;
+    flex-wrap: nowrap;
+    margin-left: 2vw;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu {
+    margin-left: 20px;
+    font-size: 2rem;
+    transition: transform 0.4s ease-in-out;
+    cursor: pointer;
 }
 
 #title {
@@ -16,3 +56,124 @@ header {
     letter-spacing: 2px;
     cursor: pointer;
 }
+
+.search-container {
+    display: flex;
+    align-items: center;
+    width: 30%;
+    max-width: 900px;
+    min-width: 500px;
+    border: 1px solid #34495E;
+    border-radius: 24px;
+    padding: 5px 15px;
+    background-color: white;
+}
+
+.search-container input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 10px;
+    background-color: transparent;
+}
+
+.search-container input::placeholder {
+    color: black;
+}
+
+.search-container button {
+    background-color: transparent;
+    color: black;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease-in-out;
+    margin-left: 10px;
+}
+
+.search-container button i:hover {
+    background-color: #F8B400;
+	opacity:0.4;
+}
+
+#b1, #b2 {
+    background-color: transparent !important;
+    border: none;
+    font-size: 2rem;
+    color: black;
+}
+
+#b1:hover, #b2:hover {
+    opacity: 0.5;
+}
+
+#b1 i, #b2 i {
+    font-size: 2rem;
+}
+
+.logo:hover, .logo-btn:hover {
+    opacity: 0.5;
+}
+
+.logo-btn {
+    width: 7vh;
+    height: 7vh;
+    background: url('../img/favicon.ico') no-repeat center;
+    background-size: contain;
+    border: none;
+    cursor: pointer;
+    animation: heartbeat 1.5s infinite ease-in-out;
+}
+
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(0.95); }
+}
+
+/* 버튼 배경 및 테두리 제거 */
+.menu, .search-button, .search-container button  , .nav-button button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    padding: 5px;
+    color: black;
+}
+#search, .search-container{
+	background:transparent;
+}
+.menu{
+	font-size: 3rem;
+}
+
+@media (max-width: 768px) {
+    header {
+        height: auto;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
+    #left-header, #right-header {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .search-container {
+        width: 90%;
+        min-width: unset;
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+

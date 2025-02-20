@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/SingIn.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/SignIn.css">
 
 <div class="modal-overlay"></div>
 <div class="modal" id="email-modal">
@@ -26,40 +26,29 @@
 
 <script>
 $(document).ready(function() {
-
-	var contextPath = "";
-	
-    // ✅ 엔터 키 입력 시 `next-btn` 클릭과 같은 동작 수행
-    $("#email-input").keypress(function(event) {
-        if (event.which === 13) {  // 13 = Enter Key
-            event.preventDefault();
-            $("#next-btn").click(); // 다음 버튼 클릭 이벤트 실행
-        }
-    });
-
-    $(".next-btn").click(function(event) {
+    var contextPath = "<%= request.getContextPath() %>";
+    
+    $("#next-btn").click(function(event) {
         event.preventDefault();
         var email = $("#email-input").val().trim();
         var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-        if (!emailPattern.test(email)) {
+        if (email === "" || !emailPattern.test(email)) {
             showErrorMessage("⚠ 유효한 이메일을 입력하세요.");
             return;
         }
 
-        // ✅ Step 1: 이메일 중복 체크
         $.ajax({
-        	url: contextPath + "/CheckEmailServlet",
+            url: contextPath + "/CheckEmailServlet",
             type: "POST",
             data: { email: email },
             success: function(response) {
-                console.log("🔍 이메일 중복 체크 응답:", response);
+                console.log("🔍 서버 응답:", response);
 
                 if (response.trim() === "duplicate_email") {
                     showErrorMessage("❌ 이미 존재하는 이메일입니다. 다른 이메일을 입력하세요.");
                     $("#email-input").val("").focus();
                 } else if (response.trim() === "available") {
-                    // ✅ Step 2: 이메일 저장
                     saveEmail(email);
                 } else {
                     showErrorMessage("❌ 서버 오류 발생: " + response);
@@ -79,15 +68,12 @@ $(document).ready(function() {
             data: { step: "1", email: email },
             success: function(response) {
                 console.log("📩 이메일 저장 응답:", response);
+
                 if (response.trim() === "success") {
                     loadPasswordModal();
                 } else {
                     showErrorMessage("❌ 이메일 저장 실패: " + response);
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error("🚨 AJAX 요청 오류:", status, error);
-                showErrorMessage("❌ 서버 요청 중 문제가 발생했습니다.");
             }
         });
     }
@@ -97,10 +83,16 @@ $(document).ready(function() {
             url: "SubFrame/Modal/SignIn_2.jsp",
             type: "GET",
             success: function(data) {
+                console.log("✅ 비밀번호 입력 모달 로드 성공");
+
                 $("#email-modal").fadeOut(200, function() {
+                    $(this).remove();
                     $("body").append(data);
                     $("#password-modal").fadeIn(200);
                 });
+            },
+            error: function(xhr, status, error) {
+                console.error("🚨 비밀번호 모달 AJAX 요청 오류:", status, error);
             }
         });
     }

@@ -22,7 +22,7 @@
 
 <script>
 $(document).ready(function() {
-	var contextPath = "";
+	var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
 	
     $("#agree-terms").change(function() {
         $("#complete-button").prop("disabled", !this.checked);

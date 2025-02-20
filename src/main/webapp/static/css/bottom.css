@@ -13,10 +13,16 @@
 	justify-content:space-between;
 	font-size:1rem;
 }
+#musicbar, #settingbar{
+	margin-left:24px;
+	margin-right:24px;
+}
+#musicbar button i, #settingbar button i{
+	font-size:3rem;
+}
 #bottom button{
      /* ë°°ê²½ ì ê±° */
-    border: none;      /* íëë¦¬ ì ê±° */
-    padding: 0.4rem;        /* ë´ë¶ ì¬ë°± ì ê±° */
+    border: none;      /* íëë¦¬ ì ê±° */      /* ë´ë¶ ì¬ë°± ì ê±° */
     cursor: pointer; 
 	background:none;
 }

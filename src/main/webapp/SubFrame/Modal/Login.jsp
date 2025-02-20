@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/Login.css">
+<script>
+    var contextPath = "<%= request.getContextPath() %>"; // JSP에서 서버의 contextPath 가져오기
+    console.log("🔍 현재 contextPath:", contextPath); // 디버깅용 출력
+</script>
 
 <div class="modal-overlay"></div>
 <div class="modal" id="login-modal">
@@ -9,6 +13,8 @@
         <input type="password" id="login-password" placeholder="비밀번호" class="password-input" required />
         <p id="login-warning" class="password-warning hidden"></p>
         <button type="button" class="next-btn" id="login-button">로그인</button>
+        <button type="button" class="next-btn" id="signup-link">회원가입</button>
+        
     </form>
 
     <div class="separator">
@@ -22,14 +28,12 @@
     </div>
 
     <p class="forgot-password"><a href="#">비밀번호를 잊으셨나요?</a></p>
-    <a href="#" id="signup-link">회원가입하기</a>
 </div>
 
 <script>
-var contextPath = "";
-
 $(document).ready(function() {
     // 로그인 버튼 클릭 이벤트
+
     $("#login-button").click(function(event) {
         event.preventDefault();
         const email = $("#login-email").val().trim();
@@ -39,7 +43,8 @@ $(document).ready(function() {
             showErrorMessage("⚠ 이메일과 비밀번호를 입력하세요.");
             return;
         }
-
+        var contextPath = "<%= request.getContextPath() %>";
+        console.log("🔍 로그인 요청 URL:", contextPath + "/LoginServlet");
         // AJAX를 통해 서버에서 로그인 검증
         $.ajax({
             url: contextPath + "/LoginServlet",
