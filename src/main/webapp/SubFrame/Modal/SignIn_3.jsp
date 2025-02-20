@@ -24,6 +24,8 @@
 
 <script>
 $(document).ready(function() {
+	var contextPath = "";
+	
     $(".next-btn").click(function(event) {
         event.preventDefault();
         const nickname = $("#nickname-input").val().trim();
@@ -60,9 +62,9 @@ $(document).ready(function() {
 
         // AJAX 요청을 통해 서버로 데이터 전송
         $.ajax({
-            url: "${pageContext.request.contextPath}/SignInServlet",
+            url: contextPath + "/SignInServlet",
             type: "POST",
-            data: { step: "3", nickname: nickname, birthdate: birthdate, gender: gender },
+            data: { nickname: nickname, birthdate: birthdate, gender: gender },
             success: function(response) {
                 console.log("🔍 서버 응답:", response);
 

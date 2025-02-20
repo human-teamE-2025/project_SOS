@@ -22,6 +22,8 @@
 
 <script>
 $(document).ready(function() {
+	var contextPath = "";
+	
     $("#agree-terms").change(function() {
         $("#complete-button").prop("disabled", !this.checked);
     });
@@ -31,7 +33,7 @@ $(document).ready(function() {
         $("#complete-button").prop("disabled", true); // 중복 클릭 방지
 
         $.ajax({
-            url: "${pageContext.request.contextPath}/SignUpCompleteServlet",
+            url: contextPath + "/SignUpCompleteServlet",
             type: "POST",
             success: function(response) {
                 console.log("🔍 서버 응답:", response);

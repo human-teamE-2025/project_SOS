@@ -26,6 +26,8 @@
 </div>
 
 <script>
+var contextPath = "";
+
 $(document).ready(function() {
     // 로그인 버튼 클릭 이벤트
     $("#login-button").click(function(event) {
@@ -40,7 +42,7 @@ $(document).ready(function() {
 
         // AJAX를 통해 서버에서 로그인 검증
         $.ajax({
-            url: "${pageContext.request.contextPath}/LoginServlet",
+            url: contextPath + "/LoginServlet",
             type: "POST",
             data: { email: email, password: password },
             success: function(response) {
@@ -72,7 +74,9 @@ $(document).ready(function() {
             type: "GET",
             dataType: "html",
             success: function(data) {
+            	
                 $("#login-modal").fadeOut(200, function() {
+
                     $("body").append(data);
                     $("#email-modal").fadeIn(200);
                 });

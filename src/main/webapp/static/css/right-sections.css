@@ -3,8 +3,8 @@
 #right-sections {
     display: flex;
     flex-direction: column;
-    width: 17vw;
-    flex-grow: 1;
+    width: 300px;
+
     height: 100%; /* Ensures it fills available height */
 	box-sizing: border-box;
     gap: 2vh;
@@ -16,4 +16,10 @@
     height: 76vh;
     background-color: darkgrey;
     border-radius: 24px;
+}
+
+@media (max-width: 768px) {
+  #right-sections {
+    display: none;
+  }
 }

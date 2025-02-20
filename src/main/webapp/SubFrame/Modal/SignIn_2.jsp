@@ -22,6 +22,8 @@
 
 <script>
 $(document).ready(function() {
+	var contextPath = "";
+	
     $(".next-btn").click(function(event) {
         event.preventDefault();
         const password = $("#password-input").val();
@@ -38,7 +40,7 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: "${pageContext.request.contextPath}/SignInServlet",
+            url: contextPath + "/SignInServlet",
             type: "POST",
             data: { step: "2", password: password }, // ✅ step 추가!
             success: function(response) {
@@ -67,7 +69,6 @@ $(document).ready(function() {
                 alert("❌ 서버 요청 중 문제가 발생했습니다.");
             }
         });
-
     });
 });
 

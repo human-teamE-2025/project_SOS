@@ -11,12 +11,12 @@
 #main-con{
 	display:flex;
 	flex-grow: 1;
-    padding: 4vw 4vw 4vw 4vw;
+    padding: 2vh 2vh 2vh 2vh;
 	
 	right:0%;     /* Dynamic height calculation */
-    gap: 4vw;
+    gap: 4vh;
     align-items: center; /* Key for vertical centering */
-	background-color: white;
+	background-color: pink;
 	justify-content: center;
 }
 main {
@@ -26,18 +26,9 @@ main {
     align-items: center;
     width: 55vw;
     height: 100%;
-    border: 1px solid black;
-    border-radius: 24px;
-    box-sizing: border-box;
+	border-radius:12px;
     gap: 4vw;
-}
-
-#condition{
-	background:gray;
-	color:red;
-	border-radius:24px;
-	height:6%;
-	width:55vw;
+    background-color: brown;
 }
 
 
@@ -62,3 +53,9 @@ main {
         button:hover {
             background-color: #555;
         }
+        
+
+      
+
+        
+        

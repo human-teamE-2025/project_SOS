@@ -7,4 +7,48 @@
 
     <display-name>E_web</display-name>
 
+<servlet>
+    <servlet-name>CheckEmailServlet</servlet-name>
+    <servlet-class>controller.CheckEmailServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>CheckEmailServlet</servlet-name>
+    <url-pattern>/CheckEmailServlet</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>controller.LoginServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/LoginServlet</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+    <servlet-name>SignInServlet</servlet-name>
+    <servlet-class>controller.SignInServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>SignInServlet</servlet-name>
+    <url-pattern>/SignInServlet</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>SignUpCompleteServlet</servlet-name>
+    <servlet-class>controller.SignUpCompleteServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>SignUpCompleteServlet</servlet-name>
+    <url-pattern>/SignUpCompleteServlet</url-pattern>
+</servlet-mapping>
+
+
+
+
 </web-app>

@@ -15,7 +15,7 @@
 				<main>
 					
 					<nav id="condition">
-					condition
+						<%@ include file="./condition.jsp" %>
 					</nav>
 	    
     					

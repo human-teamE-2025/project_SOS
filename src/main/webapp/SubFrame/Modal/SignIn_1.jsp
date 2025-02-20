@@ -27,6 +27,8 @@
 <script>
 $(document).ready(function() {
 
+	var contextPath = "";
+	
     // ✅ 엔터 키 입력 시 `next-btn` 클릭과 같은 동작 수행
     $("#email-input").keypress(function(event) {
         if (event.which === 13) {  // 13 = Enter Key
@@ -47,7 +49,7 @@ $(document).ready(function() {
 
         // ✅ Step 1: 이메일 중복 체크
         $.ajax({
-            url: "${pageContext.request.contextPath}/CheckEmailServlet",
+        	url: contextPath + "/CheckEmailServlet",
             type: "POST",
             data: { email: email },
             success: function(response) {
@@ -72,7 +74,7 @@ $(document).ready(function() {
 
     function saveEmail(email) {
         $.ajax({
-            url: "${pageContext.request.contextPath}/SignInServlet",
+            url: contextPath + "/SignInServlet",
             type: "POST",
             data: { step: "1", email: email },
             success: function(response) {

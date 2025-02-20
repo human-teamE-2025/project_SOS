@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  <!DOCTYPE html>
@@ -36,8 +37,74 @@
     <div id="entire">
 			<%@ include file="./SubFrame/SubContainer.jsp" %>		
 			<%@ include file="./MainFrame/about-container.jsp" %>		
-		
-
     </div>	
+    
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const columns = document.querySelectorAll('.column');
+    const buttons = document.querySelectorAll('.toggle-btn');
+    let currentOpenIndex = null;
+
+    buttons.forEach((button, index) => {
+        button.addEventListener('click', function (event) {
+            toggleDescription(index);
+            event.stopPropagation();
+        });
+    });
+
+    function toggleDescription(index) {
+        const column = columns[index];
+        const description = column.querySelector('.description');
+        const button = buttons[index];
+
+        if (currentOpenIndex !== null && currentOpenIndex !== index) {
+            closeDescription(currentOpenIndex);
+        }
+
+        const isCurrentlyOpen = description.classList.contains('show');
+
+        if (isCurrentlyOpen) {
+            closeDescription(index);
+            currentOpenIndex = null;
+        } else {
+            description.classList.add('show');
+            column.classList.add('selected');
+            button.textContent = "−";
+            currentOpenIndex = index;
+        }
+    }
+
+    function closeDescription(index) {
+        const column = columns[index];
+        const description = column.querySelector('.description');
+        const button = buttons[index];
+
+        description.classList.remove('show');
+        column.classList.remove('selected');
+        button.textContent = "+";
+    }
+
+    // 🔹 URL을 확인하여 해당 섹션 자동 활성화
+    function openSectionFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        const section = params.get("section");
+
+        if (section) {
+            let indexToOpen = null;
+            if (section === "company") indexToOpen = 0;
+            else if (section === "terms") indexToOpen = 3;
+            else if (section === "privacy") indexToOpen = 4;
+
+            if (indexToOpen !== null) {
+                toggleDescription(indexToOpen);
+            }
+        }
+    }
+
+    openSectionFromURL(); // 페이지 로드 시 실행
+});
+</script>
+    
+    
 </body>
 </html>
