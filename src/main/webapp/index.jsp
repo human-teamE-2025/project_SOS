@@ -24,7 +24,18 @@
     box-sizing: border-box;
 	font-family: 'Inter', sans-serif;
 }
-	
+	* ::-webkit-scrollbar {
+    width: 8px;
+}
+
+* ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+}
+
+* ::-webkit-scrollbar-track {
+    background-color: transparent;
+}
 </style>
 </head>
 <body>

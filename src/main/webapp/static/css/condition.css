@@ -4,6 +4,7 @@
     #condition {
         background: #d3d3d3;
         height: auto;
+        z-index:100;
         padding: 6px;
         color: black;
         border-radius: 12px;
@@ -44,7 +45,7 @@
         display: flex;
         align-items: center;
         font-size: 14px;
-        width: 95%;
+        width: 90%;	
     }
 
     /* 체크박스 컨테이너 - 가로 스크롤 지원 */
@@ -59,6 +60,7 @@
         scroll-behavior: smooth;
         position: relative;
         align-items: center;
+  
     }
 
     /* 스크롤바 숨기기 (Chrome, Safari) */
@@ -74,15 +76,15 @@
     }
 
     /* 스크롤 버튼 (🡄, 🡆) */
-    .scroll-left, .scroll-right {
+    .scroll-left, .scroll-right, toggle-btn {
         background: rgba(0, 0, 0, 0.3);
         border: none;
-        font-size: 14px;
+        font-size: 16px;
         cursor: pointer;
         padding: 6px;
         display: none;
         border-radius: 50%;
-        color: white;
+        color: black;
         width: 26px;
         height: 26px;
         text-align: center;
@@ -98,6 +100,7 @@
     /* 접기/펼치기 버튼 */
     #toggle-btn {
         background: transparent;
+        color:black;
         border: none;
         font-size: 16px;
         cursor: pointer;
@@ -109,7 +112,9 @@
     .hidden {
         display: none;
     }
-
+	#toggle-btn, .scroll-right, .scroll-left{
+		margin-left:24px;
+	}
     /* 반응형 대응 */
     @media (max-width: 768px) {
         #condition {

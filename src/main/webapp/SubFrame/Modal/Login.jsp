@@ -47,7 +47,7 @@ $(document).ready(function() {
         console.log("🔍 로그인 요청 URL:", contextPath + "/LoginServlet");
         // AJAX를 통해 서버에서 로그인 검증
         $.ajax({
-            url: contextPath + "/LoginServlet",
+            url: 	contextPath	 + "/LoginServlet",
             type: "POST",
             data: { email: email, password: password },
             success: function(response) {

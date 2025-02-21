@@ -12,15 +12,14 @@
 			
 			<div id="main-con">
 				
-				<main>
-					
-					<nav id="condition">
+			<main>
 						<%@ include file="./condition.jsp" %>
-					</nav>
-	    
-    					
-				</main>
-            
+	    				<%@ include file="./carousel1.jsp" %>
+	    				<%@ include file="./carousel2.jsp" %>
+    					<%@ include file="./carousel3.jsp" %>
+    					<%@ include file="./carousel4.jsp" %>
+						<%@ include file="./carousel5.jsp" %>
+			</main>
 				<%@ include file="./right-sections.jsp" %>
 
 			</div>
