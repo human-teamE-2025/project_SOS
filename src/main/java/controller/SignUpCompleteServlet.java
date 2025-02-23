@@ -17,7 +17,6 @@ public class SignUpCompleteServlet extends HttpServlet {
         HttpSession session = request.getSession();
         SignUpData signUpData = (SignUpData) session.getAttribute("signUpData");
 
-        // ✅ 세션 데이터가 없으면 오류 메시지 반환
         if (signUpData == null) {
             response.getWriter().write("error: session data missing");
             return;
@@ -30,26 +29,13 @@ public class SignUpCompleteServlet extends HttpServlet {
         System.out.println("👤 닉네임: " + signUpData.getNickname());
         System.out.println("📅 생년월일: " + signUpData.getBirthdate());
         System.out.println("⚧ 성별: " + signUpData.getGender());
+        System.out.println("🎵 좋아하는 장르: " + signUpData.getGenre());
 
         // ✅ 데이터 누락 확인
-        if (signUpData.getEmail() == null || signUpData.getEmail().isEmpty()) {
-            response.getWriter().write("error: email missing");
-            return;
-        }
-        if (signUpData.getPassword() == null || signUpData.getPassword().isEmpty()) {
-            response.getWriter().write("error: password missing");
-            return;
-        }
-        if (signUpData.getNickname() == null || signUpData.getNickname().isEmpty()) {
-            response.getWriter().write("error: nickname missing");
-            return;
-        }
-        if (signUpData.getBirthdate() == null || signUpData.getBirthdate().isEmpty()) {
-            response.getWriter().write("error: birthdate missing");
-            return;
-        }
-        if (signUpData.getGender() == null || signUpData.getGender().isEmpty()) {
-            response.getWriter().write("error: gender missing");
+        if (signUpData.getEmail() == null || signUpData.getPassword() == null || 
+            signUpData.getNickname() == null || signUpData.getBirthdate() == null || 
+            signUpData.getGender() == null) {
+            response.getWriter().write("error: missing required data");
             return;
         }
 
@@ -58,9 +44,9 @@ public class SignUpCompleteServlet extends HttpServlet {
         ResultSet rs = null;
 
         try {
-            conn = DBConnection.getConnection();  // ✅ 공통 DB 연결 클래스 사용
+            conn = DBConnection.getConnection();
+            conn.setAutoCommit(false); // ✅ 트랜잭션 적용 (롤백 가능)
 
-            // 성별 변환 (ENUM 'M', 'F' 저장)
             String gender = signUpData.getGender().equals("male") ? "M" : "F";
 
             // ✅ 이메일 중복 확인
@@ -70,39 +56,44 @@ public class SignUpCompleteServlet extends HttpServlet {
             rs = pstmt.executeQuery();
             if (rs.next() && rs.getInt(1) > 0) {
                 response.getWriter().write("error: duplicate email");
+                conn.rollback();
                 return;
             }
             rs.close();
             pstmt.close();
 
-            // ✅ 회원가입 데이터 삽입
-            String insertQuery = "INSERT INTO userInfo (email, password, name, birthdate, gender, created_at) VALUES (?, ?, ?, ?, ?, NOW())";
+            // ✅ 회원가입 데이터 삽입 (genre 추가)
+            String insertQuery = "INSERT INTO userInfo (email, password, name, birthdate, gender, genre, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())";
             pstmt = conn.prepareStatement(insertQuery);
             pstmt.setString(1, signUpData.getEmail());
-            pstmt.setString(2, signUpData.getPassword());
+            pstmt.setString(2, signUpData.getPassword()); // ✅ 비밀번호 암호화 제외
             pstmt.setString(3, signUpData.getNickname());
             pstmt.setString(4, signUpData.getBirthdate());
             pstmt.setString(5, gender);
+            pstmt.setString(6, signUpData.getGenre() != null ? signUpData.getGenre() : "null"); // ✅ 장르 저장
 
             int result = pstmt.executeUpdate();
             if (result > 0) {
+                conn.commit(); // ✅ 모든 작업 완료 후 커밋
                 response.getWriter().write("success");
-                session.removeAttribute("signUpData"); // ✅ 회원가입 완료 후 세션 초기화
+                session.removeAttribute("signUpData");
                 System.out.println("✅ 회원가입 성공: " + signUpData.getEmail());
             } else {
+                conn.rollback();
                 response.getWriter().write("error: insert failed");
             }
 
         } catch (SQLIntegrityConstraintViolationException e) {
             response.getWriter().write("error: duplicate entry");
         } catch (SQLException e) {
+            try { if (conn != null) conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
             e.printStackTrace();
             response.getWriter().write("error: sql exception " + e.getMessage());
         } catch (Exception e) {
+            try { if (conn != null) conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
             e.printStackTrace();
             response.getWriter().write("error: unknown " + e.getMessage());
         } finally {
-            // ✅ 중복으로 닫히지 않도록 안전한 정리
             DBConnection.close(conn, pstmt);
         }
     }

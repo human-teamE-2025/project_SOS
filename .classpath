@@ -13,5 +13,12 @@
 	</classpathentry>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry exported="true" kind="lib" path="src/main/webapp/WEB-INF/lib/servlet-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Administrator/Downloads/annotations-2.30.26.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Administrator/Downloads/regions-2.30.26.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Administrator/Downloads/http-client-spi-2.30.26.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Administrator/Downloads/auth-2.30.26.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Administrator/Downloads/protocol-core-2.30.26.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Administrator/Downloads/s3-2.30.26.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

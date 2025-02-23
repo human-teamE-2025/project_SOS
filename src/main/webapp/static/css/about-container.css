@@ -2,97 +2,7 @@
 #main-container {
     display: flex;
     justify-content: center;
-    min-width: 768px;
-    min-height: 85vh;
-}
-
-/* 메인 컨테이너 내부 */
-#main-con {
-    display: flex;
-    flex-direction: column;
-    width: 100vw;
-    background-color: #F17C7C;
-    padding: 2vw;
-    min-height: 85vh;
-}
-
-/* 각 컬럼 (문단) */
-.column {
-    background-color: #F17C7C;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    width: 100%;
-    transition: background-color 0.3s;
-    min-height: 50px; /* ✅ 컬럼 최소 높이 */
-}
-
-/* 컬럼 선택 시 */
-.column.selected {
-    background-color: #F8B400;
-    min-height: 300px; /* ✅ 컬럼이 선택될 경우 최소 높이를 조정하여 `.description`이 표시될 공간을 확보 */
-}
-
-/* 제목 스타일 */
-.title-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-/* 토글 버튼 */
-.toggle-btn {
-    background-color: transparent;
-    font-size: 20px;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    transition: transform 0.2s ease;
-}
-
-/* 설명문단 기본적으로 숨김 */
-.description {
-    display: none;
-    height: 0; /* ✅ 초기 상태에서 높이 0 */
-    overflow-y: hidden;
-    padding-right: 10px;
-    text-align: left;
-    line-height: 1.5;
-    font-size: 1rem;
-}
-
-/* 설명이 열릴 때 */
-.description.show {
-    display: block;
-    height: 250px; /* ✅ 높이 고정하여 스크롤 적용 */
-    overflow-y: auto; /* ✅ 초과 시 스크롤 */
-    background-color: #F8B400;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-/* 스크롤바 스타일 */
-.description::-webkit-scrollbar {
-    width: 8px;
-}
-
-.description::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 4px;
-}
-
-.description::-webkit-scrollbar-track {
-    background-color: transparent;
-}
-
-/* 부모 컨테이너 설정 */
-#main-container {
-    display: flex;
-    justify-content: center;
-    height: 79vh;
+    height: 85vh;
     min-width: 768px;
 }
 
@@ -101,38 +11,54 @@
     display: flex;
     flex-direction: column;
     width: 100vw;
-    background-color: #F17C7C;
+    background-color: #1C1C1C; /* ✅ 다크 배경 유지 */
     padding: 2vw;
     height: 100%;
 }
 
 /* 각 컬럼 (문단) */
 .column {
-    background-color: #F17C7C;
+    background-color: #242424; /* ✅ 기존보다 살짝 연한 다크 그레이 */
     padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     width: 100%;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease-in-out;
     min-height: 50px;
-    overflow: hidden; /* ✅ 컬럼 내부 요소가 초과될 경우 스크롤 방지 */
+    overflow: hidden;
+    cursor: pointer; /* ✅ 마우스 커서를 포인터로 변경 (클릭 가능하다는 느낌) */
+}
+
+/* 컬럼 hover 시 효과 */
+.column:hover {
+    background-color: #2E2E2E; /* ✅ 살짝 밝게 변경하여 인터랙션 느낌 추가 */
 }
 
 /* 컬럼 선택 시 */
 .column.selected {
-    background-color: #F8B400;
+    background-color: #F8B400; /* ✅ 시그니처 색상 유지 */
     min-height: 300px;
-    overflow: hidden; /* ✅ `.description`이 부모를 밀어내지 않도록 설정 */
-    
+    overflow: hidden;
 }
-
+.description.show p{
+	color:black;
+}
 /* 제목 스타일 */
 .title-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+}
+
+/* 제목 스타일 */
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #FFFFFF; /* ✅ 기본 흰색 유지 */
 }
 
 /* 토글 버튼 */
@@ -144,6 +70,12 @@
     cursor: pointer;
     padding: 5px;
     transition: transform 0.2s ease;
+    color: #FFFFFF; /* ✅ 대비를 높이기 위해 흰색 유지 */
+}
+
+/* 컬럼 클릭 시 토글 버튼도 눌린 것처럼 동작 */
+.column.selected .toggle-btn {
+    transform: rotate(180deg); /* ✅ 클릭했을 때 버튼 회전 */
 }
 
 /* 설명문단 기본적으로 숨김 */
@@ -156,40 +88,30 @@
     line-height: 1.5;
     font-size: 1rem;
     transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+    color: #2E2E2E; /* ✅ 진한 회색으로 조정 */
 }
 
 /* 설명이 열릴 때 */
 .description.show {
     display: block;
-    max-height: 250px; /* ✅ 스크롤 적용 */
-    overflow-y: scroll; /* ✅ 초과 시 스크롤 */
-    background-color: #F8B400;
+    max-height: 250px;
+    overflow-y: scroll;
+    background-color: #F8B400; /* ✅ 시그니처 색상 유지 */
     padding: 10px;
     border-radius: 5px;
-    
+    color: #000; /* ✅ 가독성을 위해 검정색 유지 */
 }
 
-/* ✅ 스크롤바 스타일을 위한 클래스 추가 */
-.custom-scrollbar::-webkit-scrollbar {
+/* ✅ 스크롤바 스타일 */
+.description::-webkit-scrollbar {
     width: 8px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
+.description::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 4px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
+.description::-webkit-scrollbar-track {
     background-color: transparent;
 }
-
-/* 제목 스타일 */
-.title {
-    font-size: 2rem;  /* ✅ 크기를 더 크게 */
-    font-weight: bold;  /* ✅ 글자 두껍게 */
-    text-transform: uppercase; /* ✅ 모든 글자를 대문자로 */
-    letter-spacing: 1px; /* ✅ 글자 간격 추가 */
-    color: #000; /* ✅ 기본적으로 검은색 */
-}
-
-

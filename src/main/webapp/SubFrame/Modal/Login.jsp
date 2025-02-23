@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/Login.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/SingIn.css">
+
 <script>
-    var contextPath = "<%= request.getContextPath() %>"; // JSP에서 서버의 contextPath 가져오기
-    console.log("🔍 현재 contextPath:", contextPath); // 디버깅용 출력
+    var contextPath = "<%= request.getContextPath() %>"; 
+    console.log("🔍 현재 contextPath:", contextPath);
 </script>
 
 <div class="modal-overlay"></div>
@@ -14,12 +15,9 @@
         <p id="login-warning" class="password-warning hidden"></p>
         <button type="button" class="next-btn" id="login-button">로그인</button>
         <button type="button" class="next-btn" id="signup-link">회원가입</button>
-        
     </form>
 
-    <div class="separator">
-        <span>또는</span>
-    </div>
+    <div class="separator"><span>또는</span></div>
 
     <div class="social-buttons">
         <button type="button" class="social-btn naver-btn" onclick="loginWith('naver')">N</button>
@@ -32,8 +30,6 @@
 
 <script>
 $(document).ready(function() {
-    // 로그인 버튼 클릭 이벤트
-
     $("#login-button").click(function(event) {
         event.preventDefault();
         const email = $("#login-email").val().trim();
@@ -43,11 +39,9 @@ $(document).ready(function() {
             showErrorMessage("⚠ 이메일과 비밀번호를 입력하세요.");
             return;
         }
-        var contextPath = "<%= request.getContextPath() %>";
-        console.log("🔍 로그인 요청 URL:", contextPath + "/LoginServlet");
-        // AJAX를 통해 서버에서 로그인 검증
+
         $.ajax({
-            url: 	contextPath	 + "/LoginServlet",
+            url: contextPath + "/LoginServlet",
             type: "POST",
             data: { email: email, password: password },
             success: function(response) {
@@ -56,8 +50,9 @@ $(document).ready(function() {
                 if (response.trim() === "success") {
                     alert("✅ 로그인 성공!");
                     
-                    // b2 버튼 아이콘 변경
+                    // ✅ 로그인 UI 변경
                     $("#b2 i").removeClass("fas fa-sign-in-alt").addClass("fa-solid fa-circle-user");
+                    loadUserInfo();
 
                     $("#login-modal").fadeOut(200);
                 } else {
@@ -71,7 +66,6 @@ $(document).ready(function() {
         });
     });
 
-    // 회원가입 버튼 클릭 이벤트
     $("#signup-link").click(function(event) {
         event.preventDefault();
         $.ajax({
@@ -79,9 +73,7 @@ $(document).ready(function() {
             type: "GET",
             dataType: "html",
             success: function(data) {
-            	
                 $("#login-modal").fadeOut(200, function() {
-
                     $("body").append(data);
                     $("#email-modal").fadeIn(200);
                 });
@@ -92,9 +84,18 @@ $(document).ready(function() {
         });
     });
 
-    // 오류 메시지 표시 함수
     function showErrorMessage(message) {
         $("#login-warning").text(message).removeClass("hidden");
+    }
+
+    function loadUserInfo() {
+        $.ajax({
+            url: "SubFrame/Modal/LoginSuccessPopup.jsp",
+            type: "GET",
+            success: function(data) {
+                $("body").append(data);
+            }
+        });
     }
 });
 

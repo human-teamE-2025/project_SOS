@@ -32,33 +32,26 @@
         
 <script>
         $(document).ready(function() {
-            $("#b2").click(function() {
-                // 모달이 이미 열려있으면 닫기
-                if ($("#login-modal").is(":visible")) {
-                    $("#login-modal").fadeOut();
-                } else {
-                    // 모달이 열려있지 않으면 불러오기
-                    $.ajax({
-                        url: "SubFrame/Modal/Login.jsp",
-                        type: "GET",
-                        dataType: "html",
-                        success: function(data) {
-                            // 모달이 이미 존재하지 않으면 새로 추가
-                            if ($("#login-modal").length === 0) {
-                                $("body").append(data); // 새 모달 추가
-                                // 처음에는 모달을 숨겨두기
-                                  
-                            }
-
-                            // 모달을 즉시 보이게 함 (AJAX 요청이 성공적으로 완료된 후에 표시)
-                            $("#login-modal").fadeIn(); 
-                        },
-                        error: function(xhr, status, error) {
-                            console.error("모달을 불러오는 중 오류 발생:", error);
-                        }
-                    });
-                }
-            });
+        	 $("#b2").click(function() {
+        	        if ($("#user-popup").length > 0) {
+        	            $("#user-popup").fadeToggle(200);
+        	        } else {
+        	            $.ajax({
+        	                url: "SubFrame/Modal/Login.jsp",
+        	                type: "GET",
+        	                dataType: "html",
+        	                success: function(data) {
+        	                    if ($("#login-modal").length === 0) {
+        	                        $("body").append(data);
+        	                    }
+        	                    $("#login-modal").fadeIn();
+        	                },
+        	                error: function(xhr, status, error) {
+        	                    console.error("모달을 불러오는 중 오류 발생:", error);
+        	                }
+        	            });
+        	        }
+        	    });
 
             // 모달 외부 클릭 시 모달 닫기
             $(document).on("click", function(event) {
@@ -82,6 +75,13 @@
             // 검색 버튼 클릭 시 검색바 토글
         });
 
-
+        $(document).ready(function () {
+            $("#logout-btn").click(function () {
+                $.post(contextPath + "/LogoutServlet", function () {
+                    socket.close(); // ✅ WebSocket 닫기
+                    location.reload();
+                });
+            });
+        });
         </script>
 

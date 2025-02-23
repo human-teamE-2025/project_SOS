@@ -35,7 +35,7 @@ public class CheckEmailServlet extends HttpServlet {
         try {
             conn = DBConnection.getConnection();
 
-            String query = "SELECT COUNT(*) FROM userInfo WHERE email = ?";
+            String query = "SELECT EXISTS(SELECT 1 FROM userInfo WHERE email = ?)";
             pstmt = conn.prepareStatement(query);
             pstmt.setString(1, email);
             rs = pstmt.executeQuery();

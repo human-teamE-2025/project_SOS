@@ -53,10 +53,43 @@ footer{
 	font-size:1rem;
 	
 }
-
+  #musicbar, #settingbar{
+  	display:flex;
+  	align-items:center;
+  	gap:1rem;
+  }
+  
 @media (max-width: 768px) {
   footer {
     display: none;
   }
+
+ 
+#musicbar button i, #settingbar button i {
+    font-size: 1.5rem;
 }
+}
+
+#session-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5px;
+    font-size: 14px;
+    color: black;
+}
+
+#session-info span {
+    display: block;
+    margin-bottom: 3px;
+}
+
+/* ✅ 모바일에서는 세션 정보 크기 줄이기 */
+@media (max-width: 768px) {
+    #session-info {
+        font-size: 12px;
+    }
+}
+
+
 

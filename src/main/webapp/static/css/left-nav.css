@@ -155,3 +155,38 @@
     width: 100%; /* 부모 기준 중앙 정렬 */
 }
 
+/* 기본 left-nav 스타일 */
+#left-nav {
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+
+/* 데스크톱 환경에서 collapsed 상태일 때 */
+#left-nav.collapsed {
+    width: 96px; /* 데스크톱 collapsed 상태 */
+}
+
+/* 모바일 기본적으로 더 작은 collapsed 상태 */
+@media (max-width: 768px) {
+#left-nav.collapsed {
+    width: 60px; /* 데스크톱 collapsed 상태 */
+}
+    /* 버튼 스타일 조정 */
+    #left-nav button{
+        font-size: 12px; /* 폰트 크기 축소 */
+        padding: 24px 0; /* 여백 줄이기 */
+    }
+
+	
+#left-nav.collapsed button i {
+        font-size:1.5rem;
+		margin-bottom:6px;	
+}
+#left-nav.collapsed #btn-sub img {
+        width: 2rem;
+        height: 2rem;
+		margin-bottom:6px;	
+}
+
+
+}
+

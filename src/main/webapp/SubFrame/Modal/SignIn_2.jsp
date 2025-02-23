@@ -2,6 +2,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/SingIn.css">
 
 <div class="modal" id="password-modal">
+    <button class="close-modal-btn" id="close-modal">&times;</button>
+
+
     <h1>Song of Senses</h1>
     <p>1/3단계<br>비밀번호 생성</p>
     <form id="password-form">
@@ -19,12 +22,22 @@
         <button type="button" class="next-btn">다음</button>
     </form>
 </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script>
 $(document).ready(function() {
     var contextPath = "<%= request.getContextPath() %>";
 
-    // ✅ 비밀번호 검증 로직 강화
+    $("#close-modal").click(function() {
+        $("#password-modal, .modal-overlay").fadeOut(200);
+    });
+
+    // ✅ ESC 키 입력 시 모달 닫기
+    $(document).keydown(function(event) {
+        if (event.key === "Escape") {
+            $("#password-modal, .modal-overlay").fadeOut(200);
+        }
+    });
+
     function validatePassword() {
         const password = $("#password-input").val();
         const confirmPassword = $("#password-confirm").val();
@@ -58,14 +71,9 @@ $(document).ready(function() {
         }
 
         // ✅ 모든 조건을 만족해야 `다음` 버튼 활성화
-        if (hasLetter && hasSpecialOrNumber && hasMinLength && isMatch) {
-            $(".next-btn").prop("disabled", false);
-        } else {
-            $(".next-btn").prop("disabled", true);
-        }
+        $(".next-btn").prop("disabled", !(hasLetter && hasSpecialOrNumber && hasMinLength && isMatch));
     }
 
-    // ✅ 비밀번호 입력 시 검증 실행
     $("#password-input, #password-confirm").on("input", validatePassword);
 
     $(".next-btn").click(function(event) {
@@ -73,7 +81,6 @@ $(document).ready(function() {
         const password = $("#password-input").val();
         const confirmPassword = $("#password-confirm").val();
 
-        // ✅ 최종 확인 (한 번 더 체크)
         if (!password || !confirmPassword) {
             alert("❌ 비밀번호를 입력해주세요.");
             return;
@@ -84,13 +91,16 @@ $(document).ready(function() {
             return;
         }
 
+        // ✅ SHA-256 해싱 적용
+        const hashedPassword = CryptoJS.SHA256(password).toString();
+
         $.ajax({
             url: contextPath + "/SignInServlet",
             type: "POST",
-            data: { step: "2", password: password },
+            data: { step: "2", password: hashedPassword },
             success: function(response) {
                 console.log("🔍 서버 응답:", response);
-                
+
                 if (response.trim() === "success") {
                     $("#password-modal").fadeOut(200, function() {
                         $.ajax({
@@ -102,9 +112,6 @@ $(document).ready(function() {
                             }
                         });
                     });
-                } else if (response.trim() === "error: email missing in session") {
-                    alert("❌ 세션 오류: 이메일 정보가 사라졌습니다. 다시 시작해주세요.");
-                    window.location.reload();
                 } else {
                     alert("❌ 비밀번호 저장 실패: " + response);
                 }
@@ -116,5 +123,5 @@ $(document).ready(function() {
         });
     });
 });
-
 </script>
+

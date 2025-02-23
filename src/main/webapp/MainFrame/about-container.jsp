@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<head>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/about-container.css">
-</head>
+
 
 <div id="main-container">
 			<%@ include file="./left-nav.jsp" %>
@@ -145,81 +144,66 @@
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const columns = document.querySelectorAll('.column');
-    const buttons = document.querySelectorAll('.toggle-btn');
     let currentOpenIndex = null;
 
-    buttons.forEach((button, index) => {
+    columns.forEach((column, index) => {
+        column.addEventListener('click', function(event) {
+            if (!event.target.classList.contains('toggle-btn')) { 
+                toggleDescription(index);
+            }
+        });
+
+        const button = column.querySelector('.toggle-btn');
         button.addEventListener('click', function(event) {
             toggleDescription(index);
-            event.stopPropagation();
+            event.stopPropagation(); // 버튼 클릭 시 이벤트 전파 방지
         });
     });
 
     function toggleDescription(index) {
         const column = columns[index];
         const description = column.querySelector('.description');
-        const button = buttons[index];
+        const button = column.querySelector('.toggle-btn');
+        const title = column.querySelector('.title');
+        title.style.color = "black";
+        // 이미 열려있는 경우 닫기
+        if (description.classList.contains('show')) {
+            closeDescription(index);
+            currentOpenIndex = null;
+            return;
+        }
 
+        // 현재 열린 항목이 있다면 닫기
         if (currentOpenIndex !== null && currentOpenIndex !== index) {
             closeDescription(currentOpenIndex);
         }
 
-        const isCurrentlyOpen = description.classList.contains('show');
+        // 새로 열기
+        description.classList.add('show');
+        column.classList.add('selected');
+        button.textContent = "−";
+        button.style.transform = "rotate(180deg)"; // ✅ 버튼 회전 효과 추가
 
-        if (isCurrentlyOpen) {
-            closeDescription(index);
-            currentOpenIndex = null;
-        } else {
-            description.classList.add('show');
-            column.classList.add('selected');
-            button.textContent = "−";
+        description.style.overflowY = "auto";
+        description.style.maxHeight = "600px";
 
-            // ✅ 스크롤 강제 적용 (CSS 유지)
-            description.style.overflowY = "auto";
-            description.style.maxHeight = "600px";  
-
-            // ✅ 스크롤바 스타일이 중복으로 추가되지 않도록 검사 후 추가
-            if (!document.getElementById("custom-scrollbar-style")) {
-                addCustomScrollbarStyle();
-            }
-
-            currentOpenIndex = index;
-        }
+        currentOpenIndex = index;
     }
 
     function closeDescription(index) {
         const column = columns[index];
         const description = column.querySelector('.description');
-        const button = buttons[index];
-
+        const button = column.querySelector('.toggle-btn');
+        const title = column.querySelector('.title');
+        title.style.color = "white";
         description.classList.remove('show');
         column.classList.remove('selected');
         button.textContent = "+";
+        button.style.transform = "rotate(0deg)"; // ✅ 버튼 원래 상태로 되돌림
 
-        // ✅ 스크롤 유지 (CSS 속성 제거 없음)
         description.style.overflowY = "hidden";
-        description.style.maxHeight = "0"; 
-    }
-
-    // ✅ 스크롤바 스타일을 동적으로 추가하는 함수 (CSS 유지)
-    function addCustomScrollbarStyle() {
-        const style = document.createElement("style");
-        style.id = "custom-scrollbar-style";
-        style.innerHTML = `
-            .description.show::-webkit-scrollbar {
-                width: 8px;
-            }
-            .description.show::-webkit-scrollbar-thumb {
-                background-color: rgba(0, 0, 0, 0.5);
-                border-radius: 4px;
-            }
-            .description.show::-webkit-scrollbar-track {
-                background-color: transparent;
-            }
-        `;
-        document.head.appendChild(style);
+        description.style.maxHeight = "0";
     }
 });
-
 
 </script>

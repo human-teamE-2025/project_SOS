@@ -1,15 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Song of Senses</title>
+
+
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/SingIn.css">
-</head>
-<body>
 
 <div class="modal-overlay"></div>
 <div class="modal" id="terms-modal">
+    <button class="close-modal-btn" id="close-modal">&times;</button>
     <h1>Song of Senses</h1>
     <p>3/3단계: 이용 약관 동의</p>
     <div class="terms-content">
@@ -24,6 +20,17 @@
 $(document).ready(function() {
 	var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
 	
+    $("#close-modal").click(function() {
+        $("#password-modal, .modal-overlay").fadeOut(200);
+    });
+
+    // ✅ ESC 키 입력 시 모달 닫기
+    $(document).keydown(function(event) {
+        if (event.key === "Escape") {
+            $("#password-modal, .modal-overlay").fadeOut(200);
+        }
+    });
+    
     $("#agree-terms").change(function() {
         $("#complete-button").prop("disabled", !this.checked);
     });
@@ -59,5 +66,3 @@ $(document).ready(function() {
 });
 </script>
 
-</body>
-</html>

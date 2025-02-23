@@ -2,16 +2,17 @@
   
   
     #condition {
-        background: #d3d3d3;
+        background-color: #3D3D3D;
         height: auto;
-        z-index:100;
         padding: 6px;
-        color: black;
+        margin-top:1px;
         border-radius: 12px;
-        width: 55vw;
+        border:1px solid black;
+        width: 95%;
         display: flex;
         flex-direction: column;
         gap: 2px;
+        z-index:10;
     }
 
     /* 필터 그룹 스타일 */
@@ -19,7 +20,7 @@
         display: flex;
         align-items: center;
         position: relative;
-        width: 93%;
+        width: 92%;
         padding: 2px 0;
     }
 
@@ -32,7 +33,7 @@
     /* 필터 제목 크기 증가 */
     .filter-title {
         font-weight: bold;
-        margin-right: 8px;
+        color:#ffffff;
         min-width: 100px;
         font-size: 18px;
         display: flex;
@@ -45,7 +46,8 @@
         display: flex;
         align-items: center;
         font-size: 14px;
-        width: 90%;	
+        color:#ffffff;
+        width: 92%;	
     }
 
     /* 체크박스 컨테이너 - 가로 스크롤 지원 */
@@ -89,8 +91,11 @@
         height: 26px;
         text-align: center;
     }
-
-    /* 스크롤 버튼 활성화 */
+    .scroll-left:hover, .scroll-right:hover, toggle-btn:hover
+    {
+   		 transition: color 0.3s ease;
+        transform: scale(1.05);
+    }/* 스크롤 버튼 활성화 */
     .scroll-left.active, .scroll-right.active {
         display: flex;
         justify-content: center;
@@ -99,8 +104,9 @@
 
     /* 접기/펼치기 버튼 */
     #toggle-btn {
+    	position:absolute;
         background: transparent;
-        color:black;
+        color:#ffffff;
         border: none;
         font-size: 16px;
         cursor: pointer;
@@ -112,17 +118,156 @@
     .hidden {
         display: none;
     }
-	#toggle-btn, .scroll-right, .scroll-left{
-		margin-left:24px;
+	#toggle-btn, .scroll-right{
+		margin-left:12px;
 	}
-    /* 반응형 대응 */
-    @media (max-width: 768px) {
-        #condition {
-            width: 90vw;
-        }
+	
+.sort-options {
+    display: flex;
+    gap: 8px;
+    margin-left: 12px;
+}
 
-        .filter-group {
+.sort-options select {
+    padding: 4px 8px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #333;
+    background: #222;
+    color: white;
+    cursor: pointer;
+}
+
+.sort-options select:hover {
+    background: #333;
+}
+	@media (max-width: 768px) {
+ 	            .filter-group {
             flex-direction: column;
             align-items: flex-start;
         }
-    }
+        }
+        
+        
+/* ✅ 체크박스 스타일 정상화 */
+.filter-scroll input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* ✅ 라벨 스타일 */
+.filter-scroll label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: #222;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid #444;
+    position: relative;
+}
+
+/* ✅ 체크박스 선택 시 스타일 변경 */
+.filter-scroll input[type="checkbox"]:checked + label {
+    background: #FFC107;
+    color: black;
+    transform: scale(1.05);
+    font-size: 16px;
+
+    border-color: #FFC107;
+}
+.filter-scroll label:hover {
+    transform: scale(1.07);
+    background: #333;
+    border-color: #555;
+}
+/* ✅ 체크박스 기본 상태 (아이콘 추가) */
+.filter-scroll label::before {
+    content: "⬜";
+    font-size: 16px;
+    color: #AAA;
+    transition: color 0.3s ease;
+}
+
+/* ✅ 체크박스 선택 후 */
+.filter-scroll input[type="checkbox"]:checked + label::before {
+        font-size: 16px;
+    content: "☑";
+
+    color: black;
+ 
+    transition: color 0.3s ease;
+    font-weight: bold;
+}
+
+/* ✅ 라디오 버튼 숨기기 */
+.filter-scroll input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* ✅ 라벨 스타일 */
+.filter-scroll label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: #222;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid #444;
+    position: relative;
+}
+
+/* ✅ 라벨 Hover 효과 */
+.filter-scroll label:hover {
+    transform: scale(1.07);
+    background: #333;
+    border-color: #555;
+}
+
+/* ✅ 선택된 라디오 버튼 스타일 */
+.filter-scroll input[type="radio"]:checked + label {
+    background: #FFC107;
+    color: black;
+    transform: scale(1.1);
+    border-color: #FFC107;
+}
+
+/* ✅ 기본 라벨 아이콘 */
+.filter-scroll label::before {
+    content: "○";
+    font-size: 16px;
+    color: #AAA;
+    transition: color 0.3s ease;
+}
+
+/* ✅ 선택된 라디오 버튼 아이콘 */
+.filter-scroll input[type="radio"]:checked + label::before {
+    content: "●";
+    color: black;
+    font-weight: bold;
+}
+.filter-group.song-tags .filter-scroll {
+    flex-wrap: wrap; /* ✅ 요소가 가로 너비를 초과하면 자동 줄바꿈 */
+    overflow-x: hidden; /* ✅ 가로 스크롤 없애기 */
+    max-height: 200px; /* ✅ 필요에 따라 최대 높이 제한 */
+    overflow-y: auto; /* ✅ 필요하면 세로 스크롤 추가 가능 */
+}
+
+.filter-group.song-tags{
+	align-items:start !important;
+}
+

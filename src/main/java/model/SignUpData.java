@@ -8,6 +8,7 @@ public class SignUpData implements Serializable {
     private String nickname;
     private String birthdate;
     private String gender;
+    private String genre; // ✅ 추가된 필드 (좋아하는 음악 장르)
 
     // Getter & Setter
     public String getEmail() { return email; }
@@ -24,4 +25,7 @@ public class SignUpData implements Serializable {
 
     public String getGender() { return gender; }
     public void setGender(String gender) { this.gender = gender; }
+
+    public String getGenre() { return genre; } // ✅ 추가된 Getter
+    public void setGenre(String genre) { this.genre = genre; } // ✅ 추가된 Setter
 }

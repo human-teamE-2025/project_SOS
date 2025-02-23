@@ -31,10 +31,13 @@
 * ::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 4px;
-}
+}	
 
 * ::-webkit-scrollbar-track {
     background-color: transparent;
+}
+button :hover{
+	opacity:0.6;
 }
 </style>
 </head>

@@ -1,0 +1,38 @@
+{
+  "trendingSongs": [
+    {
+      "title": "노래 제목 1",
+      "artist": "아티스트 1",
+      "description": "이 노래는 정말 좋아요!",
+      "views": 125000,
+      "date": "2024-02-20",
+      "thumbnail": "picture1.jpg"
+    },
+    {
+      "title": "노래 제목 2",
+      "artist": "아티스트 2",
+      "description": "이 곡은 감성적인 분위기가 매력적이에요.",
+      "views": 89000,
+      "date": "2024-02-18",
+      "thumbnail": "picture2.jpg"
+    }
+  ],
+  "recommendedSongs": [
+    {
+      "title": "추천곡 1",
+      "artist": "가수 1",
+      "description": "이 곡을 추천합니다!",
+      "views": 68000,
+      "date": "2024-02-15",
+      "thumbnail": "picture3.jpg"
+    },
+    {
+      "title": "추천곡 2",
+      "artist": "가수 2",
+      "description": "감동적인 가사가 좋아요!",
+      "views": 54000,
+      "date": "2024-02-10",
+      "thumbnail": "picture4.jpg"
+    }
+  ]
+}

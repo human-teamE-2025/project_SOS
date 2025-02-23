@@ -7,6 +7,69 @@
 
     <display-name>E_web</display-name>
 
+<filter>
+    <filter-name>CORS</filter-name>
+    <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+    <init-param>
+        <param-name>cors.allowed.origins</param-name>
+        <param-value>*</param-value>  <!-- 모든 도메인 허용 -->
+    </init-param>
+    <init-param>
+        <param-name>cors.allowed.methods</param-name>
+        <param-value>GET,POST,PUT,DELETE,OPTIONS</param-value> <!-- 허용할 HTTP 메서드 -->
+    </init-param>
+    <init-param>
+        <param-name>cors.allowed.headers</param-name>
+        <param-value>Content-Type,Authorization,X-Requested-With</param-value> <!-- 허용할 헤더 -->
+    </init-param>
+    <init-param>
+        <param-name>cors.exposed.headers</param-name>
+        <param-value>Authorization</param-value>
+    </init-param>
+</filter>
+
+<servlet>
+    <servlet-name>WebSocket</servlet-name>
+    <servlet-class>org.glassfish.tyrus.server.Server</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>WebSocket</servlet-name>
+    <url-pattern>/ws/*</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>UploadStep2</servlet-name>
+    <jsp-file>/MainFrame/upload/upload-step2.jsp</jsp-file>  <!-- ✅ 올바른 JSP 경로로 변경 -->
+    <multipart-config>
+        <max-file-size>52428800</max-file-size> <!-- 50MB -->
+        <max-request-size>104857600</max-request-size> <!-- 100MB -->
+        <file-size-threshold>1048576</file-size-threshold> <!-- 1MB -->
+    </multipart-config>
+</servlet>
+
+<servlet>
+    <servlet-name>UploadServlet</servlet-name>
+    <servlet-class>controller.UploadServlet</servlet-class>
+    <multipart-config>
+        <max-file-size>52428800</max-file-size> <!-- 50MB -->
+        <max-request-size>104857600</max-request-size> <!-- 100MB -->
+        <file-size-threshold>1048576</file-size-threshold> <!-- 1MB -->
+    </multipart-config>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>UploadServlet</servlet-name>
+    <url-pattern>/UploadServlet</url-pattern>
+</servlet-mapping>
+
+
+
+<filter-mapping>
+    <filter-name>CORS</filter-name>
+    <url-pattern>/*</url-pattern> <!-- 모든 요청에 대해 적용 -->
+</filter-mapping>
+
+
 <servlet>
     <servlet-name>CheckEmailServlet</servlet-name>
     <servlet-class>controller.CheckEmailServlet</servlet-class>
@@ -27,6 +90,26 @@
     <url-pattern>/LoginServlet</url-pattern>
 </servlet-mapping>
 
+
+<servlet>
+    <servlet-name>LogoutServlet</servlet-name>
+    <servlet-class>controller.LogoutServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/LogoutServlet</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>SessionInfoServlet</servlet-name>
+    <servlet-class>controller.SessionInfoServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>SessionInfoServlet</servlet-name>
+    <url-pattern>/SessionInfoServlet</url-pattern>
+</servlet-mapping>
 
 <servlet>
     <servlet-name>SignInServlet</servlet-name>
@@ -58,5 +141,18 @@
 </servlet-mapping>
 
 
+<servlet>
+    <servlet-name>jsp</servlet-name>
+    <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+    <init-param>
+        <param-name>development</param-name>
+        <param-value>true</param-value>
+    </init-param>
+    <init-param>
+        <param-name>modificationTestInterval</param-name>
+        <param-value>1</param-value>
+    </init-param>
+    <load-on-startup>3</load-on-startup>
+</servlet>
 
 </web-app>

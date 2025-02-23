@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 header {
-    width: 100%;
+    width: 100vw;
     height: 9vh;
     background-color: #F8B400;
     display: flex;
@@ -55,6 +55,7 @@ header {
     text-align: center;
     letter-spacing: 2px;
     cursor: pointer;
+    color: black;
 }
 
 .search-container {
@@ -155,25 +156,14 @@ header {
 }
 
 @media (max-width: 768px) {
-    header {
-        height: auto;
-        flex-direction: column;
-        align-items: center;
-        padding: 10px;
+	.search-container{
+		display:none;
+	}
+    #title{
+    	display:none;
     }
-
-    #left-header, #right-header {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .search-container {
-        width: 90%;
-        min-width: unset;
-        right: auto;
-        left: 50%;
-        transform: translateX(-50%);
+    .menu{
+    	margin-left: 0;
     }
 }
 
