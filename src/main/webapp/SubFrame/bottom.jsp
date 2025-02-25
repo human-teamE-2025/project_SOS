@@ -46,145 +46,111 @@
     </div>
 </div>
 
-<script>
-$(document).ready(function () {
-    let socket;
-    let wsUrl = "ws://" + window.location.host + "/E_web/activeUsers";
+<!-- ✅ WebSocket 전역 관리 모듈 추가 -->
+<script src="${pageContext.request.contextPath}/static/js/globalWebSocket.js"></script>
 
-    /** ✅ 실시간 접속자 수 업데이트 함수 추가 */
-    function updateUserStatus(count, loggedIn) {
-        const userCountElement = document.getElementById("active-users-count");
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const userCountElement = document.getElementById("active-users-count");
+    const toggleUserInfoButton = document.getElementById("toggle-user-info");
+
+    /** ✅ 실시간 사용자 수 업데이트 */
+    function updateActiveUsersCount(count, loggedIn) {
+        console.log("🔄 사용자 수 업데이트: ", count, " (로그인 상태:", loggedIn, ")");
+
+        if (!userCountElement) return;
 
         if (loggedIn) {
             userCountElement.textContent = count + "명";
-            userCountElement.style.color = "black";
+            userCountElement.classList.remove("login-link");
+            userCountElement.classList.add("more-btn");
         } else {
             userCountElement.textContent = "로그인 후 확인";
-            userCountElement.style.color = "blue";
+            userCountElement.classList.remove("more-btn");
+            userCountElement.classList.add("login-link");
         }
     }
 
-    /** ✅ 웹소켓 연결 및 데이터 실시간 반영 */
-    function connectWebSocket() {
-        socket = new WebSocket(wsUrl);
-
-        socket.onopen = function () {
-            console.log("✅ WebSocket 연결 성공:", wsUrl);
-            socket.send("update"); // 접속하자마자 서버에 접속자 수 요청
-        };
-
-        socket.onmessage = function (event) {
-            console.log("📩 WebSocket 메시지 수신:", event.data);
-
-            try {
-                if (event.data.trim() === "update") {
-                    console.log("🔄 서버에서 접속자 수 업데이트 요청 수신.");
-                    return;
-                }
-
-                const notificationData = JSON.parse(event.data);
-                
-                if (notificationData.type === "activeUsers") {
-                    updateUserStatus(notificationData.count, notificationData.loggedIn);
-                } else if (notificationData.type === "notification") {
-                    addNotification(notificationData.message);
-                }
-            } catch (error) {
-                console.error("🚨 WebSocket JSON 파싱 오류:", error, "데이터:", event.data);
-            }
-        };
-
-        socket.onclose = function () {
-            console.log("❌ WebSocket 연결 종료됨. 5초 후 재연결 시도...");
-            setTimeout(connectWebSocket, 5000);
-        };
-
-        socket.onerror = function (error) {
-            console.error("⚠️ WebSocket 오류 발생:", error);
-        };
+    /** ✅ WebSocket에서 접속자 수 업데이트 */
+    function handleActiveUsersUpdate(event) {
+        console.log("📢 WebSocket에서 접속자 정보 업데이트 이벤트 수신:", event.detail.count);
+        const loggedIn = sessionStorage.getItem("loggedIn") === "true";
+        updateActiveUsersCount(event.detail.count, loggedIn);
     }
 
-    /** ✅ 페이지 최초 로드 시 로그인 여부 확인 */
-    function checkLoginStatus() {
+    /** ✅ 로그인 이벤트 */
+    function handleLoginSuccess() {
+        if (sessionStorage.getItem("loggedIn") !== "true") {
+            sessionStorage.setItem("loggedIn", "true");
+            window.globalWebSocketManager.sendUpdate();
+            console.log("🔄 로그인 UI 업데이트 실행");
+
+            // ✅ 로그인 후 즉시 현재 접속자 정보 업데이트
+            document.dispatchEvent(new CustomEvent("updateActiveUsers", { detail: { count: 1 } }));
+        }
+    }
+
+    /** ✅ 로그아웃 이벤트 */
+    function handleLogoutSuccess() {
+        if (sessionStorage.getItem("loggedIn") !== "false") {
+            sessionStorage.setItem("loggedIn", "false");
+            window.globalWebSocketManager.sendUpdate();
+            console.log("🔄 로그아웃 UI 업데이트 실행");
+
+            // ✅ 로그아웃 후 즉시 접속자 정보 0으로 설정
+            document.dispatchEvent(new CustomEvent("updateActiveUsers", { detail: { count: 0 } }));
+        }
+    }
+
+    /** ✅ WebSocket 이벤트 중복 제거 후 리스너 추가 */
+    document.removeEventListener("updateActiveUsers", handleActiveUsersUpdate);
+    document.addEventListener("updateActiveUsers", handleActiveUsersUpdate);
+
+    document.removeEventListener("loginSuccess", handleLoginSuccess);
+    document.addEventListener("loginSuccess", handleLoginSuccess);
+
+    document.removeEventListener("logoutSuccess", handleLogoutSuccess);
+    document.addEventListener("logoutSuccess", handleLogoutSuccess);
+
+    /** ✅ "로그인 후 확인" 버튼 클릭 시 로그인 모달 열기 또는 접속자 리스트 표시 */
+    toggleUserInfoButton.addEventListener("click", function () {
+        let isLoggedIn = sessionStorage.getItem("loggedIn") === "true";
+
+        if (!isLoggedIn) {
+            loadLoginModal(); // ✅ 로그인 모달 열기
+        } else {
+            let modal = $("#user-list-modal");
+            modal.fadeToggle(100);
+
+            if (modal.is(":visible")) {
+                fetchActiveUsers();
+            }
+        }
+    });
+
+    /** ✅ 현재 접속 중인 유저 리스트 가져오기 */
+    function fetchActiveUsers() {
         $.ajax({
             url: "/E_web/SessionInfoServlet",
             type: "GET",
             dataType: "json",
             success: function (data) {
-                if (data.loggedIn) {
-                    updateLoginUI(data.userName, data.loginTime);
-                    loadLogoutPopup();
-                    updateUserStatus(data.onlineUsers, true); // ✅ 로그인한 경우
-                } else {
-                    resetLoginUI();
-                    updateUserStatus(0, false); // ✅ 로그아웃한 경우 "로그인 후 확인" 표시
+                console.log("📢 서버에서 접속자 목록 응답:", data);
+                let tbody = $("#user-list-table tbody").empty();
+                if (data.activeUsersList) {
+                    data.activeUsersList.forEach(user => {
+                        tbody.append(`<tr>
+                            <td>${user.userId || "N/A"}</td>
+                            <td>${user.userName || "알 수 없음"}</td>
+                            <td>${user.userEmail || "이메일 없음"}</td>
+                        </tr>`);
+                    });
                 }
             },
             error: function () {
-                console.error("❌ 세션 정보 가져오기 실패");
+                console.error("❌ 접속자 정보 가져오기 실패");
             }
         });
     }
-
-    /** ✅ 페이지 최초 로드 시 실행 */
-    checkLoginStatus();
-    connectWebSocket();
-
-    /** ✅ 버튼 클릭 이벤트 (로그인 모달 or 접속자 리스트) */
-    $("#toggle-user-info").click(function () {
-        if ($(this).hasClass("login-link")) {
-            $.ajax({
-                url: "SubFrame/Modal/Login.jsp",
-                type: "GET",
-                dataType: "html",
-                success: function (data) {
-                    if ($("#login-modal").length === 0) {
-                        $("body").append(data);
-                    }
-                    $("#login-modal").fadeIn(100);
-
-                    // ✅ 로그인 성공 시 UI 즉시 업데이트
-                    $(document).on("loginSuccess", function () {
-                        updateUserStatus(data.onlineUsers, true);
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.error("모달을 불러오는 중 오류 발생:", error);
-                }
-            });
-        } else {
-            $("#user-list-modal").fadeToggle(100);
-            $.ajax({
-                url: "${pageContext.request.contextPath}/SessionInfoServlet",
-                type: "GET",
-                dataType: "json",
-                success: function (data) {
-                    let tbody = $("#user-list-table tbody").empty();
-                    if (data.loggedInUsers) {
-                        data.loggedInUsers.forEach(user => {
-                            tbody.append(`<tr>
-                                <td>${user.userId}</td>
-                                <td>${user.userName}</td>
-                                <td>${user.userEmail}</td>
-                            </tr>`);
-                        });
-                    }
-                },
-                error: function () {
-                    console.error("❌ 접속자 정보 가져오기 실패");
-                }
-            });
-        }
-    });
-
-    /** ✅ 로그아웃 성공 이벤트 */
-    $(document).on("logoutSuccess", function () {
-        updateUserStatus(0, false);
-    });
-
-    $(".close-btn").click(function () {
-        $("#user-list-modal").fadeOut(100);
-    });
 });
 </script>
-

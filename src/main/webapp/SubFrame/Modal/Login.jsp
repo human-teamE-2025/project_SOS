@@ -56,11 +56,23 @@ $(document).ready(function() {
                 if (response.status === "success") {
                     alert("✅ 로그인 성공!");
 
-                    // ✅ 로그인 UI 변경
-                    updateLoginUI(response.userName, response.loginTime);
+                    // ✅ 로그인 UI 변경 (전역 함수 호출)
+                    if (typeof window.updateLoginUI === "function") {
+                        window.updateLoginUI(response.userName, response.loginTime);
+                    } else {
+                        console.warn("⚠ `updateLoginUI` 함수가 정의되지 않음.");
+                    }
 
                     // ✅ 로그인 모달 닫기
                     $("#login-modal").fadeOut(100);
+
+                    // ✅ WebSocket 업데이트 요청 (한 번만 실행)
+                    if (window.globalWebSocketManager && window.globalWebSocketManager.isReady()) {
+                        window.globalWebSocketManager.sendUpdate();
+                    }
+
+                    // ✅ `loginSuccess` 이벤트 트리거
+                    document.dispatchEvent(new Event("loginSuccess"));
                 } else {
                     showErrorMessage(response.message || "❌ 이메일 또는 비밀번호가 일치하지 않습니다.");
                 }

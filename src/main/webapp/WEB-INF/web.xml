@@ -7,35 +7,6 @@
 
     <display-name>E_web</display-name>
 
-<filter>
-    <filter-name>CORS</filter-name>
-    <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
-    <init-param>
-        <param-name>cors.allowed.origins</param-name>
-        <param-value>*</param-value>  <!-- 모든 도메인 허용 -->
-    </init-param>
-    <init-param>
-        <param-name>cors.allowed.methods</param-name>
-        <param-value>GET,POST,PUT,DELETE,OPTIONS</param-value> <!-- 허용할 HTTP 메서드 -->
-    </init-param>
-    <init-param>
-        <param-name>cors.allowed.headers</param-name>
-        <param-value>Content-Type,Authorization,X-Requested-With</param-value> <!-- 허용할 헤더 -->
-    </init-param>
-    <init-param>
-        <param-name>cors.exposed.headers</param-name>
-        <param-value>Authorization</param-value>
-    </init-param>
-</filter>
-
-<servlet>
-    <servlet-name>WebSocket</servlet-name>
-    <servlet-class>org.glassfish.tyrus.server.Server</servlet-class>
-</servlet>
-<servlet-mapping>
-    <servlet-name>WebSocket</servlet-name>
-    <url-pattern>/ws/*</url-pattern>
-</servlet-mapping>
 
 <servlet>
     <servlet-name>UploadStep2</servlet-name>
@@ -62,12 +33,6 @@
     <url-pattern>/UploadServlet</url-pattern>
 </servlet-mapping>
 
-
-
-<filter-mapping>
-    <filter-name>CORS</filter-name>
-    <url-pattern>/*</url-pattern> <!-- 모든 요청에 대해 적용 -->
-</filter-mapping>
 
 
 <servlet>

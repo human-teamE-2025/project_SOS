@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import org.json.JSONObject;
+
 @MultipartConfig(
 	    fileSizeThreshold = 1024 * 1024 * 1, // 1MB
 	    maxFileSize = 1024 * 1024 * 50,      // 50MB

@@ -1,82 +1,90 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const popup = document.getElementById("popup");
-    const navItem = document.getElementById("nav-item");
     const userCountElement = document.getElementById("active-users-count");
-
-    let socket; // WebSocket 객체
-
-    /** ✅ 웹소켓 연결 함수 */
-    function connectWebSocket() {
-        socket = new WebSocket("ws://" + window.location.host + "/E_web/notifications");
-
-        socket.onopen = function () {
-            console.log("✅ WebSocket 연결 성공: 알림 시스템");
-            socket.send("update"); // ✅ 접속하자마자 최신 접속자 정보 요청
+    
+    /** ✅ 전역 알림 추가 함수 (중복 실행 방지) */
+    if (!window.addNotification) {
+        window.addNotification = function (message) {
+            console.log("🔔 새로운 알림 추가:", message);
+            const navItem = document.getElementById("nav-item");
+            if (!navItem) {
+                console.error("❌ 알림 리스트(nav-item)를 찾을 수 없음.");
+                return;
+            }
+            const listItem = document.createElement("li");
+            listItem.textContent = message;
+            navItem.prepend(listItem);
         };
-
-		socket.onmessage = function (event) {
-		    console.log("📩 WebSocket 메시지 수신:", event.data);
-
-		    try {
-		        // JSON이 아닌 경우를 감지하고 무시
-		        if (event.data === "update") return;
-
-		        const notificationData = JSON.parse(event.data);
-
-		        if (notificationData.type === "activeUsers") {
-		            updateActiveUsersCount(notificationData.count, notificationData.loggedIn);
-		        } else if (notificationData.type === "notification") {
-		            addNotification(notificationData.message);
-		        }
-		    } catch (error) {
-		        console.error("🚨 WebSocket JSON 파싱 오류:", error);
-		    }
-		};
-
-        socket.onclose = function () {
-            console.log("❌ WebSocket 연결 종료됨. 재연결 시도 중...");
-            setTimeout(connectWebSocket, 3000); // 3초 후 재연결
-        };
-
-        socket.onerror = function (error) {
-            console.error("⚠️ WebSocket 오류 발생:", error);
-        };
-    }
-
-    /** ✅ 새로운 알림 추가 함수 */
-    function addNotification(message) {
-        const listItem = document.createElement("li");
-        listItem.textContent = message;
-        navItem.prepend(listItem);
     }
 
     /** ✅ 실시간 접속자 수 업데이트 */
-    function updateActiveUsersCount(count, loggedIn) {
-        if (loggedIn) {
-            userCountElement.textContent = count + "명";
-            userCountElement.classList.remove("login-link");
-            userCountElement.classList.add("more-btn");
-        } else {
-            userCountElement.textContent = "로그인 후 확인";
-            userCountElement.classList.remove("more-btn");
-            userCountElement.classList.add("login-link");
-        }
+    if (!window.updateActiveUsersCount) {
+        window.updateActiveUsersCount = function (count, loggedIn) {
+            if (!userCountElement) return;
+
+            if (loggedIn) {
+                userCountElement.textContent = count + "명";
+                userCountElement.classList.remove("login-link");
+                userCountElement.classList.add("more-btn");
+            } else {
+                userCountElement.textContent = "로그인 후 확인";
+                userCountElement.classList.remove("more-btn");
+                userCountElement.classList.add("login-link");
+            }
+        };
     }
 
-    /** ✅ 로그인 시 WebSocket에 업데이트 요청 */
-    document.addEventListener("loginSuccess", function () {
-        if (socket && socket.readyState === WebSocket.OPEN) {
-            socket.send("update"); // ✅ 로그인 성공 후 서버에 업데이트 요청
-        }
-    });
+    /** ✅ WebSocket 이벤트 핸들러 정의 */
+    function handleNotificationUpdate(event) {
+        window.addNotification(event.detail.message);
+    }
 
-    /** ✅ 로그아웃 시 WebSocket에 업데이트 요청 */
-    document.addEventListener("logoutSuccess", function () {
-        if (socket && socket.readyState === WebSocket.OPEN) {
-            socket.send("update"); // ✅ 로그아웃 후 서버에 업데이트 요청
-        }
-    });
+    function handleActiveUsersUpdate(event) {
+        window.updateActiveUsersCount(event.detail.count, event.detail.loggedIn);
+    }
 
-    /** ✅ 웹소켓 연결 실행 */
-    connectWebSocket();
+    function handleLoginSuccess() {
+        console.log("🔄 로그인 UI 업데이트 실행");
+        sessionStorage.setItem("loggedIn", "true");
+        window.globalWebSocketManager.sendUpdate();
+        checkLoginStatus(); // ✅ 서버에서 로그인 상태 확인
+    }
+
+    function handleLogoutSuccess() {
+        console.log("🔄 로그아웃 UI 업데이트 실행");
+        sessionStorage.setItem("loggedIn", "false");
+        window.globalWebSocketManager.sendUpdate();
+        checkLoginStatus(); // ✅ 서버에서 로그인 상태 확인
+    }
+
+    /** ✅ WebSocket 이벤트 리스너 설정 (중복 방지) */
+    document.removeEventListener("updateNotification", handleNotificationUpdate);
+    document.addEventListener("updateNotification", handleNotificationUpdate);
+
+    document.removeEventListener("updateActiveUsers", handleActiveUsersUpdate);
+    document.addEventListener("updateActiveUsers", handleActiveUsersUpdate);
+
+    document.removeEventListener("loginSuccess", handleLoginSuccess);
+    document.addEventListener("loginSuccess", handleLoginSuccess);
+
+    document.removeEventListener("logoutSuccess", handleLogoutSuccess);
+    document.addEventListener("logoutSuccess", handleLogoutSuccess);
+
+    /** ✅ 서버에서 로그인 상태 확인 */
+    function checkLoginStatus() {
+        fetch("/E_web/SessionInfoServlet")
+            .then(response => response.json())
+            .then(data => {
+                if (data.loggedIn) {
+                    sessionStorage.setItem("loggedIn", "true");
+                    window.updateActiveUsersCount(data.onlineUsers, true);
+                } else {
+                    sessionStorage.setItem("loggedIn", "false");
+                    window.updateActiveUsersCount(0, false);
+                }
+            })
+            .catch(error => console.error("❌ 세션 정보 확인 실패:", error));
+    }
+
+    // ✅ 초기 실행 시 로그인 상태 확인
+    checkLoginStatus();
 });

@@ -24,44 +24,6 @@
 
 <script>
 $(document).ready(function() {
-    let wsUrl = "ws://" + window.location.host + "/E_web/activeUsers";
-    let socket = new WebSocket(wsUrl);
-
-    socket.onopen = function () {
-        console.log("✅ WebSocket 연결 성공:", wsUrl);
-        socket.send("update");
-    };
-
-    socket.onmessage = function (event) {
-        console.log("📩 현재 접속중인 유저:", event.data);
-    };
-
-    socket.onclose = function () {
-        console.log("❌ WebSocket 연결 종료");
-    };
-
-    socket.onerror = function (error) {
-        console.error("⚠️ WebSocket 오류 발생:", error);
-    };
-
-    // 동적으로 로드된 로그아웃 버튼에 대해 이벤트 위임 방식으로 바인딩
-    $("#b2").click(function() {
-        if ($("#user-popup").hasClass("show")) {
-            $("#user-popup").removeClass("show").addClass("hide");
-            setTimeout(() => { $("#user-popup").hide(); }, 200); // 애니메이션 후 숨김 처리
-        } else {
-            $("#user-popup").removeClass("hide").addClass("show").show();
-        }
-    });
-
-    // 다른 곳을 클릭하면 팝업 닫기
-    $(document).click(function(event) {
-        if (!$(event.target).closest("#user-popup, #b2").length) {
-            $("#user-popup").removeClass("show").addClass("hide");
-            setTimeout(() => { $("#user-popup").hide(); }, 200);
-        }
-    });
-
     // ✅ 로그아웃 버튼 클릭 이벤트
     $("#logout-btn").click(function() {
         $.ajax({
@@ -70,10 +32,32 @@ $(document).ready(function() {
             dataType: "json",
             success: function(response) {
                 if (response.status === "success") {
+                    console.log("✅ 로그아웃 성공!");
+                    
+                    // ✅ 세션 초기화
                     sessionStorage.clear();
-                    $("#b2 i").removeClass("fa-circle-user").addClass("fa-sign-in-alt");
-                    $("#user-popup").remove();
-                    socket.send("update"); // ✅ 로그아웃 후 접속자 수 갱신
+
+                    // ✅ UI 초기화 (전역 함수 호출)
+                    if (typeof window.updateLoginUI === "function") {
+                        window.updateLoginUI(null, null);
+                    } else {
+                        console.warn("⚠ `updateLoginUI` 함수가 정의되지 않음.");
+                    }
+
+                    // ✅ WebSocket 업데이트 요청
+                    if (window.globalWebSocketManager && window.globalWebSocketManager.isReady()) {
+                        window.globalWebSocketManager.sendUpdate();
+                    }
+
+                    // ✅ `logoutSuccess` 이벤트 트리거 (헤더 및 푸터 동기화)
+                    document.dispatchEvent(new Event("logoutSuccess"));
+
+                    // ✅ 로그아웃 후 팝업 제거
+                    $("#user-popup").fadeOut(100, function() {
+                        $(this).remove();
+                    });
+                } else {
+                    alert(response.message || "❌ 로그아웃 실패!");
                 }
             },
             error: function() {
@@ -82,6 +66,16 @@ $(document).ready(function() {
         });
     });
 
-    
+    // ✅ 팝업 표시/숨기기
+    $("#b2").click(function() {
+        $("#user-popup").fadeToggle(100);
     });
+
+    // ✅ 다른 곳 클릭 시 팝업 닫기
+    $(document).click(function(event) {
+        if (!$(event.target).closest("#user-popup, #b2").length) {
+            $("#user-popup").fadeOut(100);
+        }
+    });
+});
 </script>

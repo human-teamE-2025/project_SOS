@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/header.css">
 
 <header>
@@ -24,43 +23,15 @@
     </div>
 </header>
 
+<!-- ✅ WebSocket 전역 관리 모듈 추가 -->
+<script src="${pageContext.request.contextPath}/static/js/globalWebSocket.js"></script>
+
 <script>
-$(document).ready(function() {
-    window.resetLoginUI = function() {
-        console.log("🔄 로그인 UI 초기화");
-        $("#b2 i").removeClass("fa-solid fa-circle-user").addClass("fas fa-sign-in-alt");
-        sessionStorage.clear();
-        $("#user-popup").fadeOut(100, function() {
-            $(this).remove();
-        });
-    };
-    checkLoginStatus();
-    
-    initWebSocket();
-   
+$(document).ready(function () {
+    const userCountElement = document.getElementById("active-users-count");
 
-    
-    window.checkLoginStatus = function() {
-        $.ajax({
-            url: "/E_web/SessionInfoServlet",
-            type: "GET",
-            dataType: "json",
-            success: function(data) {
-                if (data.loggedIn) {
-                    window.updateLoginUI(data.userName, data.loginTime); // ✅ 전역 함수 호출
-                    window.loadLogoutPopup(); // ✅ 전역 함수 호출
-                } else {
-                    window.resetLoginUI(); // ✅ 전역 함수 호출
-                }
-            },
-            error: function() {
-                console.error("❌ 세션 정보 가져오기 실패");
-            }
-        });
-    };
-
-    /** ✅ 로그인 UI 업데이트 (전역 등록) */
-    window.updateLoginUI = function(userName, loginTime) {
+    /** ✅ 로그인 UI 업데이트 함수 (전역) */
+    window.updateLoginUI = function (userName, loginTime) {
         console.log("✅ 로그인 UI 업데이트: ", userName, loginTime);
         $("#b2 i").removeClass("fas fa-sign-in-alt").addClass("fa-solid fa-circle-user");
 
@@ -69,103 +40,106 @@ $(document).ready(function() {
         }
     };
 
-    /** ✅ 로그인 UI 초기화 (전역 등록) */
-
-
-
-$("#b2").click(function() {
-    let isLoggedIn = sessionStorage.getItem("loggedIn") === "true";
-
-    if (isLoggedIn) {
-        if ($("#user-popup").length === 0) {
-            loadLogoutPopup();
-        } else {
-            $("#user-popup").fadeToggle(100);
-        }
-    } else {
-        loadLoginModal();
+    /** ✅ 로그아웃 UI 초기화 */
+    function resetLoginUI() {
+        console.log("🔄 로그아웃 UI 초기화");
+        $("#b2 i").removeClass("fa-solid fa-circle-user").addClass("fas fa-sign-in-alt");
+        sessionStorage.clear();
     }
-});
 
+    /** ✅ 로그인 상태 확인 */
+    function checkLoginStatus() {
+        $.ajax({
+            url: "/E_web/LoginServlet",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                if (data.status === "loggedIn") {
+                    sessionStorage.setItem("loggedIn", "true");
+                    sessionStorage.setItem("userName", data.userName);
+                    updateLoginUI(data.userName, data.loginTime);
+                } else {
+                    sessionStorage.setItem("loggedIn", "false");
+                    resetLoginUI();
+                }
+            },
+            error: function () {
+                console.error("❌ 세션 정보 가져오기 실패");
+            },
+        });
+    }
 
+    /** ✅ 로그인/로그아웃 버튼 클릭 이벤트 */
+    $("#b2").off("click").on("click", function (event) {
+        event.preventDefault();
+        let isLoggedIn = sessionStorage.getItem("loggedIn") === "true";
+
+        if (isLoggedIn) {
+            if ($("#user-popup").length === 0) {
+                loadLogoutPopup();
+            } else {
+                $("#user-popup").fadeToggle(100);
+            }
+        } else {
+            if ($("#login-modal").length === 0) {
+                loadLoginModal();
+            } else {
+                $("#login-modal").fadeIn(100);
+            }
+        }
+    });
+
+    /** ✅ 로그아웃 팝업 로드 */
     function loadLogoutPopup() {
         $.ajax({
-            url: "/E_web/SubFrame/Modal/Logout.jsp",
+            url: "${pageContext.request.contextPath}/SubFrame/Modal/Logout.jsp",
             type: "GET",
             dataType: "html",
-            success: function(data) {
+            success: function (data) {
                 $("#user-popup").remove();
                 $("body").append(data);
                 $("#user-popup").fadeIn(100);
             },
-            error: function(xhr, status, error) {
-                console.error("로그아웃 팝업 로드 오류:", error);
-            }
         });
     }
 
+    /** ✅ 로그인 모달 로드 */
     function loadLoginModal() {
         $.ajax({
-            url: "SubFrame/Modal/Login.jsp",
+            url: "${pageContext.request.contextPath}/SubFrame/Modal/Login.jsp",
             type: "GET",
             dataType: "html",
-            success: function(data) {
-                if ($("#login-modal").length === 0) {
-                    $("body").append(data);
-                }
-                $("#login-modal").fadeIn();
+            success: function (data) {
+                $("body").append(data);
+                $("#login-modal").fadeIn(100);
             },
-            error: function(xhr, status, error) {
-                console.error("로그인 모달 로드 오류:", error);
-            }
         });
     }
 
-    function initWebSocket() {
-    	let socket = new WebSocket("ws://" + window.location.host + "/E_web/activeUsers");
+    /** ✅ 로그인/로그아웃 이벤트 리스너 */
+    document.addEventListener("loginSuccess", function () {
+        sessionStorage.setItem("loggedIn", "true");
+        updateLoginUI(sessionStorage.getItem("userName") || "사용자", new Date().toLocaleTimeString());
+        console.log("🔄 로그인 UI 업데이트 실행");
 
-    	socket.onopen = function () {
-    	    socket.send("update"); // ✅ 접속하자마자 최신 접속자 정보 요청
-    	};
-
-    	socket.onmessage = function (event) {
-    	    console.log("📩 WebSocket 메시지 수신:", event.data);
-
-    	    try {
-    	        if (event.data.trim() === "update") {
-    	            console.log("🔄 서버에서 접속자 수 업데이트 요청 수신.");
-    	            return;
-    	        }
-
-    	        const notificationData = JSON.parse(event.data);
-    	        
-    	        if (notificationData.type === "activeUsers") {
-    	            updateUserStatus(notificationData.count, notificationData.loggedIn);
-    	        } else if (notificationData.type === "notification") {
-    	            addNotification(notificationData.message);
-    	        }
-    	    } catch (error) {
-    	        console.error("🚨 WebSocket JSON 파싱 오류:", error, "데이터:", event.data);
-    	    }
-        };
-
-        socket.onerror = function (error) {
-            console.error("⚠️ WebSocket 오류 발생:", error);
-        };
-    
-
-    function updateUserStatus(count, loggedIn) {
-        console.log("✅ 사용자 상태 업데이트:", count, loggedIn);
-        const userStatusElement = document.getElementById("active-users-count");
-
-        if (loggedIn) {
-            userStatusElement.textContent = count + "명";
-            userStatusElement.style.color = "black";
-        } else {
-            userStatusElement.textContent = "로그인 후 확인";
-            userStatusElement.style.color = "blue";
+        // ✅ WebSocket 업데이트 요청
+        if (window.globalWebSocketManager && window.globalWebSocketManager.isReady()) {
+            window.globalWebSocketManager.sendUpdate();
         }
-    }
-}
-    }
+    });
+
+    document.addEventListener("logoutSuccess", function () {
+        sessionStorage.setItem("loggedIn", "false");
+        resetLoginUI();
+        console.log("🔄 로그아웃 UI 업데이트 실행");
+
+        // ✅ WebSocket 업데이트 요청
+        if (window.globalWebSocketManager && window.globalWebSocketManager.isReady()) {
+            window.globalWebSocketManager.sendUpdate();
+        }
+    });
+
+    /** ✅ 초기 실행 */
+    checkLoginStatus();
+});
 </script>
