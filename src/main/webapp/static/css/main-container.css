@@ -14,7 +14,7 @@
 	flex-grow: 1;
     padding: 2vh 2vh 2vh 2vh;
 	right:0%;     /* Dynamic height calculation */
-    gap: 12px;
+    gap: 24px;
     align-items: center; /* Key for vertical centering */
 	justify-content: center;
 	background-color: #1C1C1C;
@@ -24,7 +24,7 @@ main {
     flex-direction: column;
     justify-content: start;
     align-items: center;
-    width: calc(84vw - 300px);
+    width: calc(70vw - 200px);
     height:100%;   
 	border-radius:12px;
     gap: 12px;

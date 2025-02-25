@@ -61,9 +61,9 @@ header {
 .search-container {
     display: flex;
     align-items: center;
-    width: 30%;
-    max-width: 900px;
-    min-width: 500px;
+    width: 500px;
+    max-width: 40vw;
+
     border: 1px solid #34495E;
     border-radius: 24px;
     padding: 5px 15px;
@@ -124,8 +124,8 @@ header {
 }
 
 .logo-btn {
-    width: 7vh;
-    height: 7vh;
+    width: 6vh;
+    height: 6vh;
     background: url('../img/favicon.ico') no-repeat center;
     background-size: contain;
     border: none;
@@ -135,8 +135,8 @@ header {
 
 @keyframes heartbeat {
     0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(0.95); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(0.97); }
 }
 
 /* 버튼 배경 및 테두리 제거 */
@@ -146,6 +146,8 @@ header {
     cursor: pointer;
     font-size: 2rem;
     padding: 5px;
+    padding-top: 0px;
+    padding-bottom:0px;
     color: black;
 }
 #search, .search-container{
@@ -155,7 +157,7 @@ header {
 	font-size: 3rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1279px) {
 	.search-container{
 		display:none;
 	}
@@ -165,5 +167,15 @@ header {
     .menu{
     	margin-left: 0;
     }
+    .menu i{
+    	font-size : 2rem;
+    }
+    #b1 i, #b2 i {
+    font-size: 1.5rem;
+    }
+	.logo-btn{
+		width: 5vh;
+		height: 5vh;
+	} 
 }
 

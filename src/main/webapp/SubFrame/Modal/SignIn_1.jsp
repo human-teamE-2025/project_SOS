@@ -4,7 +4,7 @@
 <div class="modal-overlay"></div>
 <div class="modal" id="email-modal">
 
-    <button class="close-modal-btn" id="close-modal">&times;</button>
+    <button class="close-modal-btn" id="close-modal2">&times;</button>
 
 
     <h1>Song of Senses</h1>
@@ -32,14 +32,14 @@
 $(document).ready(function() {
     var contextPath = "<%= request.getContextPath() %>";
 
-    $("#close-modal").click(function() {
-        $("#email-modal, .modal-overlay").fadeOut(200);
+    $("#close-modal2").click(function() {
+        $("#email-modal, .modal-overlay").fadeOut(100);
     });
 
     // ✅ ESC 키 입력 시 모달 닫기
     $(document).keydown(function(event) {
         if (event.key === "Escape") {
-            $("#email-modal, .modal-overlay").fadeOut(200);
+            $("#email-modal, .modal-overlay").fadeOut(100);
         }
     });
 
@@ -99,10 +99,10 @@ $(document).ready(function() {
             .done(function(data) {
                 console.log("✅ 비밀번호 입력 모달 로드 성공");
 
-                $("#email-modal").fadeOut(200, function() {
+                $("#email-modal").fadeOut(100, function() {
                     $(this).remove();
                     $("body").append(data);
-                    $("#password-modal").fadeIn(200);
+                    $("#password-modal").fadeIn(100);
                 });
             })
             .fail(function(xhr, status, error) {

@@ -1,14 +1,14 @@
 @charset "UTF-8";
 
 #left-nav {
-    width: 200px;  /* 유튜브 사이드바처럼 넓게 조정 */
+    width: 180px;  /* 유튜브 사이드바처럼 넓게 조정 */
     background-color: #F8B400; /* 지정한 배경색 적용 */
     border-right: 1px solid #ddd;
     overflow-y: auto; /* 기본적으로 스크롤 가능하게 설정 */
     padding-top: 10px;
     flex-shrink: 0;
     position: relative;
-    max-height: 100vh; /* 부모 컨테이너 초과 방지 */
+    min-height: 85vh; /* 부모 컨테이너 초과 방지 */
     transition: width 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
@@ -130,22 +130,22 @@
     align-items: center; /* 중앙 정렬 */
     justify-content: center;
     text-align: center;
-    padding: 15px 0; /* 버튼 크기 조정 */
+    padding: 6px 0; /* 버튼 크기 조정 */
     margin-left: 0; /* 기존 margin-left 제거 */
     width: 100%; /* 부모 크기에 맞춤 */
 }
 
 /* 아이콘 크기 증가 및 텍스트 위치 조정 */
 #left-nav.collapsed button i{
-    font-size: 2.5rem; /* 아이콘 크기 2배 증가 */
-    margin-bottom: 36px; /* 아이콘과 텍스트 사이 충분한 간격 */
+    font-size: 2rem; /* 아이콘 크기 2배 증가 */
+    margin-bottom: 12px; /* 아이콘과 텍스트 사이 충분한 간격 */
     display: block;
     width: 100%; /* 아이콘을 부모 기준으로 정렬 */
     text-align: center; /* 아이콘을 중앙에 배치 */
 }
 #left-nav.collapsed #btn-sub img{
-	width: 60px;
-	height: 60px;
+	width: 36px;
+	height: 36px;
 }
 /* 텍스트가 아이콘 아래에서 균등 정렬되도록 설정 */
 #left-nav.collapsed button span {

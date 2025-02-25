@@ -6,6 +6,7 @@
 	    flex-direction: column;
 	    height:100%;
 	    width: 300px;
+	    max-width: 24vw;
 	    border-left: 3px solid #ccc; /* ✅ 왼쪽 경계선 추가 */
 	    border-radius: 8px;
 		

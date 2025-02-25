@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <link rel="stylesheet" type="text/css" href="./SubFrame/notification/notice.css">
 
@@ -6,9 +7,10 @@
         <span id="popup-title">알림</span>
         <button id="settings-btn">설정</button>
     </div>
-    <ul id="nav-item">
-    </ul>
+    <ul id="nav-item"></ul>
 </div>
+
+<script src="./SubFrame/notification/notice.js"></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -19,26 +21,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // 버튼 클릭 시 팝업 보이기/숨기기
     button.addEventListener("click", function() {
-        popup.style.visibility = popup.style.visibility === "hidden" || popup.style.visibility === "" ? "visible" : "hidden";
+        popup.classList.toggle("visible");
     });
 
     // 리스트 아이템 삭제 기능 추가
     function addDeleteEvent(icon) {
         icon.addEventListener("click", function(event) {
-            const listItem = event.target.closest("li"); // 부모 <li> 요소 찾기
-            console.log("삭제할 ID:", listItem.getAttribute("data-id"));
+            const listItem = event.target.closest("li");
             listItem.remove();
         });
     }
 
     // 추가 옵션 버튼 클릭 이벤트
     function addOptionEvent(optionBtn) {
-        optionBtn.addEventListener("click", function(event) {
+        optionBtn.addEventListener("click", function() {
             alert("추가 옵션을 선택하세요!");
         });
     }
 
-    // 랜덤 문자열 생성 함수 (최대 10글자)
+    // 랜덤 문자열 생성 함수
     function generateRandomText(length = 10) {
         const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         return Array.from({ length }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join("");
@@ -53,12 +54,12 @@ document.addEventListener("DOMContentLoaded", function() {
         itemContent.classList.add("item-content");
 
         const img = document.createElement("img");
-        img.src = "static/img/fav.ico"; // 아이콘 경로
+        img.src = "static/img/fav.ico";
         img.alt = "icon";
 
         const link = document.createElement("a");
         link.href = "/E_web/mypage.jsp";
-        link.textContent = generateRandomText(Math.floor(Math.random() * 10) + 1); // 1~10글자
+        link.textContent = generateRandomText(Math.floor(Math.random() * 10) + 1);
 
         const buttonContent = document.createElement("div");
         buttonContent.classList.add("button-content");
@@ -83,14 +84,41 @@ document.addEventListener("DOMContentLoaded", function() {
                
         navItem.appendChild(listItem);
 
-        idCounter++; // ID 증가
+        idCounter++;
     }
 
-    // 초기 데이터 추가 (예: 100개 자동 추가)
-    for (let i = 0; i < 100; i++) {
+    // 초기 데이터 추가
+    for (let i = 0; i < 1; i++) {
         addListItem();
     }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    const popup = document.getElementById("popup");
+    const navItem = document.getElementById("nav-item");
+
+    let socket = new WebSocket("ws://" + window.location.host + "/E_web/notifications");
+
+    socket.onopen = function () {
+        console.log("✅ WebSocket 연결 성공: 알림 시스템");
+    };
+
+    socket.onmessage = function (event) {
+        const notificationData = JSON.parse(event.data);
+        addNotification(notificationData.message);
+    };
+
+    socket.onerror = function (error) {
+        console.error("⚠️ WebSocket 오류 발생:", error);
+    };
+
+    function addNotification(message) {
+        const navItem = document.getElementById("nav-item");
+        const listItem = document.createElement("li");
+        listItem.textContent = message;
+        navItem.prepend(listItem);
+    }
+
+});
+
 </script>
-
-

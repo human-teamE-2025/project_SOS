@@ -1,0 +1,100 @@
+@charset "UTF-8";
+
+/* ✅ 기본 스타일 - 로그아웃 팝업 */
+#user-popup {
+    position: fixed;
+    top: 7vh; /* 프로필 버튼(b2) 아래 위치 */
+    right: 2px; /* 화면 우측 정렬 */
+    width: 240px; /* 팝업 너비 */
+    background: #1e1e1e; /* 다크 모드 배경 */
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3); /* 오렌지빛 그림자 */
+    color: #ffffff;
+    font-size: 14px;
+    display: none; /* 기본적으로 숨김 */
+    z-index: 1000;
+    transition: all 0.2s ease-in-out;
+}
+
+/* ✅ 팝업 삼각형 표시 (프로필 버튼 아래에 위치) */
+#user-popup::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    right: 2vh;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #1e1e1e; /* 팝업 배경색과 동일 */
+}
+
+/* ✅ 팝업 내부 텍스트 */
+#user-popup p {
+    margin: 10px 0;
+    font-size: 14px;
+    text-align: center;
+    color: #ffcc80; /* 부드러운 오렌지색 포인트 */
+}
+
+/* ✅ 로그인 시간 표시 */
+#user-popup .login-time {
+    font-size: 12px;
+    color: #bbbbbb;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* ✅ 로그아웃 버튼 */
+#logout-btn {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(90deg, #ff9800, #e65100); /* 오렌지 계열 그라데이션 */
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    text-align: center;
+}
+
+#logout-btn:hover {
+    background: linear-gradient(90deg, #ffcc80, #ff9800);
+    transform: scale(1.05);
+}
+
+/* ✅ 애니메이션 효과 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+#user-popup.show {
+    display: block;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+#user-popup.hide {
+    animation: fadeOut 0.2s ease-in-out;
+    display: none;
+}

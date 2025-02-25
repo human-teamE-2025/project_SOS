@@ -3,7 +3,7 @@
 
 <div class="modal-overlay"></div>
 <div class="modal" id="profile-modal">
-    <button class="close-modal-btn" id="close-modal">&times;</button>
+    <button class="close-modal-btn" id="close-modal4">&times;</button>
     
     <h1>Song of Senses</h1>
     <p>2/3단계: 자신을 소개</p>
@@ -44,14 +44,14 @@
 $(document).ready(function() {
     var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
 
-    $("#close-modal").click(function() {
-        $("#profile-modal, .modal-overlay").fadeOut(200);
+    $("#close-modal4").click(function() {
+        $("#profile-modal, .modal-overlay").fadeOut(100);
     });
 
     // ✅ ESC 키 입력 시 모달 닫기
     $(document).keydown(function(event) {
         if (event.key === "Escape") {
-            $("#profile-modal, .modal-overlay").fadeOut(200);
+            $("#profile-modal, .modal-overlay").fadeOut(100);
         }
     });
 
@@ -117,13 +117,13 @@ $(document).ready(function() {
                 console.log("✅ 서버 응답:", response);
 
                 if (response.trim() === "success") {
-                    $("#profile-modal").fadeOut(200, function() {
+                    $("#profile-modal").fadeOut(100, function() {
                         $.ajax({
                             url: "SubFrame/Modal/SignIn_4.jsp",
                             type: "GET",
                             success: function(data) {
                                 $("body").append(data);
-                                $("#terms-modal").fadeIn(200);
+                                $("#terms-modal").fadeIn(100);
                             }
                         });
                     });

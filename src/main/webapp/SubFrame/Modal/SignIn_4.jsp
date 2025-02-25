@@ -5,7 +5,7 @@
 
 <div class="modal-overlay"></div>
 <div class="modal" id="terms-modal">
-    <button class="close-modal-btn" id="close-modal">&times;</button>
+    <button class="close-modal-btn" id="close-modal5">&times;</button>
     <h1>Song of Senses</h1>
     <p>3/3단계: 이용 약관 동의</p>
     <div class="terms-content">
@@ -20,14 +20,14 @@
 $(document).ready(function() {
 	var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
 	
-    $("#close-modal").click(function() {
-        $("#password-modal, .modal-overlay").fadeOut(200);
+    $("#close-modal5").click(function() {
+        $("#password-modal, .modal-overlay").fadeOut(100);
     });
 
     // ✅ ESC 키 입력 시 모달 닫기
     $(document).keydown(function(event) {
         if (event.key === "Escape") {
-            $("#password-modal, .modal-overlay").fadeOut(200);
+            $("#password-modal, .modal-overlay").fadeOut(100);
         }
     });
     

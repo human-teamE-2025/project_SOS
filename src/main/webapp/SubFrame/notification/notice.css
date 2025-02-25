@@ -1,50 +1,57 @@
 @charset "UTF-8";
 
-/* 팝업 스타일 */
+/* 🔹 팝업 전체 스타일 */
 #popup {
     position: fixed;
-    right: 48px;
-    top: 8vh;
-    width: 18vw;
-    height: 48vh;
-    background-color: #f8b400;
+    right: 20px;
+    top: 10vh;
+    width: 20vw;
+    max-height: 60vh;
+    background-color: rgba(34, 34, 34, 0.95); /* 반투명 블랙 */
     visibility: hidden; /* 기본적으로 숨김 */
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    border-radius: 8px;
-    overflow-y: auto; /* 스크롤 가능 */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+    transition: all 0.3s ease-in-out;
 }
 
-/* 팝업 헤더 스타일 */
+/* 🔹 팝업 헤더 스타일 */
 #popup-header {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
-    background-color: #f1a500;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    color: white;
+    padding: 12px;
+    background-color: rgba(255, 193, 7, 0.9);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    color: black;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* 🔹 알림 제목 스타일 */
+#popup-title {
+    font-size: 18px;
     font-weight: bold;
 }
 
-/* 알림 제목 스타일 */
-#popup-title {
-    font-size: 18px;
-}
-
-/* 설정 버튼 스타일 */
+/* 🔹 설정 버튼 스타일 */
 #settings-btn {
     background-color: transparent;
     border: none;
-    color: white;
+    color: black;
     font-size: 16px;
     cursor: pointer;
+    transition: color 0.2s;
 }
 
-/* 세로 줄 (hr) 스타일 */
+#settings-btn:hover {
+    color: white;
+}
 
-/* 리스트 스타일 */
+/* 🔹 리스트 스타일 */
 #popup #nav-item {
     list-style: none;
     padding: 0;
@@ -52,82 +59,92 @@
     width: 100%;
 }
 
-/* 리스트 아이템 스타일 */
+/* 🔹 리스트 아이템 스타일 */
 #popup #nav-item li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    margin: 10px;
-    height: 100px;
-    background-color: transparent;
-    border-bottom: 1px solid #ddd;
+    padding: 12px;
+    margin: 5px;
+    background-color: rgba(255, 255, 255, 0.1); /* 반투명 흰색 */
+    border-radius: 8px;
     position: relative;
+    transition: background 0.2s;
 }
 
-/* 아이템 이미지와 텍스트 */
+#popup #nav-item li:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* 🔹 아이템 내용 */
 .item-content {
     display: flex;
     align-items: center;
 }
 
 .item-content img {
-    width: 4vh;
-    height: 4vh;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    margin-right: 8px;
+    margin-right: 10px;
 }
 
 .item-content a {
-    color: black;
+    color: white;
     text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s;
 }
 
-/* 옵션 버튼 및 삭제 아이콘 스타일 */
-.option-icon, .delete-icon {
-    cursor: pointer;
-    font-size: 18px;
-    margin-left: 4px;
+.item-content a:hover {
+    color: #ffc107;
 }
 
-/* 삭제 아이콘 빨간색 */
-.delete-icon {
-    color: red;
-}
-
-/* 옵션 아이콘 회색 */
-.option-icon {
-    color: gray;
-}
-
-/* 버튼 영역 */
+/* 🔹 버튼 아이콘 */
 .button-content {
     display: flex;
     align-items: center;
 }
 
-/* 팝업이 표시될 때 */
+.option-icon,
+.delete-icon {
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+    transition: color 0.2s;
+}
+
+.option-icon {
+    color: gray;
+}
+
+.delete-icon {
+    color: red;
+}
+
+.option-icon:hover {
+    color: white;
+}
+
+.delete-icon:hover {
+    color: #ff4444;
+}
+
+/* 🔹 팝업 표시 */
 #popup.visible {
     visibility: visible;
 }
 
-/* 스크롤바 기본 숨김 */
+/* 🔹 스크롤바 커스텀 */
 #popup::-webkit-scrollbar {
-    display: none;
+    width: 6px;
 }
 
-/* hover 시 스크롤바 보이기 */
-#popup:hover::-webkit-scrollbar {
-    display: block;
-    width: 8px; /* 스크롤바 너비 */
+#popup::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
 }
 
-#popup:hover::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.5); /* 스크롤바 색상 */
-    border-radius: 4px;
+#popup::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
 }
-
-#popup:hover::-webkit-scrollbar-track {
-    background-color: rgba(255, 255, 255, 0.3); /* 스크롤 트랙 색상 */
-}
-
