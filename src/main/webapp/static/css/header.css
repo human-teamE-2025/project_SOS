@@ -161,9 +161,7 @@ header {
 	.search-container{
 		display:none;
 	}
-    #title{
-    	display:none;
-    }
+
     .menu{
     	margin-left: 0;
     }
@@ -179,3 +177,10 @@ header {
 	} 
 }
 
+@media (max-width: 1024px) {
+
+    #title{
+    	display:none;
+    }
+
+}
