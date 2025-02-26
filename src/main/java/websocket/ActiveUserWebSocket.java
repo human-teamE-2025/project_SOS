@@ -15,7 +15,7 @@ import controller.SessionInfoServlet;
 @ServerEndpoint(value = "/activeUsers", configurator = ActiveUserWebSocket.Configurator.class)
 public class ActiveUserWebSocket {
 
-    private static final Set<Session> loggedInUserSessions = Collections.synchronizedSet(new HashSet<>());
+    private static final Set<Session> loggedInUserSessions = Collections.synchronizedSet(new HashSet<Session>());
 
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
@@ -23,15 +23,15 @@ public class ActiveUserWebSocket {
 
         if (httpSession != null && httpSession.getAttribute("userId") != null) {
             synchronized (loggedInUserSessions) {
-                loggedInUserSessions.add(session);
+                loggedInUserSessions.add(session);  // 세션 추가
             }
 
             System.out.println("✅ WebSocket 연결 성공 (사용자 ID: " + httpSession.getAttribute("userId") + ")");
 
-            // ✅ `SessionInfoServlet`을 통해 세션을 등록하여 동기화
+            // 세션 정보 추가 및 동기화
             SessionInfoServlet.addSession(httpSession);
 
-            // ✅ WebSocket을 통해 로그인한 사용자 정보 전송
+            // WebSocket을 통해 로그인한 사용자 정보 전송
             broadcastLoggedInUsers();
         } else {
             try {
@@ -46,13 +46,13 @@ public class ActiveUserWebSocket {
     @OnClose
     public void onClose(Session session) {
         synchronized (loggedInUserSessions) {
-            loggedInUserSessions.remove(session);
+            loggedInUserSessions.remove(session);  // 세션 제거
         }
 
         HttpSession httpSession = (HttpSession) session.getUserProperties().get("httpSession");
         if (httpSession != null) {
             try {
-                // ✅ `SessionInfoServlet`을 통해 세션 제거
+                // 세션 정보 제거
                 SessionInfoServlet.removeSession(httpSession);
             } catch (IllegalStateException ignored) {
                 // 세션이 이미 무효화되었을 경우 예외 방지
@@ -61,7 +61,7 @@ public class ActiveUserWebSocket {
 
         System.out.println("❌ WebSocket 연결 종료됨: " + session.getId());
 
-        // ✅ WebSocket을 통해 실시간 접속자 정보 업데이트
+        // 실시간 접속자 정보 업데이트
         broadcastLoggedInUsers();
     }
 
@@ -69,6 +69,7 @@ public class ActiveUserWebSocket {
     public void onMessage(String message, Session session) {
         System.out.println("📩 WebSocket 메시지 수신: " + message);
         if ("update".equals(message)) {
+            // 클라이언트에서 "update" 메시지가 오면 접속자 정보를 갱신
             broadcastLoggedInUsers();
         }
     }
@@ -81,19 +82,20 @@ public class ActiveUserWebSocket {
 
         JSONObject jsonMessage = new JSONObject();
         jsonMessage.put("type", "activeUsers");
-        jsonMessage.put("count", loggedInUsers);
-        jsonMessage.put("users", SessionInfoServlet.getActiveUsers());
+        jsonMessage.put("count", loggedInUsers);  // 접속자 수
+        jsonMessage.put("users", SessionInfoServlet.getActiveUsers());  // 접속자 목록
 
         System.out.println("📡 WebSocket 브로드캐스트 전송: 현재 접속자 " + loggedInUsers + "명");
 
+        // 접속된 모든 WebSocket 클라이언트에게 브로드캐스트
         synchronized (loggedInUserSessions) {
             for (Session session : loggedInUserSessions) {
                 try {
-                    session.getBasicRemote().sendText(jsonMessage.toString());
+                    session.getBasicRemote().sendText(jsonMessage.toString());  // JSON 메시지 전송
                 } catch (IOException e) {
                     System.err.println("⚠ WebSocket 메시지 전송 실패 (세션 제거): " + session.getId());
                     try {
-                        session.close();
+                        session.close();  // 전송 실패한 세션 종료
                     } catch (IOException ignored) {}
                 }
             }

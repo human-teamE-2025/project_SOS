@@ -1,10 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/SingIn.css">
 
-<script>
-    var contextPath = "<%= request.getContextPath() %>"; 
-    console.log("🔍 현재 contextPath:", contextPath);
-</script>
+
 
 <div class="modal-overlay"></div>
 <div class="modal" id="login-modal">
@@ -46,7 +43,7 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: contextPath + "/LoginServlet",
+            url: "${pageContext.request.contextPath}/LoginServlet",
             type: "POST",
             data: { email: email, password: password },
             dataType: "json",
@@ -67,9 +64,7 @@ $(document).ready(function() {
                     $("#login-modal").fadeOut(100);
 
                     // ✅ WebSocket 업데이트 요청 (한 번만 실행)
-                    if (window.globalWebSocketManager && window.globalWebSocketManager.isReady()) {
-                        window.globalWebSocketManager.sendUpdate();
-                    }
+
 
                     // ✅ `loginSuccess` 이벤트 트리거
                     document.dispatchEvent(new Event("loginSuccess"));
@@ -98,7 +93,7 @@ $(document).ready(function() {
     $("#signup-link").click(function(event) {
         event.preventDefault();
         $.ajax({
-            url: "SubFrame/Modal/SignIn_1.jsp",
+            url: "${pageContext.request.contextPath}/SubFrame/Modal/SignIn_1.jsp",
             type: "GET",
             dataType: "html",
             success: function(data) {
@@ -120,7 +115,7 @@ $(document).ready(function() {
     // 프로필/로그아웃 팝업 로드 함수 (Logout.jsp)
     function loadLogoutPopup() {
         $.ajax({
-            url: contextPath + "/SubFrame/Modal/Logout.jsp",
+            url: "${pageContext.request.contextPath}/SubFrame/Modal/Logout.jsp",
             type: "GET",
             dataType: "html",
             success: function(data) {

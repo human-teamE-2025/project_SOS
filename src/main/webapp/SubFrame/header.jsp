@@ -27,6 +27,7 @@
 <script src="${pageContext.request.contextPath}/static/js/globalWebSocket.js"></script>
 
 <script>
+
 $(document).ready(function () {
     const userCountElement = document.getElementById("active-users-count");
 
@@ -41,33 +42,37 @@ $(document).ready(function () {
     };
 
     /** ✅ 로그아웃 UI 초기화 */
-    function resetLoginUI() {
-        console.log("🔄 로그아웃 UI 초기화");
-        $("#b2 i").removeClass("fa-solid fa-circle-user").addClass("fas fa-sign-in-alt");
-        sessionStorage.clear();
-    }
+function resetLoginUI() {
+    console.log("🔄 로그아웃 UI 초기화");
+    $("#b2 i").removeClass("fa-solid fa-circle-user").addClass("fas fa-sign-in-alt");
+    sessionStorage.clear();  // sessionStorage 초기화
+}
 
     /** ✅ 로그인 상태 확인 */
-    function checkLoginStatus() {
-        $.ajax({
-            url: "/E_web/LoginServlet",
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                if (data.status === "loggedIn") {
-                    sessionStorage.setItem("loggedIn", "true");
-                    sessionStorage.setItem("userName", data.userName);
-                    updateLoginUI(data.userName, data.loginTime);
-                } else {
-                    sessionStorage.setItem("loggedIn", "false");
-                    resetLoginUI();
-                }
-            },
-            error: function () {
-                console.error("❌ 세션 정보 가져오기 실패");
-            },
-        });
-    }
+function checkLoginStatus() {
+    $.ajax({
+        url: "${pageContext.request.contextPath}/LoginServlet", // 로그인 상태 확인하는 서블릿
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            if (data.status === "loggedIn") {
+                sessionStorage.setItem("loggedIn", "true");
+                sessionStorage.setItem("userName", data.userName);
+                updateLoginUI(data.userName, data.loginTime);
+            } else {
+                sessionStorage.setItem("loggedIn", "false");
+                resetLoginUI();
+            }
+        },
+        error: function () {
+            console.error("❌ 세션 정보 가져오기 실패");
+            // 세션 만료 처리: 세션이 만료된 경우 UI 초기화
+            sessionStorage.setItem("loggedIn", "false");
+            resetLoginUI();
+        },
+    });
+}
+
 
     /** ✅ 로그인/로그아웃 버튼 클릭 이벤트 */
     $("#b2").off("click").on("click", function (event) {
@@ -133,11 +138,15 @@ $(document).ready(function () {
         resetLoginUI();
         console.log("🔄 로그아웃 UI 업데이트 실행");
 
-        // ✅ WebSocket 업데이트 요청
+        // WebSocket 업데이트 요청
         if (window.globalWebSocketManager && window.globalWebSocketManager.isReady()) {
             window.globalWebSocketManager.sendUpdate();
         }
+
+        // 새로고침하여 세션 만료 후 로그인 전 상태로 되돌리기
+         // 로그아웃 후 페이지 새로고침
     });
+
 
     /** ✅ 초기 실행 */
     checkLoginStatus();

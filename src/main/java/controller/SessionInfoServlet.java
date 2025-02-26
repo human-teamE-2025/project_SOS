@@ -10,8 +10,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Set;
-import java.util.HashSet;
+import java.util.Map;
 import java.util.HashMap;
+import java.util.HashSet;
+
 import org.json.JSONObject;
 import websocket.ActiveUserWebSocket;
 import websocket.NotificationWebSocket;
@@ -63,16 +65,19 @@ public class SessionInfoServlet extends HttpServlet {
      */
     public static synchronized void addSession(HttpSession session) {
         String userId = getUserIdFromSession(session);
+        System.out.println("🔍 addSession() 호출: " + userId); // 로그 추가
 
-        if (userId != null) {
+        if (userId != null && session != null && !session.isNew()) {
             try {
-                // ✅ 기존 세션 강제 만료 후 새로운 세션 등록
+                // 기존 세션이 유효한지 확인
                 if (userSessions.containsKey(userId)) {
                     HttpSession oldSession = userSessions.get(userId);
-                    if (oldSession != null) {
+                    if (oldSession != null && oldSession.getAttribute("userId") != null) {
                         try {
                             oldSession.invalidate();
-                        } catch (IllegalStateException ignored) {}
+                        } catch (IllegalStateException ignored) {
+                            System.err.println("⚠ 세션 무효화 시 오류 발생: " + ignored.getMessage());
+                        }
                     }
                     loggedInUsers.remove(userId);
                     userSessions.remove(userId);
@@ -80,12 +85,13 @@ public class SessionInfoServlet extends HttpServlet {
 
                 loggedInUsers.add(userId);
                 userSessions.put(userId, session);
+                System.out.println("✅ 로그인 세션 추가됨: " + userId); // 로그 추가
 
                 String userName = (String) session.getAttribute("userName");
                 if (userName != null) {
                     System.out.println("🔔 WebSocket 로그인 알림 전송: " + userName);
                     NotificationWebSocket.sendLoginNotification(userName);
-                    ActiveUserWebSocket.broadcastLoggedInUsers();
+                    ActiveUserWebSocket.broadcastLoggedInUsers(); // 접속자 수 갱신
                 }
 
                 System.out.println("✅ 로그인 세션 추가됨: " + userId);
@@ -99,9 +105,11 @@ public class SessionInfoServlet extends HttpServlet {
      * ✅ 세션을 제거하고, 로그아웃 알림을 전송하며, WebSocket을 통해 현재 접속자 수 갱신
      */
     public static synchronized void removeSession(HttpSession session) {
-        if (session == null) return;
+        if (session == null || session.getAttribute("userId") == null) return;  // 세션 유효성 체크
 
         String userId = getUserIdFromSession(session);
+        System.out.println("🔍 removeSession() 호출: " + userId); // 로그 추가
+
         if (userId != null && userSessions.containsKey(userId)) {
             loggedInUsers.remove(userId);
             userSessions.remove(userId);
@@ -110,12 +118,14 @@ public class SessionInfoServlet extends HttpServlet {
             if (userName != null) {
                 System.out.println("❌ WebSocket 로그아웃 알림 전송: " + userName);
                 NotificationWebSocket.sendLogoutNotification(userName);
-                ActiveUserWebSocket.broadcastLoggedInUsers();
+                ActiveUserWebSocket.broadcastLoggedInUsers(); // 접속자 수 갱신
             }
 
             try {
                 session.invalidate();
-            } catch (IllegalStateException ignored) {}
+            } catch (IllegalStateException ignored) {
+                System.err.println("⚠ 세션 무효화 시 오류 발생: " + ignored.getMessage());
+            }
         }
     }
 
@@ -135,7 +145,7 @@ public class SessionInfoServlet extends HttpServlet {
      * ✅ 현재 로그인된 사용자 수 반환
      */
     public static synchronized int getLoggedInUsersCount() {
-        cleanupExpiredSessions();
+        cleanupExpiredSessions(); // 만료된 세션 정리
         int count = loggedInUsers.size();
         System.out.println("🟢 현재 로그인된 사용자 수: " + count);
         return count;
@@ -144,10 +154,19 @@ public class SessionInfoServlet extends HttpServlet {
     /**
      * ✅ 현재 로그인된 사용자 목록 반환
      */
-    public static synchronized Set<String> getActiveUsers() {
-        cleanupExpiredSessions();
-        Set<String> activeUsers = new HashSet<>(loggedInUsers);
-        System.out.println("🟢 현재 접속 중인 사용자 리스트: " + activeUsers);
+    public static synchronized Set<Map<String, String>> getActiveUsers() {
+        cleanupExpiredSessions(); // 만료된 세션 정리
+        Set<Map<String, String>> activeUsers = new HashSet<>();
+        for (String userId : loggedInUsers) {
+            Map<String, String> userDetails = new HashMap<>();
+            HttpSession session = userSessions.get(userId);
+            if (session != null) {
+                userDetails.put("userId", userId);
+                userDetails.put("userName", (String) session.getAttribute("userName"));
+                userDetails.put("userEmail", (String) session.getAttribute("userEmail"));
+            }
+            activeUsers.add(userDetails);
+        }
         return activeUsers;
     }
 

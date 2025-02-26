@@ -1,8 +1,8 @@
 window.globalWebSocketManager = (function () {
+
     let socket = null;
     let isConnected = false;
     let connectAttempts = 0;
-    let prevActiveUsers = null;
     const MAX_RECONNECT_ATTEMPTS = 5;
 
     function connectWebSocket() {
@@ -28,7 +28,7 @@ window.globalWebSocketManager = (function () {
         socket.onopen = function () {
             console.log("✅ WebSocket 연결 성공: 알림 시스템");
             isConnected = true;
-            connectAttempts = 0; // 재연결 시도 초기화
+            connectAttempts = 0;
             sendUpdate();
         };
 
@@ -38,29 +38,23 @@ window.globalWebSocketManager = (function () {
 
                 if (notificationData.type === "notification") {
                     console.log("🔔 새로운 알림:", notificationData.message);
-
                     if (typeof window.addNotification === "function") {
-                        window.addNotification(notificationData.message);
+                        window.addNotification(notificationData.message); // 알림 추가
                     } else {
                         console.warn("⚠️ `addNotification` 함수가 아직 정의되지 않음.");
                     }
-
                     const notificationEvent = new CustomEvent("updateNotification", {
                         detail: { message: notificationData.message }
                     });
                     document.dispatchEvent(notificationEvent);
-                } 
-                
-                else if (notificationData.type === "activeUsers") {
+                } else if (notificationData.type === "activeUsers") {
                     console.log("👥 현재 접속자 수 업데이트:", notificationData.count);
-
                     if (typeof window.updateActiveUsersCount === "function") {
                         window.updateActiveUsersCount(notificationData.count, true);
                     } else {
                         console.warn("⚠️ `updateActiveUsersCount` 함수가 아직 정의되지 않음.");
                     }
 
-                    // 현재 접속자 수가 변경된 경우에만 업데이트
                     if (prevActiveUsers !== notificationData.count) {
                         prevActiveUsers = notificationData.count;
                         const userEvent = new CustomEvent("updateActiveUsers", {
@@ -85,6 +79,18 @@ window.globalWebSocketManager = (function () {
         };
     }
 
+    // `addNotification` 함수 정의 (알림을 추가하는 함수)
+    window.addNotification = function (message) {
+        const navItem = document.getElementById("nav-item");
+        if (!navItem) {
+            console.error("❌ 알림 리스트(nav-item)를 찾을 수 없음.");
+            return;
+        }
+        const listItem = document.createElement("li");
+        listItem.textContent = message;
+        navItem.prepend(listItem); // 알림을 리스트에 추가
+    };
+
     function sendUpdate() {
         if (isConnected && socket.readyState === WebSocket.OPEN) {
             console.log("📡 WebSocket 상태 확인 후 `update` 요청 실행!");
@@ -95,30 +101,31 @@ window.globalWebSocketManager = (function () {
         }
     }
 
+    // 로그인 성공 시
     function handleLoginSuccess() {
         if (sessionStorage.getItem("loggedIn") !== "true") {
             sessionStorage.setItem("loggedIn", "true");
             sendUpdate();
             console.log("🔄 로그인 후 WebSocket 업데이트 요청 전송");
 
-            // ✅ 로그인 후 즉시 접속자 정보 업데이트
             document.dispatchEvent(new CustomEvent("updateActiveUsers", { detail: { count: prevActiveUsers || 1 } }));
         }
     }
 
+    // 로그아웃 성공 시
     function handleLogoutSuccess() {
         if (sessionStorage.getItem("loggedIn") !== "false") {
-            sessionStorage.clear();  // ✅ `sessionStorage` 완전 초기화
+            sessionStorage.clear();
             sendUpdate();
             console.log("🔄 로그아웃 후 WebSocket 업데이트 요청 전송");
 
-            // ✅ 로그아웃 후 즉시 접속자 정보 업데이트
             setTimeout(() => {
                 document.dispatchEvent(new CustomEvent("updateActiveUsers", { detail: { count: 0 } }));
             }, 500);
         }
     }
 
+    // 세션 상태 체크
     function checkSessionStatus() {
         fetch("/E_web/LoginServlet", {
             method: "GET",
@@ -150,11 +157,6 @@ window.globalWebSocketManager = (function () {
     document.removeEventListener("logoutSuccess", handleLogoutSuccess);
     document.addEventListener("logoutSuccess", handleLogoutSuccess);
 
-    // ✅ 페이지 로드 시 `checkSessionStatus()` 실행하여 로그인 유지 상태 확인
-    window.addEventListener("load", function () {
-        checkSessionStatus();
-    });
-
     return {
         connect: connectWebSocket,
         sendUpdate: sendUpdate,
@@ -162,5 +164,4 @@ window.globalWebSocketManager = (function () {
     };
 })();
 
-// ✅ 페이지 로드 시 WebSocket 자동 연결
 window.globalWebSocketManager.connect();

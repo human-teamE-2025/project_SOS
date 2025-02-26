@@ -30,24 +30,11 @@ $(document).ready(function() {
             url: "/E_web/LogoutServlet",
             type: "POST",
             dataType: "json",
-            success: function(response) {
+            success: function(response) {	
                 if (response.status === "success") {
                     console.log("✅ 로그아웃 성공!");
-                    
-                    // ✅ 세션 초기화
-                    sessionStorage.clear();
-
-                    // ✅ UI 초기화 (전역 함수 호출)
-                    if (typeof window.updateLoginUI === "function") {
-                        window.updateLoginUI(null, null);
-                    } else {
-                        console.warn("⚠ `updateLoginUI` 함수가 정의되지 않음.");
-                    }
 
                     // ✅ WebSocket 업데이트 요청
-                    if (window.globalWebSocketManager && window.globalWebSocketManager.isReady()) {
-                        window.globalWebSocketManager.sendUpdate();
-                    }
 
                     // ✅ `logoutSuccess` 이벤트 트리거 (헤더 및 푸터 동기화)
                     document.dispatchEvent(new Event("logoutSuccess"));
@@ -57,18 +44,13 @@ $(document).ready(function() {
                         $(this).remove();
                     });
                 } else {
-                    alert(response.message || "❌ 로그아웃 실패!");
+                    alert(response.message || "❌ 로그아웃 실패1!");
                 }
             },
             error: function() {
-                alert("❌ 로그아웃 실패!");
+                console.log(error)//세션만료
             }
         });
-    });
-
-    // ✅ 팝업 표시/숨기기
-    $("#b2").click(function() {
-        $("#user-popup").fadeToggle(100);
     });
 
     // ✅ 다른 곳 클릭 시 팝업 닫기

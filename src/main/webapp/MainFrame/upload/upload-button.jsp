@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     } else {
                         console.error("❌ Step1 캐싱 실패");
                     }
-                } else {
+                } else {	
                     // ❌ 로그인되지 않은 사용자 → "로그인 후 이용 가능" 경고 표시
                     showLoginRequiredTooltip(uploadButton);
                 }

@@ -47,10 +47,14 @@ $(document).ready(function() {
                 
                 if (response.trim() === "success") {
                     alert("🎉 회원가입이 완료되었습니다!");
+                    
                     window.location.href = "index.jsp";
+                    document.dispatchEvent(new CustomEvent("updateNotification", { detail: { message: successMessage } }));
+
                 } else if (response.trim() === "duplicate_email") {
                     alert("❌ 이미 존재하는 이메일입니다! 다른 이메일을 입력하세요.");
                     $("#complete-button").prop("disabled", false); // 다시 활성화
+                    
                 } else {
                     alert("❌ 회원가입 실패: " + response);
                     $("#complete-button").prop("disabled", false); // 다시 활성화
