@@ -7,14 +7,25 @@
 <aside id="left-nav">
     <ul id="nav-item">
         <button id="btn-home"><i class="fa-solid fa-house"></i> 홈</button>
+        
         <button id="btn-mypage" onclick="location.href='mypage.jsp'"><i class="fa-solid fa-user"></i> 내 페이지</button>
-        <button id="btn-sub"><img src="${pageContext.request.contextPath}/static/img/favicon.ico"> 구독</button>
-        <button id="btn-seen"><i class="fa-solid fa-clock"></i> 시청기록</button>
+        <button id="btn-sub"><i class="fa-solid fa-heart"></i> 구독</button>
+        <button id="btn-seen" onclick="location.href='view-index.jsp'"><i class="fa-solid fa-clock"></i> 시청기록</button>
         <button id="btn-mymusic"><i class="fa-solid fa-compact-disc"></i> 내가 올린 음악</button>
         <button id="btn-playlist"><i class="fa-solid fa-list"></i> 플레이 리스트</button>
-        <hr>
+        <button id="btn-friend" onclick="alert();"><i class="fa-solid fa-users-gear"></i> &nbsp;&nbsp;LIVE</button>
+        <button class="btn-artist" onclick="location.href='${pageContext.request.contextPath}/about.jsp?section=terms'">
+                        <i class="fa-solid fa-file-lines"></i> 이용약관 </button>
+        
 
         <div id="artist-section">
+                        <button class="btn-artist" onclick="location.href='${pageContext.request.contextPath}/about.jsp?section=privacy'">
+                        <i class="fa-solid fa-file-lines"></i> 개인정보처리방침 </button>
+                        <button class="btn-artist" onclick="location.href='${pageContext.request.contextPath}/about.jsp?section=company'">
+                        <i class="fa-solid fa-file-lines"></i> 회사소개 </button>
+                        <button class="btn-artist" onclick="location.href='${pageContext.request.contextPath}/about.jsp?section=Partnership'">
+                        <i class="fa-solid fa-file-lines"></i> 제휴안내 </button>
+        
             <%
                 int artistCount = 20; // 원하는 아티스트 개수 설정
                 for (int i = 1; i <= artistCount; i++) {
@@ -51,7 +62,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     checkMobile(); // 초기 실행
     window.addEventListener("resize", checkMobile); // 창 크기 변경 시 적용
-
+    function loadingSession(){
+    	$("#toggle-user-info").click();
+    }
     menuButton.addEventListener("click", function () {
 
         if (window.innerWidth <= 768) {

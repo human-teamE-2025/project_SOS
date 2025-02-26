@@ -13,7 +13,7 @@
     <div id="right-header">
         <div class="search-container">
             <input id="search" type="text" placeholder="Search...">
-            <button class="search-submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <button class="search-submit" onclick="alert('구현예정');"><i class="fa-solid fa-magnifying-glass"></i></button>
         </div>
 
         <div class="nav-button">

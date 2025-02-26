@@ -161,9 +161,7 @@ header {
 	.search-container{
 		display:none;
 	}
-    #title{
-    	display:none;
-    }
+
     .menu{
     	margin-left: 0;
     }
@@ -177,5 +175,13 @@ header {
 		width: 5vh;
 		height: 5vh;
 	} 
+}
+
+@media (max-width: 1024px) {
+
+    #title{
+    	display:none;
+    }
+
 }
 

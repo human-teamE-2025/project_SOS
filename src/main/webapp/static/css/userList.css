@@ -1,0 +1,72 @@
+@charset "UTF-8";
+
+.custom-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.custom-modal-content {
+    background-color: #1c1c1c;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 60%;
+    max-height: 80%;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(255, 204, 0, 0.8);
+    color: white;
+}
+
+.custom-close-btn {
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #f4b400;
+}
+
+.custom-table-container {
+    max-height: 400px;
+    overflow-y: auto;
+    border-radius: 8px;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.custom-table th {
+    background-color: #f4b400;
+    color: black;
+    padding: 10px;
+    border: 1px solid #000;
+}
+
+.custom-table td {
+    border: 1px solid #f4b400;
+    padding: 10px;
+    font-size: 14px;
+}
+
+/* ✅ 활성 세션 (연결된 상태) */
+.status-connected {
+    background-color: #ffcc00; /* 기존 페이지 색과 조화되는 황금색 계열 */
+    color: black;
+    font-weight: bold;
+}
+
+/* ✅ 종료된 세션 (연결 종료된 상태) */
+.status-disconnected {
+    background-color: darkred; /* 기존 빨강보다 어두운 붉은색 */
+    color: #f4b400; /* 기존 디자인과 맞게 황금색 계열 글자 */
+    font-weight: bold;
+}
+

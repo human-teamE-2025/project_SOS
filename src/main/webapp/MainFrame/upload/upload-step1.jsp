@@ -261,12 +261,14 @@ document.getElementById("music-upload-step1").addEventListener("submit", functio
             return JSON.parse(text);  // JSON 변환
         } catch (error) {
             console.error("❌ JSON 파싱 오류: 응답이 JSON이 아닙니다.", text);
-            throw new Error("서버 응답이 올바른 JSON 형식이 아닙니다.");
+            alert("에러 일단 무시");
+            window.location.href = "./MainFrame/upload/upload-step2.jsp";
+            throw new Error("서버 응답이 올바른 JSON 형식이 아닙니다. ");
         }
     })
     .then(data => {
         if (data.success) {
-            window.location.href = "step2.jsp"; // step2.jsp로 이동
+            window.location.href = "./MainFrame/upload/upload-step2.jsp"; // step2.jsp로 이동
         } else {
             alert("파일 업로드 실패: " + data.error);
         }

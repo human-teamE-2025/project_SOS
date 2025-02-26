@@ -102,6 +102,7 @@
                         let indexToOpen = null;
 
                         if (section === "company") indexToOpen = 0;
+                        else if (section === "Partnership") indexToOpen = 1;
                         else if (section === "terms") indexToOpen = 3;
                         else if (section === "privacy") indexToOpen = 4;
 
