@@ -1,287 +1,191 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <style>
-#upload-step1 {
+#custom-upload-container {
     background: #222;
     padding: 20px;
     border-radius: 10px;
     color: white;
-    max-width: 90%;
+    max-width: 600px;
     margin: auto;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
-#upload-step1 h2 {
-    text-align: center;
-}
+.custom-upload-title { text-align: center; font-size: 24px; font-weight: bold; }
 
-#music-upload-step1 {
+.custom-upload-form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 }
 
-#music-upload-step1 input,
-#music-upload-step1 select {
-    padding: 10px;
+.custom-row {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.custom-upload-input, .custom-upload-select, .custom-upload-textarea {
+    padding: 12px;
     border-radius: 5px;
-    border: 1px solid #555;
-    background: #333;
+    border: 1px solid #777;
+    background: #444;
     color: white;
     font-size: 16px;
-    transition: 0.3s ease;
+    flex: 1;
 }
 
-#music-upload-step1 input:focus,
-#music-upload-step1 select:focus {
-    border-color: #FFC107;
-    outline: none;
-}
-
-#music-upload-step1 button {
+.custom-upload-button {
     background: #FFC107;
     color: black;
-    padding: 10px;
+    padding: 12px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     transition: 0.3s ease;
+    width: 100%;
 }
 
-#music-upload-step1 button:disabled {
-    background: #777;
-    cursor: not-allowed;
+.custom-upload-button:hover { background: #FFB300; }
+
+.custom-thumbnail-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
 }
 
-#music-upload-step1 button:hover:enabled {
-    background: #FFB300;
+.custom-thumbnail-preview {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: #666;
+    flex-shrink: 0;
+}
+
+.custom-color-input {
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.custom-mood-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex: 2;
+}
+
+.custom-mood-tags label {
+    background: #555;
+    padding: 10px 14px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s ease;
+}
+
+.custom-mood-tags input:checked + label { background: #FFB300; color: black; font-weight: bold; }
+
+.custom-mood-tags input { display: none; }
+
+/* 설명 입력란 크기 조정 */
+.custom-description-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.custom-upload-textarea {
+    flex: 2;
+    min-height: 60px;
+}
+.custom-radio-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.custom-radio-group input[type="radio"] {
+    transform: scale(1.2);
+    margin-right: 5px;
 }
 
 </style>
 
-<div id="upload-step1">
-    <h2>🎵 노래 업로드 (1단계)</h2>
-    <form id="music-upload-step1" enctype="multipart/form-data">
-    
-            <label for="music-file">음악 파일 업로드 (MP3, WAV, AAC, 10MB 이하):</label>
-        <input type="file" id="music-file" name="music-file" accept=".mp3, .wav, .aac" required>
-        <!-- ✅ 파일 정보 표시 -->
-<p class="file-info" id="file-info"></p>
-        
-        
-        <label for="song-title">제목:</label>
-        <input type="text" id="song-title" name="song-title" required>
-
-        <label for="artist">아티스트:</label>
-        <input type="text" id="artist" name="artist" required>
-
-        <label for="genre">장르:</label>
-        <select id="genre" name="genre" required>
-            <option value="">-- 장르 선택 --</option>
-            <option value="pop">팝</option>
-            <option value="rock">락</option>
-            <option value="hiphop">힙합</option>
-            <option value="jazz">재즈</option>
-            <option value="classical">클래식</option>
-        </select>
-
-
-
-
-
-        <!-- ✅ 버튼을 폼 내부에 포함 -->
-        <div class="form-buttons">
-            <button type="submit" id="next-step">다음 단계</button>
-            <button type="button" id="back-to-main">취소</button>
+<div id="custom-upload-container">
+    <h2 class="custom-upload-title">🎵 노래 업로드</h2>
+    <form id="custom-music-upload" class="custom-upload-form" enctype="multipart/form-data">
+        <label>음악 파일 업로드 :</label>
+        <input type="file" id="custom-music-file" class="custom-upload-input" placeholder="hello" name="music-file" accept=".mp3, .wav, .aac" required>
+        <div class="custom-radio-group">
+            <label for="national">국내음악</label>
+            <input type="radio" id="national" name="music-type" value="national">
+            <label for="global">국외음악</label>
+            <input type="radio" id="global" name="music-type" value="global">
         </div>
+
+
+        <label>아티스트:</label>
+        <input type="text" id="custom-artist" class="custom-upload-input" name="artist" required>
+        
+            <label>장르:</label>
+            <select id="custom-genre" class="custom-upload-select" name="genre" required>
+                <option value="">-- 장르 선택 --</option>
+                <option value="pop">팝</option>
+                <option value="rock">락</option>
+                <option value="hiphop">힙합</option>
+                <option value="jazz">재즈</option>
+                <option value="classical">클래식</option>
+            </select>
+
+
+        <div class="custom-description-container">
+            <label>썸네일색상:</label>
+                <input type="color" id="custom-thumbnail-preview" class="custom-thumbnail-preview" value="#ff9a9e">           
+            <label>설명 (선택사항):</label>
+            <textarea id="custom-description" class="custom-upload-textarea" name="description" rows="3"></textarea>
+			</div>
+			
+			            <label>분위기 태그 선택(선택사항):</label>
+            <div class="custom-mood-tags">
+                <% 
+                
+                String[] moodTags = {
+                        "새벽 감성 음악", "여름 바닷가 감성", "영화 주제 음악", "드라마 OST", "피아노로 연주된", 
+                        "기타로 연주된", "바이올린 연주곡", "오케스트라 편곡", "잔잔한 카페 분위기", 
+                        "활기찬 분위기", "침울한 분위기", "몽환적인 느낌의 곡", "사랑스러운 로맨틱송", 
+                        "운동할 때 듣기 좋은", "공부할 때 집중되는 음악", "새벽 감성 음악", "신나는 댄스곡", 
+                        "잔잔한 어쿠스틱", "90년대 레트로 감성", "Lo-Fi 힙합 스타일"
+                    };
+                
+                for (int i = 0; i < moodTags.length; i++) { %>
+                    <input type="checkbox" id="custom-mood<%=i%>" name="mood" value="<%=moodTags[i]%>">
+                    <label for="custom-mood<%=i%>"><%=moodTags[i]%></label>
+                <% } %>
+            </div>
+        <button type="submit" class="custom-upload-button">최종 업로드</button>
     </form>
 </div>
+
 <script>
-function initUploadFormEvents() {
-    console.log("🚀 Step1 이벤트 리스너 등록 완료");
-
-    // ✅ DOM 요소 가져오기
-    const form = document.getElementById("music-upload-step1");
-    const nextStepButton = document.getElementById("next-step");
-    const backToMainButton = document.getElementById("back-to-main");
-    const fileInput = document.getElementById("music-file");
-    const songTitleInput = document.getElementById("song-title");
-    const fileInfoDisplay = document.getElementById("file-info");
-
-    // ✅ 필수 요소 검증
-    if (!form || !nextStepButton || !backToMainButton || !fileInput || !songTitleInput || !fileInfoDisplay) {
-        console.error("❌ 필수 요소가 로드되지 않음");
-        return;
-    }
-
-    // ✅ 취소 버튼 이벤트
-    backToMainButton.addEventListener("click", function () {
-        if (document.referrer) {
-            history.back();
-        } else {
-            window.location.href = "${pageContext.request.contextPath}/index.jsp";
-        }
-    });
-
-    // ✅ 파일 선택 이벤트 핸들러
-    function handleFileSelect() {
-        if (fileInput.files.length === 0) {
-            fileInfoDisplay.innerHTML = `<span style="color: red;">❌ 파일을 선택하세요.</span>`;
-            return;
-        }
-
-        const file = fileInput.files[0];
-        const fileName = file.name.replace(/\.[^/.]+$/, ""); // 확장자 제거한 파일명
-        const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2) + " MB"; // MB 단위 변환
-
-        // ✅ 허용된 확장자 체크
-        const allowedExtensions = ["mp3", "wav", "aac"];
-        const fileExtension = file.name.split(".").pop().toLowerCase();
-        if (!allowedExtensions.includes(fileExtension)) {
-            fileInfoDisplay.innerHTML = `<span style="color: red;">❌ 지원되지 않는 파일 형식입니다.</span>`;
-            return;
-        }
-
-        // ✅ 파일 크기 체크
-        if (file.size > 10 * 1024 * 1024) {
-            fileInfoDisplay.innerHTML = `<span style="color: red;">❌ 파일 크기가 10MB를 초과합니다.</span>`;
-            return;
-        }
-
-        // ✅ 제목 자동 입력
-        songTitleInput.value = fileName;
-
-        // ✅ "파일 분석 중..." 문구 표시
-        fileInfoDisplay.innerHTML = `<span style="color: #FFC107;">파일 분석 중...</span>`;
-
-        // ✅ 오디오 길이 가져오기
-        getAudioDuration(file)
-            .then(duration => {
-                fileInfoDisplay.innerHTML = `길이: ${duration} | 크기: ${fileSizeMB}`;
-                console.log(`✅ 오디오 분석 성공 - 길이: ${duration} | 크기: ${fileSizeMB}`);
-            })
-            .catch(error => {
-                console.error("❌ 오디오 분석 실패:", error);
-                fileInfoDisplay.innerHTML = `<span style="color: red;">❌ 길이 불러오기 실패</span> | 크기: ${fileSizeMB}`;
-            });
-    }
-
-    // ✅ 오디오 길이를 MM:SS 형식으로 변환
-    function formatDuration(seconds) {
-        if (isNaN(seconds) || seconds === 0) return "알 수 없음"; // 예외 처리
-        const min = Math.floor(seconds / 60);
-        const sec = Math.floor(seconds % 60);
-        return `${min}:${sec.toString().padStart(2, "0")}`;
-    }
-
-    // ✅ Web Audio API를 사용한 오디오 길이 가져오기
-    function getAudioDuration(file) {
-        return new Promise((resolve, reject) => {
-            try {
-                const reader = new FileReader();
-                reader.onload = function (event) {
-                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-                    console.log(`🎵 AudioContext State: ${audioContext.state}`);
-
-                    // ✅ AudioContext가 'suspended' 상태일 경우 resume() 실행
-                    if (audioContext.state === "suspended") {
-                        audioContext.resume().then(() => {
-                            console.log("🔄 AudioContext resumed.");
-                        });
-                    }
-
-                    audioContext.decodeAudioData(event.target.result)
-                        .then(buffer => {
-                            if (!buffer || isNaN(buffer.duration)) {
-                                console.warn("⚠️ Web Audio API가 오디오 길이를 정확히 가져오지 못함.");
-                                return fallbackAudioDuration(file, resolve, reject);
-                            }
-                            resolve(formatDuration(buffer.duration));
-                        })
-                        .catch(error => {
-                            console.error("❌ decodeAudioData() 실패:", error);
-                            return fallbackAudioDuration(file, resolve, reject);
-                        });
-                };
-
-                reader.onerror = function () {
-                    console.error("❌ FileReader에서 파일 읽기 실패");
-                    reject("파일을 읽는 중 오류 발생");
-                };
-
-                reader.readAsArrayBuffer(file);
-            } catch (error) {
-                console.error("❌ Web Audio API를 사용할 수 없음:", error);
-                return fallbackAudioDuration(file, resolve, reject);
-            }
-        });
-    }
-
-    // ✅ `new Audio()` 백업 방식
-    function fallbackAudioDuration(file, resolve, reject) {
-        try {
-            const audio = new Audio(URL.createObjectURL(file));
-            audio.addEventListener("loadedmetadata", function () {
-                if (!audio.duration || isNaN(audio.duration)) {
-                    reject("오디오 길이를 가져올 수 없음");
-                } else {
-                    resolve(formatDuration(audio.duration));
-                }
-            });
-        } catch (error) {
-            console.error("❌ `new Audio()` 방식도 실패함:", error);
-            reject("오디오 길이 분석 실패");
-        }
-    }
-
-    // ✅ 이벤트 리스너 등록
-document.getElementById("music-upload-step1").addEventListener("submit", function (event) {
-    event.preventDefault();
-    
-    const formData = new FormData(this);
-
-    fetch("UploadServlet", {
-        method: "POST",
-        body: formData,
-        headers: {
-            "Accept": "application/json"  // 서버에서 JSON을 반환하도록 요청
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`서버 응답 오류: ${response.status}`);
-        }
-        return response.text();  // JSON으로 변환하기 전, 텍스트로 확인
-    })
-    .then(text => {
-        console.log("📥 서버 응답 (텍스트):", text);  // 응답 확인용 로그
-
-        try {
-            return JSON.parse(text);  // JSON 변환
-        } catch (error) {
-            console.error("❌ JSON 파싱 오류: 응답이 JSON이 아닙니다.", text);
-            alert("에러 일단 무시");
-            window.location.href = "./MainFrame/upload/upload-step2.jsp";
-            throw new Error("서버 응답이 올바른 JSON 형식이 아닙니다. ");
-        }
-    })
-    .then(data => {
-        if (data.success) {
-            window.location.href = "./MainFrame/upload/upload-step2.jsp"; // step2.jsp로 이동
-        } else {
-            alert("파일 업로드 실패: " + data.error);
-        }
-    })
-    .catch(error => console.error("❌ Step1 전송 오류:", error));
+document.getElementById("custom-thumbnail-color").addEventListener("input", function(event) {
+    document.getElementById("custom-thumbnail-preview").style.backgroundColor = event.target.value;
 });
 
-    // ✅ 이벤트 리스너 실행
-    
-}
-
-
-// ✅ Step1이 AJAX로 불러와질 때 자동 실행되도록 설정
-initUploadFormEvents();
-
+document.getElementById("custom-music-upload").addEventListener("submit", function(event) {
+    event.preventDefault();
+    alert("업로드 완료!");
+});
 </script>

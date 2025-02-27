@@ -27,6 +27,7 @@
 	* ::-webkit-scrollbar {
     width: 8px;
 }
+
 * ::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 4px;
@@ -43,7 +44,7 @@ button :hover{
 <body>
     <div id="entire">
 			<%@ include file="./SubFrame/SubContainer.jsp" %>		
-			<%@ include file="./MainFrame/main-container.jsp" %>				
+			<%@ include file="./MainFrame/detail.jsp" %>				
 
     </div>	
 </body>

@@ -124,7 +124,7 @@
         </div>
         <div class="filter-scroll">
             <input type="radio" id="length1" name="song-length" value="under30">
-            <label for="length1">30초 이하</label>
+            <label for="length1">30초 미만</label>
 
             <input type="radio" id="length2" name="song-length" value="30to60">
             <label for="length2">30초 ~ 1분</label>

@@ -9,7 +9,8 @@
     <section id="right-sections">
         <!-- 게시판 헤더 -->
 <div class="board-header">
-    <span>게시판</span>
+    <span>게시판 ▽</span>
+
         <%@ include file="./upload/upload-button.jsp" %>  <!-- ✅ 업로드 버튼 포함 -->
 
 </div>
