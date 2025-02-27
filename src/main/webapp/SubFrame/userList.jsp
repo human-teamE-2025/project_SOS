@@ -28,16 +28,16 @@
 var userRecords = [];
 
 //✅ 모달 열 때만 WebSocket 실행
-function openCustomModal() {
+window.openCustomModal = function() {
  document.getElementById("custom-user-list-modal").style.display = "block";
 
  // ✅ WebSocket이 이미 열려있으면 다시 연결하지 않음
  if (!userRecordSocket || userRecordSocket.readyState === WebSocket.CLOSED) {
-     initUserRecordWebSocket();
+	 window.initUserRecordWebSocket();
  }
  setTimeout(() => {
      console.log("🔄 openCustomModal()에서 테이블 업데이트 실행");
-     updateUserListTable(); // ✅ 모달이 열린 후 테이블 업데이트 실행
+     window.updateUserListTable(); // ✅ 모달이 열린 후 테이블 업데이트 실행
  }, 100); // 100ms 지연 추가
 }
 
@@ -47,7 +47,7 @@ function closeCustomModal() {
 }
 
 //✅ WebSocket을 모달이 열릴 때만 실행
-function initUserRecordWebSocket() {
+window.initUserRecordWebSocket= function(){
  var wsUrl = "ws://localhost:8080${pageContext.request.contextPath}/userList";// ✅ URL 수정
  console.log("🌐 WebSocket 연결 시도: " + wsUrl);
 
@@ -71,7 +71,7 @@ function initUserRecordWebSocket() {
 	        console.error("❌ WebSocket 데이터 처리 오류:", error);
 	    }
 	};
- userRecordSocket.onclose = function() {
+ userRecordSocket.onclose = function(){
      console.log("🔌 UserRecord WebSocket closed");
  };
 
@@ -81,7 +81,7 @@ function initUserRecordWebSocket() {
 }
 
 //✅ WebSocket 메시지를 테이블에 삽입
-function updateUserListTable() {
+window.updateUserListTable= function() {
  try {
      console.log("📌 테이블 업데이트 실행됨, 현재 데이터 개수:", userRecords.length);
 

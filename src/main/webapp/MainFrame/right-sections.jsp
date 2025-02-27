@@ -5,15 +5,71 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 
+<style>
+/* 기본 헤더 스타일 */
+.board-header {
+    position: relative;
+    background: #333;
+    padding: 12px 16px;
+    border-radius: 8px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: 0.3s ease;
+}
+
+/* 드롭다운 메뉴 스타일 */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #222;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    display: none;
+    flex-direction: column;
+    margin-top: 6px;
+    overflow: hidden;
+}
+
+/* 드롭다운 항목 스타일 */
+.dropdown-item {
+    padding: 12px 16px;
+    color: white;
+    text-align: center;
+    transition: background 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background: #FFC107;
+    color: black;
+}
+
+/* 드롭다운 활성화 */
+.dropdown-menu.active {
+    display: flex;
+}
+</style>
 
     <section id="right-sections">
         <!-- 게시판 헤더 -->
-<div class="board-header">
-    <span>게시판 ▽</span>
+<div class="board-header" onclick="toggleDropdown()">
+    <span id="board-title">실시간 ▽</span>
+    <%@ include file="./upload/upload-button.jsp" %>  <!-- ✅ 업로드 버튼 포함 -->
 
-        <%@ include file="./upload/upload-button.jsp" %>  <!-- ✅ 업로드 버튼 포함 -->
-
+    <!-- 드롭다운 옵션 -->
+    <div id="board-dropdown" class="dropdown-menu">
+        <div class="dropdown-item" onclick="selectBoardOption('실시간')">실시간</div>
+        <div class="dropdown-item" onclick="selectBoardOption('재생목록')">재생목록</div>
+        <div class="dropdown-item" onclick="selectBoardOption('게시판')">게시판</div>
+    </div>
 </div>
+
 
 
         <!-- 게시판 게시글 목록 -->
@@ -125,6 +181,15 @@
     </section>
     
     <script>
+    function toggleDropdown() {
+        document.getElementById("board-dropdown").classList.toggle("active");
+    }
+
+    function selectBoardOption(option) {
+        document.getElementById("board-title").innerText = option + " ▽";
+        document.getElementById("board-dropdown").classList.remove("active");
+    }
+    
     document.addEventListener("DOMContentLoaded", function () {
         const posts = document.querySelectorAll(".post-thumbnail"); // 썸네일 선택
         const gradients = [

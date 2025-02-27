@@ -1,5 +1,120 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/bottom.css">
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let tracks = [];
+    let trackIndex = 0;
+    let isShuffle = false;
+
+    const audioElement = document.getElementById("audio");
+    const playPauseIcon = document.getElementById("playPauseIcon");
+    const volumeSlider = document.getElementById("volumeSlider");
+    const playlistContainer = document.querySelector(".playlist");
+    const currentTimeDisplay = document.getElementById("currentTime");
+
+    function fetchTracksFromFolder() {
+        const trackFiles = [
+            "${pageContext.request.contextPath}/static/img/noise-Audio.mp3",
+            "${pageContext.request.contextPath}/static/img/noise-Audio.mp3",
+            "${pageContext.request.contextPath}/static/img/noise-Audio.mp3",
+        ];
+
+        tracks = trackFiles.map((file) => ({
+            title: file.split("/").pop(),
+            audioFile: file,
+        }));
+
+        loadPlaylist();
+    }
+
+    function loadPlaylist() {
+        playlistContainer.innerHTML = "";
+
+        tracks.forEach((track, index) => {
+            const trackItem = document.createElement("div");
+            trackItem.classList.add("track-item");
+            trackItem.addEventListener("click", () => selectTrack(index));
+
+            const title = document.createElement("div");
+            title.classList.add("track-title");
+            title.textContent = track.title;
+
+            trackItem.appendChild(title);
+            playlistContainer.appendChild(trackItem);
+        });
+    }
+
+    function updateTrack(index) {
+        if (tracks.length === 0) return;
+        audioElement.src = tracks[index].audioFile;
+        audioElement.play();
+        playPauseIcon.classList.replace("fa-play", "fa-pause");
+    }
+
+    function selectTrack(index) {
+        trackIndex = index;
+        updateTrack(trackIndex);
+    }
+
+    function prevTrack() {
+        trackIndex = (trackIndex - 1 + tracks.length) % tracks.length;
+        updateTrack(trackIndex);
+    }
+
+    function nextTrack() {
+        trackIndex = isShuffle ? Math.floor(Math.random() * tracks.length) : (trackIndex + 1) % tracks.length;
+        updateTrack(trackIndex);
+    }
+
+    function playPause() {
+        if (audioElement.paused) {
+        	audioElement.play();
+            
+            
+            playPauseIcon.classList.replace("fa-play", "fa-pause");
+        } else {
+        	alert("dd");
+            audioElement.pause();
+            playPauseIcon.classList.replace("fa-pause", "fa-play");
+        }
+    }
+
+    function changeVolume() {
+        audioElement.volume = volumeSlider.value / 100;
+    }
+
+    function togglePlaylist() {
+        playlistContainer.classList.toggle("show");
+    }
+
+    function toggleShuffle() {
+        isShuffle = !isShuffle;
+        alert(`랜덤 재생 ${isShuffle ? "활성화" : "비활성화"}`);
+    }
+
+    audioElement.addEventListener("timeupdate", () => {
+        let currentTime = audioElement.currentTime;
+        let currentMinute = Math.floor(currentTime / 60);
+        let currentSecond = Math.floor(currentTime % 60);
+        currentSecond = currentSecond < 10 ? "0" + currentSecond : currentSecond;
+        currentTimeDisplay.textContent = `${currentMinute}:${currentSecond}`;
+    });
+
+    function initEventListeners() {
+        document.getElementById("playPause").addEventListener("click", playPause);
+        document.getElementById("prevTrack").addEventListener("click", prevTrack);
+        document.getElementById("nextTrack").addEventListener("click", nextTrack);
+        volumeSlider.addEventListener("input", changeVolume);
+        document.getElementById("togglePlaylist").addEventListener("click", togglePlaylist);
+        document.getElementById("toggleShuffle").addEventListener("click", toggleShuffle);
+    }
+
+    fetchTracksFromFolder();
+    initEventListeners();
+});
+</script>
+
+<audio id="audio"></audio>
 
 <section id="bottom">
     <aside id="musicbar">

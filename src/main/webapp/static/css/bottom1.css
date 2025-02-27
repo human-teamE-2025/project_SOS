@@ -1,0 +1,129 @@
+@charset "UTF-8";
+
+/* ✅ 하단 영역 스타일 */
+#bottom {
+    position: fixed;
+    z-index: 10000;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 6vh;
+    background-color: #F8B400;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    padding: 10px 20px;
+    color: #ffffff;
+}
+
+/* ✅ 음악바 & 설정바 */
+#musicbar, #settingbar {
+    margin: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* ✅ 음악바 & 설정바 버튼 스타일 */
+#musicbar button i, #settingbar button i {
+    font-size: 2rem;
+}
+
+#bottom button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+/* ✅ 재생 버튼 스타일 */
+.play {
+    color: black;
+    font-size: 2rem;
+}
+
+.play:hover {
+    animation: heartbeat 0.6s ease-in-out;
+}
+
+.playlist {
+            display: none;
+            border: 1px solid black;
+            max-width: 200px;
+            background: orange;
+        }
+.playlist.show {
+            display: block;
+        }
+.track-item {
+            cursor: pointer;
+            padding: 5px;
+            border-bottom: 1px solid orange;
+        }
+.track-item:hover {
+            background: black;
+        }
+
+
+/* ✅ 재생 버튼 애니메이션 */
+@keyframes heartbeat {
+    0%, 50%, 100% { transform: scale(1); }
+    30%, 70% { transform: scale(1.2); }
+}
+
+/* ✅ 푸터 스타일 */
+footer {
+    bottom: 0;
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    font-size: 1rem;
+    gap: 10px;
+}
+
+/* ✅ 로그인 버튼 스타일 */
+#toggle-user-info {
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* ✅ 로그인 전 - 파란색 링크 스타일 */
+#toggle-user-info.login-link {
+    color: #007bff; /* 파란색 */
+    text-decoration: underline;
+}
+
+#toggle-user-info.login-link:hover {
+    color: #0056b3;
+}
+
+/* ✅ 로그인 후 - 더보기 버튼 스타일 */
+#toggle-user-info.more-btn {
+    background: linear-gradient(90deg, #ff9800, #e65100);
+    color: black;
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+#toggle-user-info.more-btn:hover {
+    background: linear-gradient(90deg, #ffcc80, #ff9800);
+    transform: scale(1.05);
+}
+
+/* ✅ 모바일 대응 */
+@media (max-width: 768px) {
+    footer {
+        display: none;
+    }
+    
+    #musicbar button i, #settingbar button i {
+        font-size: 1.5rem;
+    }
+
+    #session-info {
+        font-size: 12px;
+    }
+}

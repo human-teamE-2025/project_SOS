@@ -3,7 +3,7 @@
 /* ✅ 하단 영역 스타일 */
 #bottom {
     position: fixed;
-    z-index: 10000;
+    z-index: 10;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -18,13 +18,19 @@
 }
 
 /* ✅ 음악바 & 설정바 */
-#musicbar, #settingbar {
+#settingbar {
     margin: 0 24px;
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
+#musicbar{
+	margin-left : 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
 /* ✅ 음악바 & 설정바 버튼 스타일 */
 #musicbar button i, #settingbar button i {
     font-size: 2rem;

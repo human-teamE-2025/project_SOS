@@ -114,6 +114,72 @@
 </div>
 
 <script>
+
+document.addEventListener("DOMContentLoaded", () => {
+    // 애니메이션 스타일을 동적으로 추가
+    const style = document.createElement("style");
+    style.innerHTML = `
+        @keyframes selectedEffect {
+            0% { transform: translateY(0px); opacity: 1; }
+            50% { transform: translateY(-2px); opacity: 0.9; }
+            100% { transform: translateY(0px); opacity: 1; }
+        }
+        .selected {
+            border: 4px solid #F8B400 !important;
+            background-color: rgba(255, 0, 0, 0.1);
+            animation: selectedEffect 1s infinite ease-in-out;
+        }
+    `;
+    document.head.appendChild(style);
+
+    let selectedItem = null; // 현재 선택된 아이템 저장
+
+    document.querySelectorAll(".carousel-item").forEach(item => {
+        item.addEventListener("click", (event) => {
+            // 기존 선택된 아이템이 있다면 선택 해제
+            if (selectedItem) {
+                selectedItem.classList.remove("selected");
+            }
+
+            // 클릭한 요소를 선택된 상태로 설정
+            selectedItem = event.currentTarget;
+            selectedItem.classList.add("selected");
+
+            // 기존에 복제된 요소가 있으면 제거
+            const existingClone = document.querySelector(".clone-item");
+            if (existingClone) {
+                existingClone.remove();
+            }
+
+            // 클릭한 요소 복제
+            const clone = event.currentTarget.cloneNode(true);
+            clone.classList.add("clone-item"); // 복제된 요소에 고유 클래스 추가
+            clone.style.position = "fixed";
+            clone.style.left = "180px";
+            clone.style.bottom = "0px";
+            clone.style.zIndex = "1000";
+            clone.style.width = event.currentTarget.offsetWidth + "px"; // 원본 크기 유지
+            clone.style.height = event.currentTarget.offsetHeight + "px";
+            clone.style.borderRadius = getComputedStyle(event.currentTarget).borderRadius;
+            clone.style.minWidth = "8vh";
+            clone.style.minHeight = "8vh";
+            clone.style.maxWidth = "16vh";
+            clone.style.maxHeight = "16vh";
+
+            document.body.appendChild(clone);
+        });
+    });
+
+    // 페이지 로드 시 첫 번째 요소 자동 선택
+    const firstItem = document.querySelector(".carousel-item");
+    if (firstItem) {
+        firstItem.click();
+    }
+});
+
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
     function getRandomGradient() {
         // ✅ 대비가 명확한 랜덤 색상 조합을 생성
