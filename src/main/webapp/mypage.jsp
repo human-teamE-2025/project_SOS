@@ -32,7 +32,7 @@
 <body>
     <div id="entire">
 			<%@ include file="./SubFrame/SubContainer.jsp" %>		
-			<%@ include file="./MainFrame/mypage-container.jsp" %>		
+			<%@ include file="./MainFrame/mypage.jsp" %>		
 
 
     </div>	

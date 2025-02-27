@@ -70,25 +70,50 @@ main {
 	display: flex;
 	flex-direction: column;
 }
-p{
+.a-title p{
+	display: block;
+	flex-direction: column;
+	padding-top: 20px;
+	white-space: nowrap; /* 한 줄로 표시 */
+    overflow: hidden;    /* 넘치는 텍스트 숨기기 */
+    text-overflow: ellipsis; /* 넘치는 텍스트에 '...' 표시 */
+    max-width: 280px; 
+}
+.view-font{
+	display: block;
 	color:white;
 	padding-top:15px;
 	padding-left: 20px;
+	overflow: hidden;
+    margin-bottom: 10px; 
+	
 }
-h1{
-	font-size: 35px;
+.parent-element {
+    display: flex;
+    flex-direction: column; /* 세로로 정렬하도록 수정 */
 }
-h2{
+/* 두 번째 p 태그 */
+.a-title .parent-element p:nth-child(2) {
+    margin-bottom: 0; /* 간격을 줄이기 위해 margin-bottom 값 수정 */
+}
+
+/* 세 번째 p 태그 */
+.a-title .parent-element p:nth-child(3) {
+    margin-top: 0; /* 간격을 줄이기 위해 margin-top 값 수정 */
+}
+.day{
 	padding-top: 30px;
 	font-size: 20px;
 }
 hr{
 	border: 1px solid gray;
 }
+/* 비디오 */
 .a-section{
 	margin-top:20px;
 	width: 100%;
 	height: 100%;
+	margin-bottom: 50px; 
 }
 .video{
 	border: 2px solid white;
@@ -133,61 +158,22 @@ hr{
 	cursor: pointer;
 }
 .close-buttons:hover, .more-buttons:hover{
-	color:gray
+	color:gray;
+	background: none;
 }
-/* 
-play-buttons 버튼은 기본적으로 숨김
-.play-buttons, .pause-buttons {
-    display: none;
-    width: 40px;  버튼 크기
-    height: 40px; 버튼 크기
-    background: none;
-    border: none;
-    position: absolute; 비디오 중앙에 위치시킬 것
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); 버튼을 정확히 중앙에 배치
-    cursor: pointer;
-    transition: all 0.3s ease;  부드럽게 나타나는 효과
-}
-.pause-buttons {
-    display: none; 일시정지 버튼은 처음에 보이지 않음
-} 
- */
-.video:hover {
-    opacity: 0.5;  /* 비디오가 마우스를 올리면 조금 어두워짐 */
-}
-/* 사용자 정의 컨트롤 숨기기 */
-.custom-controls {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    display: flex;
-    gap: 10px;
-    opacity: 0;  /* 처음에는 숨김 */
-    transition: opacity 0.3s ease;
+  
+
+.page-button{
+	display: flex;
+	flex-direction: row;
+	width:50px;
+	height:50px;
+	padding-top:50px;
+	
+	
 }
 
-/* 비디오가 hover 되면 컨트롤 표시 */
-.video:hover .custom-controls {
-    opacity: 1;
+video:hover{
+	opacity: 0.5;
 }
 
-/* 버튼 스타일링 */
-button {
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-button:hover {
-    background-color: rgba(0, 0, 0, 0.9);
-}
-
-/* 볼륨 슬라이더 */
-input[type="range"] {
-    width: 100px;
-}
