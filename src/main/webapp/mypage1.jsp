@@ -15,19 +15,28 @@
 
 
 <style>
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 	font-family: 'Inter', sans-serif;
 }
-
-#entire {
-
+	* ::-webkit-scrollbar {
+    width: 8px;
 }
+* ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+}	
 
-			
-</style>
+* ::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+button :hover{
+	opacity:0.6;
+}
+</style>			
 </head>
 <body>
     <div id="entire">

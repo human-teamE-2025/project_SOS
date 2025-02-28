@@ -15,7 +15,7 @@
 	<section class="section">
 	<div id="member-container">
 	    <div class="member" style="width: 35vw; height: 23vh;">
-	            <h3 id="pay">내 요금제</h3>
+	            <h3 id="pay-1">내 요금제</h3>
 	            <h1 id="nomal">일반회원</h1>
 	            <p id="day">요금 청구 날짜: 2025년 5월 23일</p>
 	            <p id="card">뒷번호 ****인 visa 카드</p>

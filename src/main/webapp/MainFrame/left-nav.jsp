@@ -6,7 +6,7 @@
 
 <aside id="left-nav">
     <ul id="nav-item">
-        <button id="btn-home"><i class="fa-solid fa-house"></i> 홈</button>
+        <button id="btn-home" onclick="location.href='index.jsp'"><i class="fa-solid fa-house"></i> 홈</button>
         
         <button id="btn-mypage" onclick="location.href='mypage1.jsp'"><i class="fa-solid fa-user"></i> 내 페이지</button>
         <button id="btn-sub"><i class="fa-solid fa-heart"></i> 구독</button>

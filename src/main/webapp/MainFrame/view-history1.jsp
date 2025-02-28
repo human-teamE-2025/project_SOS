@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/view-history.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/view-history1.css">
 
 
 			
@@ -90,7 +90,6 @@
 				
             </div>
         </div>
-        <br>
         <br>
  <div class="a-section">
             <h2 class="day">어제</h2>
